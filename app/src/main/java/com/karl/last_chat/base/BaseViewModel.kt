@@ -10,6 +10,9 @@ class BaseViewModel : ViewModel() {
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    fun handleError(throwable: Throwable) {
+
+    }
 
     override fun onCleared() {
         super.onCleared()
@@ -17,14 +20,14 @@ class BaseViewModel : ViewModel() {
     }
 
 
-    fun launchDataLoad(){
+    fun launchDataLoad() {
         uiScope.launch {
             sortList()
             //modify ui
         }
     }
 
-    suspend fun sortList() = withContext(Dispatchers.Main){
+    suspend fun sortList() = withContext(Dispatchers.Main) {
         //Heavy work
     }
 }
