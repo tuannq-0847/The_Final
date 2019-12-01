@@ -12,5 +12,8 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutRes)
+        onInitComponents()
     }
+
+    abstract fun onInitComponents()
 }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "832772855170",
+    "firebase_url": "https://lastchat-fe975.firebaseio.com",
+    "project_id": "lastchat-fe975",
+    "storage_bucket": "lastchat-fe975.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832772855170:android:8309292925c2742ba72b9b",
+        "android_client_info": {
+          "package_name": "com.karl.last_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832772855170-729eksmoh4klr3sa1o19i3iiqn4mk6bc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.karl.last_chat",
+            "certificate_hash": "dcfaec903f59aea9465973e2d9c6e553c93b0a3b"
+          }
+        },
+        {
+          "client_id": "832772855170-j1kockn7iom483ldre0gspusvr73k16s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfjhH6TM8ShXEcMSm8BwVyR-aefOrktas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832772855170-j1kockn7iom483ldre0gspusvr73k16s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

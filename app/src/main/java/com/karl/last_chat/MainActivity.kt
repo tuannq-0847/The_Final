@@ -1,12 +1,14 @@
 package com.karl.last_chat
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.karl.last_chat.base.BaseActivity
+import com.karl.last_chat.utils.extensions.addFragment
+import com.karl.last_chat.view.auth.AuthFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
+    override val layoutRes: Int
+        get() = R.layout.activity_main
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onInitComponents() {
+        supportFragmentManager.addFragment(AuthFragment.newInstance(), R.id.mainContainer)
     }
 }
