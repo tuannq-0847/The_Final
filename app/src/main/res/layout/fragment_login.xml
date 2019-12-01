@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editEmail"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_52dp"
+        android:layout_marginStart="@dimen/_64dp"
+        android:layout_marginEnd="@dimen/_64dp"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingStart="@dimen/_16dp"
+        android:paddingEnd="@dimen/_16dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp"
+        app:layout_constraintBottom_toTopOf="@id/editPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editPassword"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_52dp"
+        android:layout_marginStart="@dimen/_64dp"
+        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_64dp"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"
+        android:paddingEnd="@dimen/_16dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp"
+        app:layout_constraintBottom_toTopOf="@id/textForgot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editEmail"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textForgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:text="Forgot Password?"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_14sp"
+        app:layout_constraintBottom_toTopOf="@id/textLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editPassword"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textVerticalLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="-90"
+        android:text="LOGIN"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/editPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/editPassword"
+        app:layout_constraintTop_toTopOf="@id/editEmail" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:text="LOGIN"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textForgot" />
+</androidx.constraintlayout.widget.ConstraintLayout>
