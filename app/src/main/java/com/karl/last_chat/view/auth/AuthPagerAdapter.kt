@@ -5,7 +5,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 
-class AuthPagerAdapter(private val fragments: List<Fragment>, fm: FragmentManager, behavior: Int) :
+class AuthPagerAdapter(
+    private val fragments: MutableList<Fragment>,
+    fm: FragmentManager,
+    behavior: Int
+) :
     FragmentStatePagerAdapter(fm, behavior) {
     override fun getItem(position: Int): Fragment {
         return fragments[position]

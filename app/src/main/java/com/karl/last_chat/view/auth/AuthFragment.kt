@@ -5,6 +5,7 @@ import android.graphics.Path
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
@@ -17,6 +18,10 @@ import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListener {
+    override fun onObserve() {
+
+    }
+
     override val viewModel: AuthViewModel by viewModel()
 
     override fun onPageScrollStateChanged(state: Int) {
@@ -28,12 +33,12 @@ class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListen
     }
 
     override fun onPageSelected(position: Int) {
-        fragments[0].textVerticalLogin.visibility =
+        (fragments[0] as LoginFragment).textVerticalLogin.visibility =
             if (fragments[position] is LoginFragment) View.GONE else View.VISIBLE
         //     handleAnimation(fragments[0].textVerticalLogin)
 //        rotateAnim(fragments[0].textVerticalLogin)
 
-        fragments[1].textVerticalSignUp.visibility =
+        (fragments[1] as RegisterFragment).textVerticalSignUp.visibility =
             if (fragments[position] is RegisterFragment) View.GONE else View.VISIBLE
     }
 
@@ -65,7 +70,7 @@ class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListen
     }
 
     private val fragments =
-        mutableListOf(LoginFragment.newInstance(), RegisterFragment.newInstance())
+        mutableListOf<Fragment>(LoginFragment.newInstance(), RegisterFragment.newInstance())
 
     private val pagerAdapter by lazy {
         AuthPagerAdapter(

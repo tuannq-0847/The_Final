@@ -6,7 +6,7 @@
     android:background="@color/colorAccent">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editEmail"
+        android:id="@+id/editEmailL"
         android:layout_width="0dp"
         android:layout_height="@dimen/_52dp"
         android:layout_marginStart="@dimen/_64dp"
@@ -18,14 +18,14 @@
         android:paddingEnd="@dimen/_16dp"
         android:textColor="@android:color/black"
         android:textSize="@dimen/_14sp"
-        app:layout_constraintBottom_toTopOf="@id/editPassword"
+        app:layout_constraintBottom_toTopOf="@id/editPasswordL"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editPassword"
+        android:id="@+id/editPasswordL"
         android:layout_width="0dp"
         android:layout_height="@dimen/_52dp"
         android:layout_marginStart="@dimen/_64dp"
@@ -41,7 +41,7 @@
         app:layout_constraintBottom_toTopOf="@id/textForgot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editEmail"
+        app:layout_constraintTop_toBottomOf="@id/editEmailL"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -55,7 +55,7 @@
         app:layout_constraintBottom_toTopOf="@id/textLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editPassword"
+        app:layout_constraintTop_toBottomOf="@id/editPasswordL"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -65,10 +65,10 @@
         android:rotation="-90"
         android:text="LOGIN"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/editPassword"
+        app:layout_constraintBottom_toBottomOf="@id/editPasswordL"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/editPassword"
-        app:layout_constraintTop_toTopOf="@id/editEmail" />
+        app:layout_constraintStart_toEndOf="@id/editPasswordL"
+        app:layout_constraintTop_toTopOf="@id/editEmailL" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textLogin"

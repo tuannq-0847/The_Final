@@ -6,12 +6,12 @@
     android:orientation="vertical"
     android:padding="@dimen/_16dp">
 
-    <ImageView
-        android:layout_width="@dimen/_32dp"
-        android:layout_height="@dimen/_32dp"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/_16dp"
-        android:src="@drawable/ic_warning" />
+
+    <com.karl.last_chat.widget.CheckableView
+        android:layout_width="@dimen/_64dp"
+        android:layout_height="@dimen/_64dp"
+        android:layout_gravity="center">
+    </com.karl.last_chat.widget.CheckableView>
 
     <TextView
         android:id="@+id/titleContent"
