@@ -3,4 +3,9 @@
     <string name="email_not_valid">Your email is bad !!! Please check again</string>
     <string name="password_not_valid">Password is not valid !!! Please check again</string>
     <string name="pw_new_pw_not_match">Old password and new password is not matches!!! Please check again</string>
+    <string name="res_successfully">Register successfully</string>
+    <string name="message">Message</string>
+    <string name="search">Search</string>
+    <string name="group">Group</string>
+    <string name="personal">Personal</string>
 </resources>
