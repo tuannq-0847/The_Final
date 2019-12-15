@@ -12,4 +12,7 @@
     <dimen name="_512dp">512dp</dimen>
     <dimen name="_144dp">144dp</dimen>
     <dimen name="_8dp">8dp</dimen>
+    <dimen name="_352dp">352dp</dimen>
+    <dimen name="_74dp">74dp</dimen>
+    <dimen name="_244dp">244dp</dimen>
 </resources>

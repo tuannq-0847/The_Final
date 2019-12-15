@@ -18,7 +18,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(), View.OnClickListener
         viewModel.authResultEvent.observe(this, Observer {
             context?.showDialogOk(getString(R.string.res_successfully)) {
                 // viewModel.getAllIcon()
-                fragmentManager?.replaceFragment(HomeFragment.newInstance(), R.id.mainContainer)
+                fragmentManager?.replaceFragment(HomeFragment.newInstance(true), R.id.mainContainer)
             }
         })
     }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/avatar"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/imageSee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:drawableStart="@drawable/ic_eye"
+        android:drawablePadding="@dimen/_16dp"
+        android:text="@string/see_avatar"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp" />
+
+    <TextView
+        android:id="@+id/imageCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:drawableStart="@drawable/ic_photo_camera"
+        android:drawablePadding="@dimen/_16dp"
+        android:text="@string/get_new_image"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp" />
+
+    <TextView
+        android:id="@+id/imagePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:drawableStart="@drawable/ic_decoration"
+        android:drawablePadding="@dimen/_16dp"
+        android:text="@string/choose_stored_image"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp" />
+
+</LinearLayout>

@@ -1,22 +1,20 @@
 package com.karl.last_chat.view.register
 
 import android.util.Log
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.karl.last_chat.base.BaseViewModel
+import com.karl.last_chat.data.model.User
+import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import com.karl.last_chat.utils.extensions.validEmail
 import com.karl.last_chat.utils.extensions.validPassword
 import com.karl.last_chat.utils.validate.ValidateEnum
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 
-class RegisterViewModel(private val firebaseAuth: FirebaseAuth) : BaseViewModel() {
+class RegisterViewModel(private val authRepository: AppRepository) : BaseViewModel() {
 
-    val authResultEvent by lazy { SingleLiveEvent<AuthResult>() }
+    val authResultEvent by lazy { SingleLiveEvent<Void>() }
 
     val b = mutableListOf<String>()
 
@@ -39,15 +37,29 @@ class RegisterViewModel(private val firebaseAuth: FirebaseAuth) : BaseViewModel(
     }
 
     fun signUpAccount(email: String, password: String) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                // Log.d("result", it.toString())
+        runBlocking {
+            authRepository.createUser(email, password)
+                .addOnSuccessListener {
+                    insertUser(it.user!!)
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
+    private fun insertUser(user: FirebaseUser) {
+        runBlocking {
+            authRepository.insertUser(
+                User(user.uid)
+            ).addOnSuccessListener {
                 authResultEvent.value = it
-            }
-            .addOnFailureListener {
+            }.addOnFailureListener {
                 error.value = it
             }
+        }
     }
+
 
     fun getAllIcon() {
         mainScope.launch {

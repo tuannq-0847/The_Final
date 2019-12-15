@@ -6,6 +6,7 @@ import com.karl.last_chat.view.auth.AuthViewModel
 import com.karl.last_chat.view.home.HomeViewModel
 import com.karl.last_chat.view.home.chat.ChatViewModel
 import com.karl.last_chat.view.login.LoginViewModel
+import com.karl.last_chat.view.personal.PersonalViewModel
 import com.karl.last_chat.view.register.RegisterViewModel
 import com.karl.last_chat.view.splash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,6 +18,6 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { HomeViewModel() }
     viewModel { ChatViewModel() }
-    viewModel { SplashViewModel() }
-    single { FirebaseAuth.getInstance() }
+    viewModel { PersonalViewModel() }
+    viewModel { SplashViewModel(get()) }
 }

@@ -1,14 +1,15 @@
 package com.karl.last_chat.view.login
 
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.karl.last_chat.base.BaseViewModel
+import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import com.karl.last_chat.utils.extensions.validEmail
 import com.karl.last_chat.utils.extensions.validPassword
 import com.karl.last_chat.utils.validate.ValidateEnum
+import kotlinx.coroutines.runBlocking
 
-class LoginViewModel(private val firebaseAuth: FirebaseAuth) : BaseViewModel() {
+class LoginViewModel(private val appRepository: AppRepository) : BaseViewModel() {
 
     val authResultEvent by lazy { SingleLiveEvent<AuthResult>() }
     fun validateLogin(
@@ -24,12 +25,14 @@ class LoginViewModel(private val firebaseAuth: FirebaseAuth) : BaseViewModel() {
     }
 
     fun loginWithEmailPassword(email: String, password: String) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                authResultEvent.value = it
-            }
-            .addOnFailureListener {
-                error.value = it
-            }
+        runBlocking {
+            appRepository.signIn(email, password)
+                .addOnSuccessListener {
+                    authResultEvent.value = it
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
     }
 }
