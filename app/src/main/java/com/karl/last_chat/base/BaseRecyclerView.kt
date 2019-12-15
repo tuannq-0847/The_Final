@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 
 abstract class BaseRecyclerView<Item>(
     callBack: DiffUtil.ItemCallback<Item>
-) : ListAdapter<Item, BaseRecyclerView.BaseViewHolder<Item>>(
+) : ListAdapter<Item, BaseRecyclerView.BaseViewHolder>(
     AsyncDifferConfig.Builder<Item>(callBack)
         .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
         .build()
@@ -23,14 +23,20 @@ abstract class BaseRecyclerView<Item>(
 
     abstract fun getLayoutRes(viewType: Int): Int
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Item> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(getLayoutRes(viewType), parent, false)
         )
     }
 
-    open class BaseViewHolder<Item>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        open fun onBind(item: Item) {}
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        onBind(holder.itemView, currentList[position])
+    }
+
+    abstract fun onBind(itemView: View, item: Item)
+
+    open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        // open fun onBind(item: Item) {}
     }
 }
