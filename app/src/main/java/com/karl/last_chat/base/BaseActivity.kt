@@ -13,7 +13,10 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(layoutRes)
         onInitComponents()
+        doObserve()
     }
+
+    abstract fun doObserve()
 
     abstract fun onInitComponents()
 }

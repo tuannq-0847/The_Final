@@ -17,3 +17,11 @@ fun FragmentManager.replaceFragment(fragment: Fragment, container: Int) {
         .commit()
 }
 
+fun FragmentManager.addFragmentWithBackStack(fragment: Fragment, container: Int) {
+    beginTransaction().add(container, fragment)
+        .addToBackStack(fragment.javaClass.simpleName)
+        .setCustomAnimations(R.anim.left_to_right, R.anim.right_to_left)
+        .commit()
+}
+
+

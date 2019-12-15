@@ -8,4 +8,4 @@ val appModule = module {
     single { androidApplication().resources }
 }
 
-val appModules = listOf(appModule,viewModelModule)
+val appModules = listOf(appModule, viewModelModule, repositoryModule)

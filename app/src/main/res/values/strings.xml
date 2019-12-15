@@ -8,4 +8,8 @@
     <string name="search">Search</string>
     <string name="group">Group</string>
     <string name="personal">Personal</string>
+    <string name="avatar">Avatar</string>
+    <string name="see_avatar">See avatar</string>
+    <string name="get_new_image">Get new image</string>
+    <string name="choose_stored_image">Choose stored image</string>
 </resources>
