@@ -18,6 +18,6 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { HomeViewModel() }
     viewModel { ChatViewModel() }
-    viewModel { PersonalViewModel() }
+    viewModel { PersonalViewModel(get()) }
     viewModel { SplashViewModel(get()) }
 }

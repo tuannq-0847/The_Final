@@ -3,21 +3,36 @@ package com.karl.last_chat.view.personal
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.onClickViews
+import com.karl.last_chat.utils.extensions.rotate
+import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.view.dialogs.DialogAvatar
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.provider.MediaStore
-import com.karl.last_chat.utils.extensions.rotate
+import kotlin.math.abs
 
 
-class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener {
+class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener,
+    AppBarLayout.OnOffsetChangedListener {
+
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+            //collapsed
+            imageAvatarSmall.visibility = View.VISIBLE
+        } else {
+            //expand
+            imageAvatarSmall.visibility = View.GONE
+        }
+    }
 
     private lateinit var sharedViewModel: SharedViewModel
 
@@ -32,6 +47,9 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             R.id.imageAvatar -> {
                 dialog.show()
             }
+            R.id.imageBackground -> {
+                dialog.show()
+            }
         }
     }
 
@@ -44,6 +62,8 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         sharedViewModel = activity?.run {
             ViewModelProviders.of(this)[SharedViewModel::class.java]
         } ?: throw Exception()
+        appBarPersonal.addOnOffsetChangedListener(this)
+        viewModel.getInforUser()
     }
 
     override fun onStop() {
@@ -53,18 +73,37 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onObserve() {
-        sharedViewModel.uriImage.observe(this, Observer {uri->
+        sharedViewModel.uriImage.observe(this, Observer { uri ->
             val inputStream = activity?.contentResolver?.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
             inputStream?.let {
-                imageAvatar.setImageBitmap(bitmap.rotate(bitmap,getOrientation(uri)))
-
+                viewModel.uploadAvatar(uri)
+                imageAvatar.setImageBitmap(bitmap.rotate(bitmap, getOrientation(uri)))
             }
+        })
+        viewModel.eventUploadAvatar.observe(this, Observer {
+            context?.showMessage("done")
+        })
+        viewModel.dataPersonal.observe(this, Observer {
+            Glide.with(context!!)
+                .load(it.pathAvatar)
+                .placeholder(R.drawable.avatar)
+                .into(imageAvatar)
+            Glide.with(context!!)
+                .load(it.pathBackground)
+                .placeholder(R.drawable.bg_cover_1)
+                .into(imageBackground)
+            Glide.with(context!!)
+                .load(it.pathAvatar)
+                .placeholder(R.drawable.avatar)
+                .into(imageAvatarSmall)
+            textNameSmall.text = it.userName
         })
     }
 
     private fun getOrientation(uri: Uri): Int {
-        val cursor = context?.contentResolver?.query(uri,
+        val cursor = context?.contentResolver?.query(
+            uri,
             arrayOf(MediaStore.Images.ImageColumns.ORIENTATION), null, null, null
         )
 
