@@ -12,4 +12,5 @@
     <string name="see_avatar">See avatar</string>
     <string name="get_new_image">Get new image</string>
     <string name="choose_stored_image">Choose stored image</string>
+    <string name="add_introduce">Add introduce myself</string>
 </resources>

@@ -5,8 +5,10 @@ import androidx.lifecycle.Observer
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.onClickViews
+import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.utils.validate.ValidateEnum
+import com.karl.last_chat.view.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -14,7 +16,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
 
     override fun onObserve() {
         viewModel.authResultEvent.observe(this, Observer {
-
+            fragmentManager?.replaceFragment(HomeFragment.newInstance(), R.id.mainContainer)
         })
     }
 

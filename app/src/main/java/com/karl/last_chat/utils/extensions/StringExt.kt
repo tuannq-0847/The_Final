@@ -1,5 +1,10 @@
 package com.karl.last_chat.utils.extensions
 
+import android.os.Build
+import java.nio.charset.Charset
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.regex.Pattern
 
 const val EMAIL_REGEX =
@@ -9,6 +14,23 @@ const val PASSWORD_REGEX = "^[a-zA-Z0-9'!#\$%&'*+/=?^_`{|}~.-]{0,28}\$"
 
 fun String.validEmail() = Pattern.matches(EMAIL_REGEX, this)
 
-fun String.validPassword():Boolean {
+fun String.validPassword(): Boolean {
     return Pattern.matches(PASSWORD_REGEX, "1")
+}
+
+fun String.generateName(): String {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd/HH:mm:ss")
+        val localDateTime = LocalDateTime.now()
+        return dateFormat.format(localDateTime)
+    }
+    return randomString()
+}
+
+fun randomString(): String {
+
+    val array = ByteArray(7) // length is bounded by 7
+    Random().nextBytes(array)
+    return String(array, Charset.forName("UTF-8"))
 }
