@@ -5,10 +5,9 @@ import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
-import com.karl.last_chat.utils.extensions.addFragment
-import com.karl.last_chat.utils.extensions.addFragmentWithBackStack
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.home.chat.ChatFragment
+import com.karl.last_chat.view.home.message.MessagesFragment
 import com.karl.last_chat.view.personal.PersonalFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +27,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             fragmentManager?.replaceFragment(PersonalFragment.newInstance(), R.id.homeContainer)
         } else {
             fragmentManager?.replaceFragment(
-                ChatFragment.newInstance(),
+                MessagesFragment.newInstance(),
                 R.id.homeContainer
             )
         }
@@ -41,7 +40,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             }
             R.id.tabMessage -> {
                 fragmentManager?.replaceFragment(
-                    ChatFragment.newInstance(),
+                    MessagesFragment.newInstance(),
                     R.id.homeContainer
                 )
             }

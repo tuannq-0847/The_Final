@@ -5,6 +5,7 @@ import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.view.auth.AuthViewModel
 import com.karl.last_chat.view.home.HomeViewModel
 import com.karl.last_chat.view.home.chat.ChatViewModel
+import com.karl.last_chat.view.home.message.MessagesViewModel
 import com.karl.last_chat.view.login.LoginViewModel
 import com.karl.last_chat.view.personal.PersonalViewModel
 import com.karl.last_chat.view.register.RegisterViewModel
@@ -20,4 +21,5 @@ val viewModelModule = module {
     viewModel { ChatViewModel() }
     viewModel { PersonalViewModel(get()) }
     viewModel { SplashViewModel(get()) }
+    viewModel { MessagesViewModel(get()) }
 }
