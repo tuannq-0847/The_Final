@@ -18,6 +18,8 @@ class MainActivity : BaseActivity() {
 
     private lateinit var sharedViewModel: SharedViewModel
 
+    private val viewModel: MainViewModel by viewModel()
+
     override val layoutRes: Int
         get() = R.layout.activity_main
 
@@ -25,6 +27,7 @@ class MainActivity : BaseActivity() {
         // supportFragmentManager.addFragment(AuthFragment.newInstance(), R.id.mainContainer)
         supportFragmentManager.replaceFragment(SplashFragment.newInstance(), R.id.mainContainer)
         sharedViewModel = ViewModelProviders.of(this@MainActivity)[SharedViewModel::class.java]
+
     }
 
     override fun doObserve() {

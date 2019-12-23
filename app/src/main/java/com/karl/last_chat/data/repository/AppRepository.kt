@@ -30,4 +30,6 @@ interface AppRepository {
     suspend fun updateUserStatus(online: Int)
 
     suspend fun getInforUsers(): DatabaseReference
+
+    suspend fun getMessages(): DatabaseReference
 }

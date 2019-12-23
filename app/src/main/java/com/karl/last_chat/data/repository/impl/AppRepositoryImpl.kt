@@ -21,6 +21,9 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun getMessages(): DatabaseReference =
+        firebaseDatabase.getReference("${Constants.MESSAGE}/$userId")
+
     override suspend fun getInforUsers() =
         firebaseDatabase.getReference("${Constants.USER}/$userId")
 
