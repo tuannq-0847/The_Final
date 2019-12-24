@@ -1,0 +1,33 @@
+*   [33m1e3c021[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #8 from tuannq-0847/finish_custom_view_loading
+[31m|[m[32m\[m  
+[31m|[m * [33m037bc46[m[33m ([m[1;31morigin/finish_custom_view_loading[m[33m)[m finish custom view loading
+[31m|[m[31m/[m  
+*   [33m2117ff9[m Merge pull request #7 from tuannq-0847/update_personal
+[33m|[m[34m\[m  
+[33m|[m * [33m68e34de[m[33m ([m[1;31morigin/update_personal[m[33m)[m update personal
+[33m|[m[33m/[m  
+*   [33m9fe6d96[m Merge pull request #6 from tuannq-0847/init_personal
+[35m|[m[36m\[m  
+[35m|[m * [33mfd70cb2[m[33m ([m[1;31morigin/init_personal[m[33m)[m init personal
+[35m|[m[35m/[m  
+*   [33maff4a63[m Merge pull request #5 from tuannq-0847/init_home
+[1;31m|[m[1;32m\[m  
+[1;31m|[m * [33md27f58d[m[33m ([m[1;31morigin/init_home[m[33m)[m init splash, home
+[1;31m|[m[1;31m/[m  
+*   [33m3653050[m Merge pull request #4 from tuannq-0847/init_login_register
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33m278040a[m[33m ([m[1;31morigin/init_login_register[m[33m)[m complete custom view dialog  and login register
+* [1;34m|[m   [33mbd89839[m Merge pull request #3 from tuannq-0847/init_login_register
+[1;35m|[m[1;34m\[m [1;34m\[m  
+[1;35m|[m [1;34m|[m[1;34m/[m  
+[1;35m|[m * [33mcf3569b[m integrate register and dialog error
+[1;35m|[m[1;35m/[m  
+*   [33m3d54688[m Merge pull request #2 from tuannq-0847/create_base
+[31m|[m[32m\[m  
+[31m|[m * [33m9a72328[m[33m ([m[1;31morigin/create_base[m[33m)[m create base
+[31m|[m[31m/[m  
+*   [33ma9e8e6a[m Merge pull request #1 from tuannq-0847/integrate_circle_ci
+[33m|[m[34m\[m  
+[33m|[m * [33m8b1456a[m[33m ([m[1;31morigin/integrate_circle_ci[m[33m)[m integrate circle ci
+[33m|[m[33m/[m  
+* [33m1b34b1f[m init project
