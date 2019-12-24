@@ -44,8 +44,8 @@ class MainActivity : BaseActivity() {
         sharedViewModel = ViewModelProviders.of(this@MainActivity)[SharedViewModel::class.java]
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            5000,
-            5F,
+            1000,
+            1F,
             object : LocationListener {
                 override fun onLocationChanged(location: Location?) {
                     Log.d("LocationChanged", "${location?.latitude}..." + location?.longitude)

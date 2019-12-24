@@ -6,7 +6,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.replaceFragment
-import com.karl.last_chat.view.home.chat.ChatFragment
+import com.karl.last_chat.view.home.discovery.DiscoveryFragment
+import com.karl.last_chat.view.home.group_chat.GroupFragment
 import com.karl.last_chat.view.home.message.MessagesFragment
 import com.karl.last_chat.view.personal.PersonalFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -36,7 +37,10 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.tabSearch -> {
-
+                fragmentManager?.replaceFragment(
+                    DiscoveryFragment.newInstance(),
+                    R.id.homeContainer
+                )
             }
             R.id.tabMessage -> {
                 fragmentManager?.replaceFragment(
@@ -45,7 +49,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
                 )
             }
             R.id.tabGroup -> {
-
+                fragmentManager?.replaceFragment(GroupFragment.newInstance(), R.id.homeContainer)
             }
             R.id.tabPersonal -> {
                 fragmentManager?.replaceFragment(

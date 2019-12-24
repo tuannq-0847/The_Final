@@ -1,12 +1,12 @@
-package com.karl.last_chat.view.home.chat
+package com.karl.last_chat.view.home.group_chat
 
 import android.view.View
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ChatFragment : BaseFragment<ChatViewModel>() {
-    override val viewModel: ChatViewModel by viewModel()
+class GroupFragment : BaseFragment<GroupViewModel>() {
+    override val viewModel: GroupViewModel by viewModel()
 
 //    val adapter = EmojiAdapter(object : DiffUtil.ItemCallback<String>() {
 //        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
@@ -32,7 +32,7 @@ class ChatFragment : BaseFragment<ChatViewModel>() {
     }
 
     companion object {
-
-        fun newInstance() = newInstance<ChatFragment>()
+        
+        fun newInstance() = newInstance<GroupFragment>()
     }
 }

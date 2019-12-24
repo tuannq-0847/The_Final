@@ -16,4 +16,9 @@ class DiscoveryFragment : BaseFragment<DiscoveryViewModel>() {
     override fun onObserve() {
 
     }
+
+    companion object{
+
+        fun newInstance() = newInstance<DiscoveryFragment>()
+    }
 }
