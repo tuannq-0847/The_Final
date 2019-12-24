@@ -32,4 +32,6 @@ interface AppRepository {
     suspend fun getInforUsers(): DatabaseReference
 
     suspend fun getMessages(): DatabaseReference
+
+    suspend fun updateLocation(lat: Double, long: Double)
 }
