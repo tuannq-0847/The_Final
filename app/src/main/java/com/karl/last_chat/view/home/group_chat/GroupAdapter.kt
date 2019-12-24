@@ -1,4 +1,4 @@
-package com.karl.last_chat.view.home.chat
+package com.karl.last_chat.view.home.group_chat
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
@@ -6,7 +6,7 @@ import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseRecyclerView
 import com.karl.last_chat.data.model.Message
 
-class ChatAdapter() :
+class GroupAdapter :
     BaseRecyclerView<Message>(object : DiffUtil.ItemCallback<Message>() {
         override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
             return oldItem.idMessage == newItem.idMessage
@@ -24,6 +24,6 @@ class ChatAdapter() :
         }
 
     override fun onBind(itemView: View, item: Message) {
-        
+
     }
 }

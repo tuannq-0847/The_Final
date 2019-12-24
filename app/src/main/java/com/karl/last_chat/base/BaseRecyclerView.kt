@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.Executors
 
 abstract class BaseRecyclerView<Item>(
-    callBack: DiffUtil.ItemCallback<Item>
+    callBack: DiffUtil.ItemCallback<Item>,
+    val onClickItem: (item: Item) -> Unit = {}
 ) : ListAdapter<Item, BaseRecyclerView.BaseViewHolder>(
     AsyncDifferConfig.Builder<Item>(callBack)
         .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
@@ -31,7 +32,11 @@ abstract class BaseRecyclerView<Item>(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        onBind(holder.itemView, currentList[position])
+        val item = currentList[position]
+        holder.itemView.setOnClickListener {
+            onClickItem(item)
+        }
+        onBind(holder.itemView, item)
     }
 
     abstract fun onBind(itemView: View, item: Item)

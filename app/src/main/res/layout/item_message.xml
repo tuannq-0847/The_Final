@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageAv"
+        android:layout_width="@dimen/_36dp"
+        android:layout_height="@dimen/_36dp"
+        app:layout_constraintEnd_toStartOf="@id/textLastMesasge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textLastMesasge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="@dimen/_14sp"
+        app:layout_constraintBottom_toBottomOf="@id/imageAv"
+        app:layout_constraintEnd_toStartOf="@id/imageStatus"
+        app:layout_constraintStart_toEndOf="@id/imageAv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageStatus"
+        android:layout_width="@dimen/_16dp"
+        android:layout_height="@dimen/_16dp"
+        android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_8dp"
+        android:src="@color/color_online"
+        app:layout_constraintBottom_toBottomOf="@id/imageAv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textLastMesasge"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
