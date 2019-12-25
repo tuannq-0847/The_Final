@@ -26,6 +26,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     private fun observeError() {
         viewModel.error.observe(this, Observer {
+            viewModel.hideLoading()
             onReceiveError(it)
         })
     }
@@ -44,6 +45,11 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     open fun onReceiveError(throwable: Throwable) {
         context?.showDialogWarning(throwable.message!!)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.hideLoading()
     }
 
     companion object {

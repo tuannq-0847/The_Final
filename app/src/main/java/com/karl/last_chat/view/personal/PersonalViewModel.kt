@@ -18,6 +18,7 @@ class PersonalViewModel(private val appRepository: AppRepository) : BaseViewMode
     val dataPersonal by lazy { SingleLiveEvent<User>() }
     fun uploadCover(uri: Uri) {
         runBlocking {
+            showLoading()
             appRepository.uploadAvatar(uri)
                 .addOnSuccessListener {
                     eventUploadAvatar.value = true
@@ -30,6 +31,7 @@ class PersonalViewModel(private val appRepository: AppRepository) : BaseViewMode
 
     fun uploadAvatar(uri: Uri) {
         runBlocking {
+            showLoading()
             appRepository.uploadAvatar(uri)
                 .addOnSuccessListener {
                     eventUploadAvatar.value = true
@@ -42,6 +44,7 @@ class PersonalViewModel(private val appRepository: AppRepository) : BaseViewMode
 
     fun getInforUser() {
         runBlocking {
+            showLoading()
             appRepository.getInforUsers().addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
                     error.value = databaseError.toException()

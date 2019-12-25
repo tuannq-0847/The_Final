@@ -131,6 +131,14 @@ abstract class BaseViewModel : ViewModel() {
         "\udd2f"
     )
 
+    fun showLoading() {
+        loading.value = true
+    }
+
+    fun hideLoading() {
+        loading.value = false
+    }
+
     suspend fun sortList() = withContext(Dispatchers.Main) {
         //Heavy work
     }

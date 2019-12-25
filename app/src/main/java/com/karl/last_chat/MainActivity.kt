@@ -13,6 +13,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -28,6 +29,7 @@ import com.karl.last_chat.utils.DialogEnum
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.personal.SharedViewModel
 import com.karl.last_chat.view.splash.SplashFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -130,6 +132,9 @@ class MainActivity : BaseActivity() {
             } else {
                 openGallery()
             }
+        })
+        viewModel.loading.observe(this, Observer {
+            rotateView.visibility = if (it) View.VISIBLE else View.GONE
         })
     }
 

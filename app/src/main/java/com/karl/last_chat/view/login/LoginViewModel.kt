@@ -26,6 +26,7 @@ class LoginViewModel(private val appRepository: AppRepository) : BaseViewModel()
 
     fun loginWithEmailPassword(email: String, password: String) {
         runBlocking {
+            showLoading()
             appRepository.signIn(email, password)
                 .addOnSuccessListener {
                     authResultEvent.value = it

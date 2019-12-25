@@ -38,6 +38,7 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
 
     fun signUpAccount(email: String, password: String) {
         runBlocking {
+            showLoading()
             authRepository.createUser(email, password)
                 .addOnSuccessListener {
                     insertUser(it.user!!)
@@ -50,6 +51,7 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
 
     private fun insertUser(user: FirebaseUser) {
         runBlocking {
+            showLoading()
             authRepository.insertUser(
                 User(user.uid)
             ).addOnSuccessListener {
