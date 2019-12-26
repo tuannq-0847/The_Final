@@ -12,9 +12,4 @@
         tools:context=".MainActivity">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.karl.last_chat.widget.RotateView
-        android:id="@+id/rotateView"
-        android:layout_width="@dimen/_24dp"
-        android:layout_height="@dimen/_24dp" />
 </FrameLayout>

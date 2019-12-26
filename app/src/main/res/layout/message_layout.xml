@@ -47,10 +47,4 @@
             android:text="to find people"
             android:textSize="@dimen/_14sp" />
     </LinearLayout>
-
-    <com.karl.last_chat.widget.RotateView
-        android:layout_width="@dimen/_24dp"
-        android:layout_height="@dimen/_24dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_loading" />
 </LinearLayout>

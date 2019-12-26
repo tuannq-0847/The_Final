@@ -1,5 +1,6 @@
 package com.karl.last_chat.di
 
+import com.karl.last_chat.MainViewModel
 import com.karl.last_chat.view.auth.AuthViewModel
 import com.karl.last_chat.view.home.HomeViewModel
 import com.karl.last_chat.view.home.chat.ChatViewModel
@@ -24,4 +25,5 @@ val viewModelModule = module {
     viewModel { MessagesViewModel(get()) }
     viewModel { GroupViewModel() }
     viewModel { DiscoveryViewModel() }
+    viewModel { MainViewModel(get()) }
 }

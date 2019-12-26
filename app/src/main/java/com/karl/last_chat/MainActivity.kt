@@ -12,8 +12,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -29,7 +27,6 @@ import com.karl.last_chat.utils.DialogEnum
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.personal.SharedViewModel
 import com.karl.last_chat.view.splash.SplashFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -110,9 +107,14 @@ class MainActivity : BaseActivity() {
                 )
             }
         } else {
-            getLocations()
+            if (!isLocationEnabled()) {
+                showRequestDialogGps()
+            } else getLocations()
         }
     }
+
+    private fun isLocationEnabled() =
+        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
     private fun isPermissionGranted(): Boolean {
         return (ContextCompat.checkSelfPermission(
@@ -133,9 +135,6 @@ class MainActivity : BaseActivity() {
                 openGallery()
             }
         })
-        viewModel.loading.observe(this, Observer {
-            rotateView.visibility = if (it) View.VISIBLE else View.GONE
-        })
     }
 
 
@@ -154,13 +153,23 @@ class MainActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            try {
-                val imageUri = data?.data
-                sharedViewModel.uriImage.value = imageUri
+        when (requestCode) {
+            FLAG_OPEN_DIALOG_REQUEST -> {
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    finish()
+                }
+            }
+            else -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        val imageUri = data?.data
+                        sharedViewModel.uriImage.value = imageUri
 
-            } catch (ex: Exception) {
-                ex.printStackTrace()
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                }
             }
         }
     }
@@ -175,7 +184,6 @@ class MainActivity : BaseActivity() {
             1 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //allowed
-                    Log.d("allow", "in...")
                     showRequestDialogGps()
                 } else {
                     //denied
@@ -206,10 +214,7 @@ class MainActivity : BaseActivity() {
                         try {
                             val resolvableApiException = ex as ResolvableApiException
                             resolvableApiException
-                                .startResolutionForResult(
-                                    this,
-                                    1
-                                )
+                                .startResolutionForResult(this, FLAG_OPEN_DIALOG_REQUEST)
                         } catch (e: IntentSender.SendIntentException) {
 
                         }
@@ -225,5 +230,6 @@ class MainActivity : BaseActivity() {
         const val LOCATION_REFRESH_TIME = 5000
         const val LOCATION_REFRESH_DISTANCE = 5000F
         const val ACTIVITY_SELECT_IMAGE = 1234
+        const val FLAG_OPEN_DIALOG_REQUEST = 9999
     }
 }

@@ -16,6 +16,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
 
     override fun onObserve() {
         viewModel.authResultEvent.observe(this, Observer {
+            viewModel.hideLoading()
             fragmentManager?.replaceFragment(HomeFragment.newInstance(), R.id.mainContainer)
         })
     }
