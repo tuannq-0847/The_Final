@@ -1,15 +1,11 @@
 package com.karl.last_chat.view.home.message
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.onClickViews
-import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.home.HomeFragment
-import com.karl.last_chat.view.home.discovery.DiscoveryFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.message_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
