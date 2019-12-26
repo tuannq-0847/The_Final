@@ -1,7 +1,10 @@
 package com.karl.last_chat.view.home
 
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
@@ -27,7 +30,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             bottomNavigation.selectedItemId = R.id.tabPersonal
             fragmentManager?.replaceFragment(PersonalFragment.newInstance(), R.id.homeContainer)
         } else {
-            fragmentManager?.replaceFragment(
+            childFragmentManager.replaceFragment(
                 MessagesFragment.newInstance(),
                 R.id.homeContainer
             )
@@ -62,7 +65,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     }
 
     override fun onObserve() {
-
     }
 
     companion object {
