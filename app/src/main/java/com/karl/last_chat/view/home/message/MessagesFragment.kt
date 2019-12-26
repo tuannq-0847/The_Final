@@ -25,6 +25,7 @@ class MessagesFragment : BaseFragment<MessagesViewModel>() {
 
     override fun onObserve() {
         viewModel.messageEvents.observe(this, Observer {
+            viewModel.hideLoading()
             if (it.isEmpty()) {
                 layoutFind.visibility = View.VISIBLE
                 textGetStarted.visibility = View.VISIBLE

@@ -37,7 +37,8 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
     }
 
     fun signUpAccount(email: String, password: String) {
-        runBlocking {
+        uiScope.launch {
+            showLoading()
             authRepository.createUser(email, password)
                 .addOnSuccessListener {
                     insertUser(it.user!!)
@@ -49,11 +50,12 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
     }
 
     private fun insertUser(user: FirebaseUser) {
-        runBlocking {
+        uiScope.launch {
             authRepository.insertUser(
                 User(user.uid)
             ).addOnSuccessListener {
                 authResultEvent.value = it
+                hideLoading()
             }.addOnFailureListener {
                 error.value = it
             }

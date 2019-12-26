@@ -15,6 +15,7 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
 
     fun getMessagesList() {
         runBlocking {
+            showLoading()
             appRepository.getMessages()
                 .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {

@@ -11,7 +11,7 @@ abstract class BaseViewModel : ViewModel() {
     open val error by lazy { SingleLiveEvent<Throwable>() }
     open val loading by lazy { SingleLiveEvent<Boolean>() }
 
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     fun handleError(throwable: Throwable) {
 
@@ -130,6 +130,14 @@ abstract class BaseViewModel : ViewModel() {
         "\ud83e",
         "\udd2f"
     )
+
+    fun showLoading() {
+        loading.value = true
+    }
+
+    fun hideLoading() {
+        loading.value = false
+    }
 
     suspend fun sortList() = withContext(Dispatchers.Main) {
         //Heavy work

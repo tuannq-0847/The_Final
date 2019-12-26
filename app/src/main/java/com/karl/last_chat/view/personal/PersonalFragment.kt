@@ -76,6 +76,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         sharedViewModel.uriImage.observe(this, Observer { uri ->
             val inputStream = activity?.contentResolver?.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
+            viewModel.hideLoading()
             inputStream?.let {
                 viewModel.uploadAvatar(uri)
                 imageAvatar.setImageBitmap(bitmap.rotate(bitmap, getOrientation(uri)))
@@ -85,6 +86,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             context?.showMessage("done")
         })
         viewModel.dataPersonal.observe(this, Observer {
+            viewModel.hideLoading()
             Glide.with(context!!)
                 .load(it.pathAvatar)
                 .placeholder(R.drawable.avatar)

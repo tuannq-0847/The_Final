@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.karl.last_chat.utils.extensions.showDialogWarning
+import com.karl.last_chat.view.dialogs.LoadingDialog
 
 abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
@@ -17,15 +18,29 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     @get:LayoutRes
     abstract val layoutRes: Int
 
+    private val loadingDialog by lazy { LoadingDialog(context!!) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onInitComponents(view)
+        observeInternal()
         onObserve()
         observeError()
     }
 
+    private fun observeInternal() {
+        viewModel.loading.observe(this, Observer {
+            if (it) {
+                loadingDialog.show()
+            } else {
+                loadingDialog.dismiss()
+            }
+        })
+    }
+
     private fun observeError() {
         viewModel.error.observe(this, Observer {
+            viewModel.hideLoading()
             onReceiveError(it)
         })
     }
@@ -44,6 +59,11 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     open fun onReceiveError(throwable: Throwable) {
         context?.showDialogWarning(throwable.message!!)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.hideLoading()
     }
 
     companion object {
