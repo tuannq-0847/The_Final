@@ -8,7 +8,16 @@ import com.karl.last_chat.base.BaseRecyclerView
 import com.karl.last_chat.utils.Constants
 import kotlinx.android.synthetic.main.item_emoji.view.*
 
-class EmojiAdapter(callBack: DiffUtil.ItemCallback<String>) : BaseRecyclerView<String>(callBack) {
+class EmojiAdapter() : BaseRecyclerView<String>(object : DiffUtil.ItemCallback<String>() {
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        return oldItem == newItem
+    }
+
+}) {
     override fun onBind(itemView: View, item: String) {
         Log.d("itemView", item)
         itemView.textEmoji.text = Constants.BASE_EMOJI + item

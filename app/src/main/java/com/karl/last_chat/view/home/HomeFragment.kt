@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.replaceFragment
+import com.karl.last_chat.view.home.chat.ChatFragment
 import com.karl.last_chat.view.home.discovery.DiscoveryFragment
 import com.karl.last_chat.view.home.group_chat.GroupFragment
 import com.karl.last_chat.view.home.message.MessagesFragment
@@ -31,7 +32,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             fragmentManager?.replaceFragment(PersonalFragment.newInstance(), R.id.homeContainer)
         } else {
             childFragmentManager.replaceFragment(
-                MessagesFragment.newInstance(),
+                ChatFragment.newInstance(),
                 R.id.homeContainer
             )
         }
@@ -47,7 +48,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             }
             R.id.tabMessage -> {
                 fragmentManager?.replaceFragment(
-                    MessagesFragment.newInstance(),
+                    ChatFragment.newInstance(),
                     R.id.homeContainer
                 )
             }
