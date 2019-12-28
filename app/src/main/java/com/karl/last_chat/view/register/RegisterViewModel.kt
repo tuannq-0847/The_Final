@@ -16,8 +16,6 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
 
     val authResultEvent by lazy { SingleLiveEvent<Void>() }
 
-    val b = mutableListOf<String>()
-
     val mainScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     fun validateEmailPassword(
         email: String,
@@ -58,32 +56,6 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
                 hideLoading()
             }.addOnFailureListener {
                 error.value = it
-            }
-        }
-    }
-
-
-    fun getAllIcon() {
-        mainScope.launch {
-            val url = "https://unicode.org/emoji/charts/full-emoji-list.html"
-            val document = withContext(Dispatchers.IO) {
-                Jsoup.connect(url).get()
-            }
-            val elements = document.select("table>tbody>tr")
-            Log.d("ele", elements.size.toString())
-            elements.forEach {
-                val element = it.getElementsByTag("a")
-                if (element.text().contains("U+")) {
-                    b.add(element.text().replace("U+", "0x"))
-                    //  b.add(element.text())
-                    Log.d("element", element.text().replace("U+", "0x"))
-                }
-            }
-            b.forEach {
-                Log.d("eleb", b.size.toString())
-                for (c in StringBuilder().appendCodePoint(Integer.decode(it)).toString().toCharArray()) {
-                    Log.d("charArray", "\\u" + Integer.toHexString(c.toInt()))
-                }
             }
         }
     }
