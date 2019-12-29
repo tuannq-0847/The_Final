@@ -1,10 +1,11 @@
 package com.karl.last_chat.base
 
 import androidx.lifecycle.ViewModel
+import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.*
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel(private val appRepository: AppRepository?) : ViewModel() {
 
 
     open val viewModelJob = SupervisorJob()
@@ -1412,6 +1413,19 @@ abstract class BaseViewModel : ViewModel() {
 
     fun hideLoading() {
         loading.value = false
+    }
+
+
+    fun updateFirebaseIntanceId() {
+        uiScope.launch {
+            appRepository?.getInstanceIdUser()?.addOnCompleteListener {
+                it.result?.token?.let {
+                    runBlocking {
+                        appRepository.updateInstanceId(it)
+                    }
+                }
+            }
+        }
     }
 
     suspend fun sortList() = withContext(Dispatchers.Main) {

@@ -7,9 +7,10 @@ import com.karl.last_chat.utils.SingleLiveEvent
 import com.karl.last_chat.utils.extensions.validEmail
 import com.karl.last_chat.utils.extensions.validPassword
 import com.karl.last_chat.utils.validate.ValidateEnum
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class LoginViewModel(private val appRepository: AppRepository) : BaseViewModel() {
+class LoginViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
 
     val authResultEvent by lazy { SingleLiveEvent<AuthResult>() }
     fun validateLogin(

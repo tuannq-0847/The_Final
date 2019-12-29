@@ -9,7 +9,7 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class DiscoveryViewModel(private val appRepository: AppRepository) : BaseViewModel() {
+class DiscoveryViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
     val userAroundHere by lazy { SingleLiveEvent<MutableList<User>>() }
 
     fun getUsers() {
@@ -24,7 +24,8 @@ class DiscoveryViewModel(private val appRepository: AppRepository) : BaseViewMod
                         val users = mutableListOf<User>()
                         data.children.forEach {
                             it.getValue(User::class.java)?.let { u ->
-                                users.add(u)
+                                if (u.uid != appRepository.getCurrentUser()?.uid)
+                                    users.add(u)
                             }
                         }
                         userAroundHere.value = users

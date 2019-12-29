@@ -107,8 +107,17 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 
+    //card stack view
+    implementation "com.yuyakaido.android:card-stack-view:2.3.4"
+
+    //rounded imageview
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     //fcm
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    //photoview
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     //location
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])

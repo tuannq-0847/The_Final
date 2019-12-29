@@ -10,7 +10,7 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.runBlocking
 
-class MessagesViewModel(private val appRepository: AppRepository) : BaseViewModel() {
+class MessagesViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
     val messageEvents by lazy { SingleLiveEvent<MutableList<LastMessage>>() }
 
     fun getMessagesList() {

@@ -4,17 +4,15 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
-import com.karl.last_chat.utils.extensions.onClickViews
-import com.karl.last_chat.utils.extensions.rotate
-import com.karl.last_chat.utils.extensions.showMessage
+import com.karl.last_chat.utils.extensions.*
 import com.karl.last_chat.view.dialogs.DialogAvatar
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,10 +25,10 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
             //collapsed
-            imageAvatarSmall.visibility = View.VISIBLE
+            view?.visibilityStateViews(imageAvatarSmall, textNameSmall)
         } else {
             //expand
-            imageAvatarSmall.visibility = View.GONE
+            view?.visibilityStateViews(imageAvatarSmall, textNameSmall, visibilityState = View.GONE)
         }
     }
 
@@ -86,19 +84,11 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             context?.showMessage("done")
         })
         viewModel.dataPersonal.observe(this, Observer {
+            Log.d("pathAvatar", it.pathAvatar)
             viewModel.hideLoading()
-            Glide.with(context!!)
-                .load(it.pathAvatar)
-                .placeholder(R.drawable.avatar)
-                .into(imageAvatar)
-            Glide.with(context!!)
-                .load(it.pathBackground)
-                .placeholder(R.drawable.bg_cover_1)
-                .into(imageBackground)
-            Glide.with(context!!)
-                .load(it.pathAvatar)
-                .placeholder(R.drawable.avatar)
-                .into(imageAvatarSmall)
+            imageAvatar.loadWithGlide(it.pathAvatar)
+            imageAvatarSmall.loadWithGlide(it.pathAvatar)
+            imageBackground.loadWithGlide(it.pathBackground, R.drawable.bg_cover_1)
             textNameSmall.text = it.userName
         })
     }
