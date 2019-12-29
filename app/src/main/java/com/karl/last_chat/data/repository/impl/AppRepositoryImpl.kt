@@ -21,6 +21,9 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun getUsers(): DatabaseReference =
+        firebaseDatabase.getReference("${Constants.USER}")
+
     override suspend fun updateLocation(lat: Double, long: Double) {
         firebaseDatabase.getReference("${Constants.USER}/$userId")
             .child("lat").setValue(lat)
