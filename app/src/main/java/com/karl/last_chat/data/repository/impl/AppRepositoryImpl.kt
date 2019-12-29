@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
@@ -21,6 +22,26 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun sendFriendRequest(userId: String): Task<Void> =
+        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+            .setValue(userId)
+
+    override suspend fun checkIsFriend(userId: String): DatabaseReference =
+        firebaseDatabase.getReference(Constants.FRIEND).child(userId)
+
+    override suspend fun updateInstanceId(instanceId: String) =
+        firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
+            .child("deviceToken")
+            .setValue(instanceId)
+
+    override suspend fun getInstanceIdUser(): Task<InstanceIdResult> = firebaseInstanceId.instanceId
+
+    override suspend fun getInforUser(userId: String): DatabaseReference = firebaseDatabase
+        .getReference("${Constants.USER}/$userId")
+
+    override fun getCurrentUser(): FirebaseUser? =
+        firebaseAuth.currentUser
+
     override suspend fun getUsers(): DatabaseReference =
         firebaseDatabase.getReference("${Constants.USER}")
 

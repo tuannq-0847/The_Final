@@ -19,6 +19,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(), View.OnClickListener
             context?.showDialogOk(getString(R.string.res_successfully)) {
                 // viewModel.getAllIcon()
                 fragmentManager?.replaceFragment(HomeFragment.newInstance(true), R.id.mainContainer)
+                viewModel.updateFirebaseIntanceId()
             }
         })
     }

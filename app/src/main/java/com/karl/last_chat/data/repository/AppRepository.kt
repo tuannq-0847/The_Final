@@ -3,6 +3,7 @@ package com.karl.last_chat.data.repository
 import android.net.Uri
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.StorageTask
@@ -36,4 +37,16 @@ interface AppRepository {
     suspend fun updateLocation(lat: Double, long: Double)
 
     suspend fun getUsers(): DatabaseReference
+
+    fun getCurrentUser(): FirebaseUser?
+
+    suspend fun getInforUser(userId: String): DatabaseReference
+
+    suspend fun getInstanceIdUser(): Task<InstanceIdResult>
+
+    suspend fun updateInstanceId(instanceId: String): Task<Void>
+
+    suspend fun checkIsFriend(userId: String): DatabaseReference
+
+    suspend fun sendFriendRequest(userId: String): Task<Void>
 }

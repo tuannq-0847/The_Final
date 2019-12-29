@@ -18,6 +18,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
         viewModel.authResultEvent.observe(this, Observer {
             viewModel.hideLoading()
             fragmentManager?.replaceFragment(HomeFragment.newInstance(), R.id.mainContainer)
+            viewModel.updateFirebaseIntanceId()
         })
     }
 

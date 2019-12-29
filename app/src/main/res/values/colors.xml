@@ -8,4 +8,7 @@
     <color name="color_online">#0ee375</color>
     <color name="color_offline">#757575</color>
     <color name="color_black_80">#99000000</color>
+    <color name="color_default_image">#d3d6db</color>
+    <color name="color_white_70">#B3FFFFFF</color>
+    <color name="color_white_80">#CCFFFFFF</color>
 </resources>

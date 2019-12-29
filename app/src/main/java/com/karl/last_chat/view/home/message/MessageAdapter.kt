@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseRecyclerView
 import com.karl.last_chat.data.model.LastMessage
+import com.karl.last_chat.utils.extensions.loadWithGlide
 import kotlinx.android.synthetic.main.item_message.view.*
 
 class MessageAdapter(listener: (item: LastMessage) -> Unit) :
@@ -26,11 +27,7 @@ class MessageAdapter(listener: (item: LastMessage) -> Unit) :
         itemView.run {
             textLastMesasge.text = item.lastContent
             imageStatus.setImageResource(if (item.onlineStatus == 1) R.drawable.ic_online else R.drawable.ic_offline)
-            Glide.with(context)
-                .load(item.pathImage)
-                .placeholder(R.drawable.avatar)
-                .error(R.drawable.avatar)
-                .into(imageStatus)
+            imageAv.loadWithGlide(item.pathImage)
         }
     }
 }

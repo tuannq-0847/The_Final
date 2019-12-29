@@ -11,7 +11,7 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.runBlocking
 
-class PersonalViewModel(private val appRepository: AppRepository) : BaseViewModel() {
+class PersonalViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
 
     val eventUploadAvatar by lazy { SingleLiveEvent<Boolean>() }
 

@@ -12,7 +12,7 @@ import com.karl.last_chat.utils.validate.ValidateEnum
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 
-class RegisterViewModel(private val authRepository: AppRepository) : BaseViewModel() {
+class RegisterViewModel(private val authRepository: AppRepository) : BaseViewModel(authRepository) {
 
     val authResultEvent by lazy { SingleLiveEvent<Void>() }
 

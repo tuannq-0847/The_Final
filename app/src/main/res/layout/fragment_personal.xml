@@ -58,6 +58,7 @@
                 app:layout_collapseMode="pin">
 
                 <ImageView
+                    android:id="@+id/imageBack"
                     android:layout_width="@dimen/_24dp"
                     android:layout_height="@dimen/_24dp"
                     android:layout_marginEnd="@dimen/_16dp"
@@ -116,6 +117,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textName" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageContact"
+                android:layout_width="@dimen/_48dp"
+                android:layout_height="@dimen/_48dp"
+                android:layout_margin="@dimen/_16dp"
+                android:background="@color/colorAccent"
+                android:src="@drawable/ic_add_black_24dp"
+                android:visibility="gone"
+                app:fabCustomSize="@dimen/_48dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

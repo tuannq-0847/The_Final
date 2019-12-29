@@ -4,7 +4,7 @@ import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.repository.AppRepository
 import kotlinx.coroutines.runBlocking
 
-class MainViewModel(private val appRepository: AppRepository) : BaseViewModel() {
+class MainViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
 
     fun updateLocation(lat: Double, long: Double) {
         runBlocking {
