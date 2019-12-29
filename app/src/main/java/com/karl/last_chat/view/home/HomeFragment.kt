@@ -1,15 +1,11 @@
 package com.karl.last_chat.view.home
 
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.replaceFragment
-import com.karl.last_chat.view.home.chat.ChatFragment
 import com.karl.last_chat.view.home.discovery.DiscoveryFragment
 import com.karl.last_chat.view.home.group_chat.GroupFragment
 import com.karl.last_chat.view.home.message.MessagesFragment
@@ -29,10 +25,10 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
         val isFirst = arguments!!.getBoolean(IS_FIRST)
         if (isFirst) {
             bottomNavigation.selectedItemId = R.id.tabPersonal
-            fragmentManager?.replaceFragment(PersonalFragment.newInstance(), R.id.homeContainer)
+            childFragmentManager.replaceFragment(PersonalFragment.newInstance(), R.id.homeContainer)
         } else {
             childFragmentManager.replaceFragment(
-                ChatFragment.newInstance(),
+                MessagesFragment.newInstance(),
                 R.id.homeContainer
             )
         }
@@ -41,22 +37,25 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.tabSearch -> {
-                fragmentManager?.replaceFragment(
+                childFragmentManager.replaceFragment(
                     DiscoveryFragment.newInstance(),
                     R.id.homeContainer
                 )
             }
             R.id.tabMessage -> {
-                fragmentManager?.replaceFragment(
-                    ChatFragment.newInstance(),
+                childFragmentManager.replaceFragment(
+                    MessagesFragment.newInstance(),
                     R.id.homeContainer
                 )
             }
             R.id.tabGroup -> {
-                fragmentManager?.replaceFragment(GroupFragment.newInstance(), R.id.homeContainer)
+                childFragmentManager.replaceFragment(
+                    GroupFragment.newInstance(),
+                    R.id.homeContainer
+                )
             }
             R.id.tabPersonal -> {
-                fragmentManager?.replaceFragment(
+                childFragmentManager.replaceFragment(
                     PersonalFragment.newInstance(),
                     R.id.homeContainer
                 )

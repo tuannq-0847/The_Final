@@ -24,6 +24,6 @@ val viewModelModule = module {
     viewModel { SplashViewModel(get()) }
     viewModel { MessagesViewModel(get()) }
     viewModel { GroupViewModel() }
-    viewModel { DiscoveryViewModel() }
+    viewModel { DiscoveryViewModel(get()) }
     viewModel { MainViewModel(get()) }
 }

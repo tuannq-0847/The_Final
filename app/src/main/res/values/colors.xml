@@ -7,4 +7,5 @@
     <color name="color_selected">#2eaae8</color>
     <color name="color_online">#0ee375</color>
     <color name="color_offline">#757575</color>
+    <color name="color_black_80">#99000000</color>
 </resources>
