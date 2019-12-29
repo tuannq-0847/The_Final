@@ -15,18 +15,16 @@
         android:id="@+id/recyclerChat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/layoutChat"
-        app:layout_constraintTop_toBottomOf="@id/chatToolbar"
-        app:spanCount="10" />
+        app:layout_constraintTop_toBottomOf="@id/chatToolbar" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutChat"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_52dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerEmoji"
         app:layout_constraintTop_toBottomOf="@id/recyclerChat">
 
         <ImageView
@@ -35,18 +33,27 @@
             android:layout_height="@dimen/_24dp"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_8dp"
-            android:src="@drawable/ic_emoji" />
+            android:src="@drawable/ic_emoji"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/editChat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editChat"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_8dp"
-            android:layout_toStartOf="@id/imageAttach"
-            android:layout_toEndOf="@id/imageEmoji"
             android:background="@null"
-            android:hint="@string/message" />
+            android:hint="@string/message"
+            android:maxLength="120"
+            android:paddingTop="@dimen/_8dp"
+            android:paddingBottom="@dimen/_8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageAttach"
+            app:layout_constraintStart_toEndOf="@id/imageEmoji"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageAttach"
@@ -54,7 +61,12 @@
             android:layout_height="@dimen/_24dp"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/imagePic"
-            android:src="@drawable/ic_attach" />
+            android:src="@drawable/ic_attach"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imagePic"
+            app:layout_constraintStart_toEndOf="@id/editChat"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="@dimen/_8dp" />
 
         <ImageView
             android:id="@+id/imagePic"
@@ -63,17 +75,37 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_8dp"
-            android:src="@drawable/ic_picture" />
-    </RelativeLayout>
+            android:src="@drawable/ic_picture"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="@dimen/_8dp" />
+
+        <ImageView
+            android:id="@+id/imageSend"
+            android:layout_width="@dimen/_36dp"
+            android:layout_height="@dimen/_36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_8dp"
+            android:src="@drawable/send"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editChat"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEmoji"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/_244dp"
         android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutChat" />
+        app:layout_constraintTop_toBottomOf="@id/layoutChat"
+        app:spanCount="10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
