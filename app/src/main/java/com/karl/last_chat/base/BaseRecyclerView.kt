@@ -36,10 +36,10 @@ abstract class BaseRecyclerView<Item>(
         holder.itemView.setOnClickListener {
             onClickItem(item)
         }
-        onBind(holder.itemView, item)
+        onBind(holder.itemView, item,position)
     }
 
-    abstract fun onBind(itemView: View, item: Item)
+    abstract fun onBind(itemView: View, item: Item,position:Int)
 
     open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // open fun onBind(item: Item) {}

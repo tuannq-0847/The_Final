@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
+import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.User
 
 interface AppRepository {
@@ -49,4 +50,14 @@ interface AppRepository {
     suspend fun checkIsFriend(userId: String): DatabaseReference
 
     suspend fun sendFriendRequest(userId: String): Task<Void>
+
+    suspend fun sendMessage(idDiscuss: String, message: Message): Task<Void>
+
+    suspend fun getIdDiscuss(userId: String): DatabaseReference
+
+    suspend fun setIdDiscuss(userId: String, disscussId: String): Task<Void>
+
+    suspend fun getDisscussMessages(idDiscuss: String): DatabaseReference
+
+    fun generateIdMessage(idDiscuss: String): String
 }

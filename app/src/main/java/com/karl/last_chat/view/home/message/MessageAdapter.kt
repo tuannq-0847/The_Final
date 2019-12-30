@@ -23,7 +23,7 @@ class MessageAdapter(listener: (item: LastMessage) -> Unit) :
 
     override fun getLayoutRes(viewType: Int): Int = R.layout.item_message
 
-    override fun onBind(itemView: View, item: LastMessage) {
+    override fun onBind(itemView: View, item: LastMessage, position: Int) {
         itemView.run {
             textLastMesasge.text = item.lastContent
             imageStatus.setImageResource(if (item.onlineStatus == 1) R.drawable.ic_online else R.drawable.ic_offline)

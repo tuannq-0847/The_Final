@@ -23,7 +23,7 @@ class GroupAdapter :
             else -> R.layout.item_send
         }
 
-    override fun onBind(itemView: View, item: Message) {
+    override fun onBind(itemView: View, item: Message, position: Int) {
 
     }
 }

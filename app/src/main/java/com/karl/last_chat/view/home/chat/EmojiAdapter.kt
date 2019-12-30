@@ -17,7 +17,7 @@ class EmojiAdapter(val listener: (item: String) -> Unit) :
         }
 
     }) {
-    override fun onBind(itemView: View, item: String) {
+    override fun onBind(itemView: View, item: String, position: Int) {
         itemView.textEmoji.text = item
         itemView.setOnClickListener { listener(item) }
     }

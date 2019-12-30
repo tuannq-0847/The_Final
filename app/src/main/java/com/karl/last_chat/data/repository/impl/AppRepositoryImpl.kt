@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
+import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.Constants
@@ -22,6 +23,30 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override fun generateIdMessage(idDiscuss: String): String =
+        firebaseDatabase.reference.child(Constants.MESSAGES)
+            .child(idDiscuss).push().key!!
+
+    override suspend fun setIdDiscuss(userId: String, disscussId: String): Task<Void> {
+        firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
+            .setValue(disscussId)
+
+        return firebaseDatabase.getReference(Constants.MESSAGE).child(userId)
+            .setValue(disscussId)
+    }
+
+    override suspend fun getDisscussMessages(idDiscuss: String): DatabaseReference =
+        firebaseDatabase.getReference(Constants.MESSAGES).child(idDiscuss)
+
+    override suspend fun getIdDiscuss(userId: String): DatabaseReference =
+        firebaseDatabase.getReference(Constants.MESSAGE).child(userId)
+
+    override suspend fun sendMessage(idDiscuss: String, message: Message): Task<Void> =
+        firebaseDatabase.getReference(Constants.MESSAGES)
+            .child(idDiscuss)
+            .child(generateIdMessage(idDiscuss))
+            .setValue(message)
+
     override suspend fun sendFriendRequest(userId: String): Task<Void> =
         firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
             .setValue(userId)
@@ -53,7 +78,7 @@ class AppRepositoryImpl(
     }
 
     override suspend fun getMessages(): DatabaseReference =
-        firebaseDatabase.getReference("${Constants.MESSAGE}/$userId")
+        firebaseDatabase.getReference("${Constants.MESSAGES}/$userId")
 
     override suspend fun getInforUsers() =
         firebaseDatabase.getReference("${Constants.USER}/$userId")

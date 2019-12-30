@@ -89,19 +89,19 @@ class MainActivity : BaseActivity() {
             })
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        val view = currentFocus
-        if (event?.action == MotionEvent.ACTION_DOWN && view is EditText) {
-            val outRect = Rect()
-            view.getGlobalVisibleRect(outRect)
-            if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                view.clearFocus()
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
-        return super.dispatchTouchEvent(event)
-    }
+//    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+//        val view = currentFocus
+//        if (event?.action == MotionEvent.ACTION_DOWN && view is EditText) {
+//            val outRect = Rect()
+//            view.getGlobalVisibleRect(outRect)
+//            if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+//                view.clearFocus()
+//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.hideSoftInputFromWindow(view.windowToken, 0)
+//            }
+//        }
+//        return super.dispatchTouchEvent(event)
+//    }
 
     private fun checkPermission() {
         if (!isPermissionGranted()) {
