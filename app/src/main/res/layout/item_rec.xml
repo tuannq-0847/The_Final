@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="end"
-    android:orientation="vertical">
+    android:padding="@dimen/_8dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <ImageView
+        android:id="@+id/imageAvatarUserReceiver"
+        android:layout_width="@dimen/_48dp"
+        android:layout_height="@dimen/_48dp"
+        android:src="@drawable/avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textRec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="@dimen/_8dp"
+        android:layout_marginStart="@dimen/_8dp"
         android:background="@drawable/bg_rec"
-        android:gravity="end"
-        android:padding="@dimen/_8dp" />
-</LinearLayout>
+        android:gravity="center"
+        android:padding="@dimen/_8dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageAvatarUserReceiver"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/imageAvatarUserReceiver"
+        app:layout_constraintRight_toRightOf="@+id/guideLine2"
+        app:layout_constraintTop_toTopOf="@+id/imageAvatarUserReceiver"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
