@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.data.model.Message
+import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.visibilityStateViews
 import kotlinx.android.synthetic.main.fragment_chat.*
@@ -81,10 +82,12 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
             }
         })
         viewModel.messages.observe(this, Observer {
-            Log.d("messages", it.size.toString())
             chatAdapter.submitList(it)
             chatAdapter.notifyDataSetChanged()
             recyclerChat.smoothScrollToPosition(it.size - 1)
+        })
+        viewModel.isSend.observe(this, Observer {
+            viewModel.saveNotification(uid!!, Notification(it.content, it.idUserSend))
         })
     }
 

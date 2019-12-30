@@ -11,6 +11,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
 import com.karl.last_chat.data.model.Message
+import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.Constants
@@ -23,6 +24,18 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun generateNotificationId(
+        receiveId: String,
+        notification: Notification
+    ): String =
+        firebaseDatabase.getReference(Constants.NOTIFICATION)
+            .child(receiveId).push().key!!
+
+    override suspend fun saveNotification(receiveId: String, notification: Notification) =
+        firebaseDatabase.getReference(Constants.NOTIFICATION).child(receiveId).child(
+            generateNotificationId(receiveId, notification)
+        ).setValue(notification)
+
     override fun generateIdMessage(idDiscuss: String): String =
         firebaseDatabase.reference.child(Constants.MESSAGES)
             .child(idDiscuss).push().key!!
