@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.model.Message
+import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -81,6 +82,18 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
             appRepository.sendMessage(idDiscuss, message)
                 .addOnSuccessListener {
                     isSend.value = message
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
+    fun saveNotification(receiveId: String, notification: Notification) {
+        uiScope.launch {
+            appRepository.saveNotification(receiveId, notification)
+                .addOnSuccessListener {
+
                 }
                 .addOnFailureListener {
                     error.value = it

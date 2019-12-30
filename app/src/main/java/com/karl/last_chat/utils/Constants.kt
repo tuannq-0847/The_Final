@@ -7,4 +7,5 @@ object Constants {
     const val USER = "USER"
     const val MESSAGES = "MESSAGES"
     const val FRIEND = "FRIEND"
+    const val NOTIFICATION = "NOTIFICATION"
 }

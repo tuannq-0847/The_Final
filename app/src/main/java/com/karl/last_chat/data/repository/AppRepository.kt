@@ -9,6 +9,7 @@ import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.karl.last_chat.data.model.Message
+import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.data.model.User
 
 interface AppRepository {
@@ -60,4 +61,8 @@ interface AppRepository {
     suspend fun getDisscussMessages(idDiscuss: String): DatabaseReference
 
     fun generateIdMessage(idDiscuss: String): String
+
+    suspend fun saveNotification(receiveId: String, notification: Notification): Task<Void>
+
+    suspend fun generateNotificationId(receiveId: String, notification: Notification): String
 }
