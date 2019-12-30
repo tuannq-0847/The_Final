@@ -22,7 +22,7 @@ class DiscoveryAdapter(onClickItem: (item: User) -> Unit) :
     }, onClickItem) {
     override fun getLayoutRes(viewType: Int) = R.layout.item_discovery
 
-    override fun onBind(itemView: View, item: User) {
+    override fun onBind(itemView: View, item: User, position: Int) {
         itemView.imageUser.loadWithGlide(item.pathAvatar)
         itemView.textNameUser.text = item.userName
     }

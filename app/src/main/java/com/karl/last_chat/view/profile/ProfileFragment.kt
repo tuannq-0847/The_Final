@@ -29,7 +29,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener {
                     }
                 } else {
                     fragmentManager?.addFragment(
-                        ChatFragment.newInstance(),
+                        ChatFragment.newInstance(uid!!),
                         R.id.mainContainer
                     )
                 }
