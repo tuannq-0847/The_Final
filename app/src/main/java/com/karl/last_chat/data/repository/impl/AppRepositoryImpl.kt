@@ -24,6 +24,8 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun logout() = firebaseAuth.signOut()
+
     override suspend fun generateNotificationId(
         receiveId: String,
         notification: Notification

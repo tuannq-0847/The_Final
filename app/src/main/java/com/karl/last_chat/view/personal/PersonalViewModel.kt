@@ -1,7 +1,6 @@
 package com.karl.last_chat.view.personal
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -55,6 +54,12 @@ class PersonalViewModel(private val appRepository: AppRepository) : BaseViewMode
                 }
 
             })
+        }
+    }
+
+    fun logout() {
+        runBlocking {
+            appRepository.logout()
         }
     }
 }
