@@ -13,7 +13,7 @@ data class User(
     var pathAvatar: String = "",
     var pathBackground: String = "",
     var online: Int = 0,
-    var lgn: Double = 0.0,
+    var long: Double = 0.0,
     var lat: Double = 0.0,
     var deviceToken: String = ""
 ) : Parcelable

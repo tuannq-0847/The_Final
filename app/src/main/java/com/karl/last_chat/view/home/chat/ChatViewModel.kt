@@ -7,6 +7,7 @@ import com.google.firebase.database.ValueEventListener
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
+import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
     val idDiscuss by lazy { SingleLiveEvent<String>() }
     val messages = SingleLiveEvent<MutableList<Message>>()
     val a = mutableListOf<Message>()
+    val userEvent by lazy { SingleLiveEvent<User>() }
 
     fun getCurrentUser() = appRepository.getCurrentUser()
 
@@ -98,6 +100,21 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
                 .addOnFailureListener {
                     error.value = it
                 }
+        }
+    }
+
+    fun getInforUser(uid: String) {
+        uiScope.launch {
+            appRepository.getInforUser(uid)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        error.value = p0.toException()
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        userEvent.value = p0.getValue(User::class.java)
+                    }
+                })
         }
     }
 }

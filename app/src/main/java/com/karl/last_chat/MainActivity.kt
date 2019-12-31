@@ -7,15 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -27,6 +24,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.karl.last_chat.base.BaseActivity
+import com.karl.last_chat.base.StackFragment
 import com.karl.last_chat.utils.DialogEnum
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.personal.SharedViewModel
@@ -67,13 +65,16 @@ class MainActivity : BaseActivity() {
             1F,
             object : LocationListener {
                 override fun onLocationChanged(location: Location?) {
-                    val geocoder = Geocoder(this@MainActivity, Locale.getDefault())
                     val lat = location?.latitude
                     val long = location?.longitude
                     if (lat != null && long != null) {
-//                        val address = geocoder.getFromLocation(lat, long, 1)
-//                        Log.d("LocationManager", it.getAddressLine(0))
                         viewModel.updateLocation(lat, long)
+                        val addressList = Geocoder(this@MainActivity, Locale.getDefault())
+                            .getFromLocation(lat, long, 1)
+                        if (!addressList.isNullOrEmpty()) {
+                            val address = addressList[0].getAddressLine(0)
+                            Log.d("dkm", address)
+                        }
                     }
                 }
 
@@ -242,6 +243,21 @@ class MainActivity : BaseActivity() {
             }
 
         }
+    }
+
+    override fun onBackPressed() {
+        for (fragment in supportFragmentManager.fragments) {
+            if (fragment.isVisible) {
+                if (fragment.childFragmentManager.backStackEntryCount > 0) {
+                    (fragment.childFragmentManager.fragments.last() as StackFragment).onBackPressed()
+                    return
+                } else {
+                    (fragment as StackFragment).onBackPressed()
+                    return
+                }
+            }
+        }
+        super.onBackPressed()
     }
 
     companion object {

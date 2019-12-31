@@ -15,4 +15,23 @@
     <string name="add_introduce">Add introduce myself</string>
     <string name="may_you_know">People may you know</string>
     <string name="discovery">Discovery</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Logout</string>
+    <string name="welcome">Welcome to EZChat.\nPlease follow these House Rules.</string>
+    <string name="be_yourself">Be yourself.</string>
+    <string name="make_sure_photos">Make sure your photos, and bio are true to who\nyou are.</string>
+    <string name="play_it_cool">Play it cool</string>
+    <string name="respect">Respect others and treat them as you would like to\nbe treated</string>
+    <string name="stay_safe">Stay safe</string>
+    <string name="dont_quick">Don\'t be quick to give out personal information.</string>
+    <string name="be_proactive">Be proactive.</string>
+    <string name="always_report">Always report bad behavior</string>
+    <string name="got_it">Got it</string>
+    <string name="my_first_name">My first\nname is</string>
+    <string name="how_the_fuck">This is how it will appear in EzChat</string>
+    <string name="_continue">Continue</string>
+    <string name="_birthday">My\nbirthday is</string>
+    <string name="_iam">I am a</string>
+    <string name="woman">Woman</string>
+    <string name="man">Man</string>
 </resources>

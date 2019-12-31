@@ -11,5 +11,5 @@ class SharedViewModel : BaseViewModel(null) {
 
     val eventAvatar by lazy { SingleLiveEvent<DialogEnum>() }
     val uriImage by lazy { SingleLiveEvent<Uri>() }
-    val eventRequestPermission by lazy { SingleLiveEvent<PermissionStateEnum>() }
+    val eventLocationName by lazy { SingleLiveEvent<String>() }
 }

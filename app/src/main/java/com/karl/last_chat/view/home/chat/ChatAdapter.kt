@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseRecyclerView
 import com.karl.last_chat.data.model.Message
+import com.karl.last_chat.utils.extensions.loadWithGlide
 import kotlinx.android.synthetic.main.item_rec.view.*
 import kotlinx.android.synthetic.main.item_send.view.*
 
@@ -20,6 +21,8 @@ class ChatAdapter(private val uid: String) :
         }
 
     }) {
+    private var pathAvatar = ""
+
     override fun getLayoutRes(viewType: Int): Int =
         when (viewType) {
             0 -> R.layout.item_rec
@@ -35,10 +38,14 @@ class ChatAdapter(private val uid: String) :
         }
     }
 
+    fun setAvatar(url: String) {
+        pathAvatar = url
+    }
+
     override fun onBind(itemView: View, item: Message, position: Int) {
-        Log.d("item", item.content)
         if (getItemViewType(position) == 0) {
             itemView.textRec.text = item.content
+            if (pathAvatar.isNotEmpty()) itemView.imageAvatarUserReceiver.loadWithGlide(pathAvatar)
         } else {
             itemView.textSend.text = item.content
         }

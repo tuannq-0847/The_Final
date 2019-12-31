@@ -13,15 +13,17 @@
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:color/white"
             app:contentScrim="#038cfc"
             app:expandedTitleGravity="top"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.5">
 
                 <ImageView
                     android:id="@+id/imageBackground"
@@ -29,8 +31,6 @@
                     android:layout_height="@dimen/_244dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/bg_cover_1"
-                    app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +43,6 @@
                     android:layout_height="@dimen/_144dp"
                     android:layout_gravity="center"
                     android:src="@drawable/avatar"
-                    app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.5"
                     app:layout_constraintBottom_toBottomOf="@id/imageBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -52,30 +50,60 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarDetail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin">
 
-                <ImageView
-                    android:id="@+id/imageBack"
-                    android:layout_width="@dimen/_24dp"
-                    android:layout_height="@dimen/_24dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:src="@drawable/ic_arrow_back" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imageAvatarSmall"
-                    android:layout_width="@dimen/_32dp"
-                    android:layout_height="@dimen/_32dp"
-                    android:layout_marginEnd="@dimen/_8dp"
-                    android:src="@drawable/avatar" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/toolbarDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin">
 
-                <TextView
-                    android:id="@+id/textNameSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/_14sp" />
+                    <ImageView
+                        android:id="@+id/imageBack"
+                        android:layout_width="@dimen/_24dp"
+                        android:layout_height="@dimen/_24dp"
+                        android:layout_marginEnd="@dimen/_16dp"
+                        android:src="@drawable/ic_arrow_back"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imageAvatarSmall"
+                        android:layout_width="@dimen/_32dp"
+                        android:layout_height="@dimen/_32dp"
+                        android:layout_marginStart="@dimen/_8dp"
+                        android:layout_marginEnd="@dimen/_8dp"
+                        android:src="@drawable/avatar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/imageBack"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textNameSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/imageAvatarSmall"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageSetting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_16dp"
+                        android:src="@drawable/ic_setting"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -94,42 +122,77 @@
 
             <TextView
                 android:id="@+id/textName"
-                style="@style/TextViewMain"
+                style="@style/TextViewBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="Name"
+                android:textSize="@dimen/_20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textDescription"
+                android:id="@+id/textLocation"
                 style="@style/TextViewMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_8dp"
-                android:drawableStart="@drawable/ic_pencil"
-                android:gravity="center"
-                android:text="@string/add_introduce"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_16dp"
+                android:layout_marginEnd="@dimen/_16dp"
+                android:drawableStart="@drawable/ic_location"
+                android:drawablePadding="@dimen/_4dp"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textName" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageContact"
-                android:layout_width="@dimen/_48dp"
-                android:layout_height="@dimen/_48dp"
-                android:layout_margin="@dimen/_16dp"
-                android:background="@color/colorAccent"
-                android:src="@drawable/ic_add_black_24dp"
-                android:visibility="gone"
-                app:fabCustomSize="@dimen/_48dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/textGender"
+                style="@style/TextViewMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_8dp"
+                android:drawableStart="@drawable/ic_male"
+                android:drawablePadding="@dimen/_4dp"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textLocation" />
+
+            <TextView
+                android:id="@+id/textBio"
+                style="@style/TextViewMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_8dp"
+                android:drawableStart="@drawable/ic_story"
+                android:drawablePadding="@dimen/_4dp"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textGender" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/imageContact"
+        android:layout_width="@dimen/_56dp"
+        android:layout_height="@dimen/_56dp"
+        android:layout_marginEnd="@dimen/_32dp"
+        android:layout_marginBottom="@dimen/_32dp"
+        android:backgroundTint="@color/color_default_image"
+        android:src="@drawable/ic_add_black_24dp"
+        app:borderWidth="@dimen/_2dp"
+        app:elevation="@dimen/_4dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/nestedScrollPersonal"
+        app:layout_anchorGravity="right|bottom" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

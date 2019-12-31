@@ -1,15 +1,18 @@
 package com.karl.last_chat.view.register
 
+import android.content.Context
 import android.view.View
 import androidx.lifecycle.Observer
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
+import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.utils.extensions.showDialogOk
 import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.utils.validate.ValidateEnum
 import com.karl.last_chat.view.home.HomeFragment
+import com.karl.last_chat.view.register_flow.parent_res.ParentResFragment
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -18,7 +21,11 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(), View.OnClickListener
         viewModel.authResultEvent.observe(this, Observer {
             context?.showDialogOk(getString(R.string.res_successfully)) {
                 // viewModel.getAllIcon()
-                fragmentManager?.replaceFragment(HomeFragment.newInstance(true), R.id.mainContainer)
+                fragmentManager?.replaceFragment(
+                    ParentResFragment.newInstance(),
+                    R.id.mainContainer
+                )
+                writeSharePreferences(false)
                 viewModel.updateFirebaseIntanceId()
             }
         })
@@ -54,6 +61,15 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(), View.OnClickListener
                 editPassword.text.toString()
             )
         }
+    }
+
+
+    private fun writeSharePreferences(isFinish: Boolean) {
+        val sharePreferences =
+            activity?.getSharedPreferences(Constants.KEY_IS_FINISHED, Context.MODE_PRIVATE)
+        val editor = sharePreferences?.edit()
+        editor?.putBoolean(Constants.KEY_IS_FINISHED, false)
+        editor?.apply()
     }
 
     companion object {

@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_16dp"
+        style="@style/TextViewMain"
         android:ellipsize="end"
         android:maxLines="1"
         android:shadowColor="@color/color_black_80"

@@ -1,6 +1,7 @@
 package com.karl.last_chat.view.personal
 
 import android.graphics.BitmapFactory
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -13,9 +14,12 @@ import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.*
+import com.karl.last_chat.view.auth.AuthFragment
 import com.karl.last_chat.view.dialogs.DialogAvatar
+import com.karl.last_chat.view.dialogs.DialogSetting
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 import kotlin.math.abs
 
 
@@ -40,6 +44,16 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         }
     }
 
+    private val dialogSetting by lazy {
+        DialogSetting(context!!, "") {
+            viewModel.logout()
+            activity?.supportFragmentManager?.replaceFragment(
+                AuthFragment.newInstance(),
+                R.id.mainContainer
+            )
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.imageAvatar -> {
@@ -47,6 +61,9 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             }
             R.id.imageBackground -> {
                 dialog.show()
+            }
+            R.id.imageSetting -> {
+                dialogSetting.show()
             }
         }
     }
@@ -56,12 +73,13 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         get() = R.layout.fragment_personal
 
     override fun onInitComponents(view: View) {
-        onClickViews(imageAvatar)
+        onClickViews(imageAvatar, imageSetting)
         sharedViewModel = activity?.run {
             ViewModelProviders.of(this)[SharedViewModel::class.java]
         } ?: throw Exception()
         appBarPersonal.addOnOffsetChangedListener(this)
         viewModel.getInforUser()
+        imageBack.visibilityStateViews(imageBack, imageContact, visibilityState = View.GONE)
     }
 
     override fun onStop() {
@@ -84,13 +102,27 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             context?.showMessage("done")
         })
         viewModel.dataPersonal.observe(this, Observer {
-            Log.d("pathAvatar", it.pathAvatar)
             viewModel.hideLoading()
             imageAvatar.loadWithGlide(it.pathAvatar)
             imageAvatarSmall.loadWithGlide(it.pathAvatar)
             imageBackground.loadWithGlide(it.pathBackground, R.drawable.bg_cover_1)
             textNameSmall.text = it.userName
+            textName.text = it.userName
+            textBio.text = it.bio
+            textGender.text = it.gender
+            textLocation.text = getLocationName(it.lat, it.long)
         })
+    }
+
+    private fun getLocationName(lat: Double, long: Double): String {
+        context?.let {
+            val addressList = Geocoder(it, Locale.getDefault())
+                .getFromLocation(lat, long, 1)
+            if (!addressList.isNullOrEmpty()) {
+                return addressList[0].getAddressLine(0)
+            }
+        }
+        return ""
     }
 
     private fun getOrientation(uri: Uri): Int {

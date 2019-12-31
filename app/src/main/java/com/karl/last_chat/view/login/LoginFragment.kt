@@ -8,11 +8,18 @@ import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.utils.validate.ValidateEnum
+import com.karl.last_chat.view.dialogs.ForgotPwDialog
 import com.karl.last_chat.view.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
+
+    private val dialogPw by lazy {
+        ForgotPwDialog(context!!) {
+
+        }
+    }
 
     override fun onObserve() {
         viewModel.authResultEvent.observe(this, Observer {
@@ -36,6 +43,9 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
                     editPasswordL.text.toString()
                 )
             }
+            R.id.textForgot -> {
+                dialogPw.show()
+            }
         }
     }
 
@@ -44,7 +54,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
         get() = R.layout.fragment_login
 
     override fun onInitComponents(view: View) {
-        onClickViews(textLogin)
+        onClickViews(textLogin, textForgot)
     }
 
     companion object {
