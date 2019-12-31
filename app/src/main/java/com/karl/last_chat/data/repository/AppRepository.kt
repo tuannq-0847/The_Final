@@ -65,4 +65,6 @@ interface AppRepository {
     suspend fun saveNotification(receiveId: String, notification: Notification): Task<Void>
 
     suspend fun generateNotificationId(receiveId: String, notification: Notification): String
+
+    suspend fun logout()
 }

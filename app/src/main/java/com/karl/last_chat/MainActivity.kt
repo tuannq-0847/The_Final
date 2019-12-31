@@ -7,15 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -67,12 +63,9 @@ class MainActivity : BaseActivity() {
             1F,
             object : LocationListener {
                 override fun onLocationChanged(location: Location?) {
-                    val geocoder = Geocoder(this@MainActivity, Locale.getDefault())
                     val lat = location?.latitude
                     val long = location?.longitude
                     if (lat != null && long != null) {
-//                        val address = geocoder.getFromLocation(lat, long, 1)
-//                        Log.d("LocationManager", it.getAddressLine(0))
                         viewModel.updateLocation(lat, long)
                     }
                 }

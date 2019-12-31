@@ -70,6 +70,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
             }
         }
         viewModel.getDisscussId(uid!!)
+        viewModel.getInforUser(uid!!)
     }
 
     override fun onObserve() {
