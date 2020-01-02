@@ -16,12 +16,14 @@
         android:id="@+id/imageAvatarUserReceiver"
         android:layout_width="@dimen/_48dp"
         android:layout_height="@dimen/_48dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textRec"
+        style="@style/TextViewMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8dp"
@@ -35,7 +37,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/imageAvatarUserReceiver"
         app:layout_constraintRight_toRightOf="@+id/guideLine2"
-        app:layout_constraintTop_toTopOf="@+id/imageAvatarUserReceiver"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/imageAvatarUserReceiver" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import com.karl.last_chat.R
 import com.karl.last_chat.utils.extensions.onClickViews
 import kotlinx.android.synthetic.main.layout_setting_personal.*
@@ -27,5 +28,14 @@ class DialogSetting(context: Context, private val title: String, private val lis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_setting_personal)
         onClickViews(textEditProfile, textLogout)
+    }
+
+
+    override fun onStart() {
+        window!!.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        super.onStart()
     }
 }

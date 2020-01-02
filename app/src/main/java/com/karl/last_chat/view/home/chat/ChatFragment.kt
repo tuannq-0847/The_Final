@@ -1,6 +1,5 @@
 package com.karl.last_chat.view.home.chat
 
-import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
@@ -11,6 +10,7 @@ import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.visibilityStateViews
 import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -89,6 +89,10 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         })
         viewModel.isSend.observe(this, Observer {
             viewModel.saveNotification(uid!!, Notification(it.content, it.idUserSend))
+        })
+        viewModel.userEvent.observe(this, Observer {
+            chatAdapter.setAvatar(it.pathAvatar)
+            textSpannable.text = it.userName
         })
     }
 

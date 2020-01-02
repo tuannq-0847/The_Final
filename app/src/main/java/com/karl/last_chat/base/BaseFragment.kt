@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import com.karl.last_chat.utils.extensions.showDialogWarning
 import com.karl.last_chat.view.dialogs.LoadingDialog
 
-abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
+abstract class BaseFragment<VM : BaseViewModel> : Fragment(),StackFragment {
 
     abstract val viewModel: VM
 
@@ -64,6 +64,9 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.hideLoading()
+    }
+
+    override fun onBackPressed() {
     }
 
     companion object {

@@ -8,4 +8,5 @@ object Constants {
     const val MESSAGES = "MESSAGES"
     const val FRIEND = "FRIEND"
     const val NOTIFICATION = "NOTIFICATION"
+    const val KEY_IS_FINISHED = "KEY_IS_FINISHED"
 }

@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        style="@style/TextViewMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/avatar"
@@ -15,33 +16,39 @@
 
     <TextView
         android:id="@+id/imageSee"
+        style="@style/TextViewMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16dp"
         android:drawableStart="@drawable/ic_eye"
         android:drawablePadding="@dimen/_16dp"
+        android:gravity="center_vertical"
         android:text="@string/see_avatar"
         android:textColor="@android:color/black"
         android:textSize="@dimen/_14sp" />
 
     <TextView
         android:id="@+id/imageCamera"
+        style="@style/TextViewMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16dp"
         android:drawableStart="@drawable/ic_photo_camera"
         android:drawablePadding="@dimen/_16dp"
+        android:gravity="center_vertical"
         android:text="@string/get_new_image"
         android:textColor="@android:color/black"
         android:textSize="@dimen/_14sp" />
 
     <TextView
         android:id="@+id/imagePic"
+        style="@style/TextViewMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16dp"
         android:drawableStart="@drawable/ic_decoration"
         android:drawablePadding="@dimen/_16dp"
+        android:gravity="center_vertical"
         android:text="@string/choose_stored_image"
         android:textColor="@android:color/black"
         android:textSize="@dimen/_14sp" />

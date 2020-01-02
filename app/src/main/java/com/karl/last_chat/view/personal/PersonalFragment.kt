@@ -5,6 +5,7 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
@@ -78,7 +79,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         } ?: throw Exception()
         appBarPersonal.addOnOffsetChangedListener(this)
         viewModel.getInforUser()
-        imageBack.visibilityStateViews(imageBack, visibilityState = View.GONE)
+        imageBack.visibilityStateViews(imageBack, imageContact, visibilityState = View.GONE)
     }
 
     override fun onStop() {
@@ -107,15 +108,21 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             imageBackground.loadWithGlide(it.pathBackground, R.drawable.bg_cover_1)
             textNameSmall.text = it.userName
             textName.text = it.userName
-            textLocation.text = getLocationName(it.lat, it.lgn)
-
+            textBio.text = it.bio
+            textGender.text = it.gender
+            textLocation.text = getLocationName(it.lat, it.long)
         })
     }
 
     private fun getLocationName(lat: Double, long: Double): String {
-        val geocoder = Geocoder(context, Locale.getDefault())
-        val address = geocoder.getFromLocation(lat, long, 1)
-        return address[0].countryName
+        context?.let {
+            val addressList = Geocoder(it, Locale.getDefault())
+                .getFromLocation(lat, long, 1)
+            if (!addressList.isNullOrEmpty()) {
+                return addressList[0].getAddressLine(0)
+            }
+        }
+        return ""
     }
 
     private fun getOrientation(uri: Uri): Int {

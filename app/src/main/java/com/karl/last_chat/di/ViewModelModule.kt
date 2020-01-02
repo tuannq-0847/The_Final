@@ -11,6 +11,11 @@ import com.karl.last_chat.view.login.LoginViewModel
 import com.karl.last_chat.view.personal.PersonalViewModel
 import com.karl.last_chat.view.profile.ProfileViewModel
 import com.karl.last_chat.view.register.RegisterViewModel
+import com.karl.last_chat.view.register_flow.birthday.BirthdayViewModel
+import com.karl.last_chat.view.register_flow.first_name.MyFirstNameViewModel
+import com.karl.last_chat.view.register_flow.gender.GenderViewModel
+import com.karl.last_chat.view.register_flow.parent_res.ParentResViewModel
+import com.karl.last_chat.view.register_flow.welcome.ResWelcomeViewModel
 import com.karl.last_chat.view.splash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,4 +33,9 @@ val viewModelModule = module {
     viewModel { DiscoveryViewModel(get()) }
     viewModel { MainViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
+    viewModel { ParentResViewModel(get()) }
+    viewModel { ResWelcomeViewModel(get()) }
+    viewModel { BirthdayViewModel(get()) }
+    viewModel { MyFirstNameViewModel(get()) }
+    viewModel { GenderViewModel(get()) }
 }

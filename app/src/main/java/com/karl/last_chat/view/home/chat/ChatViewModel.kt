@@ -1,7 +1,6 @@
 package com.karl.last_chat.view.home.chat
 
 import android.util.Log
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -113,7 +112,7 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        Log.d("dataSnapshot", p0.childrenCount.toString())
+                        userEvent.value = p0.getValue(User::class.java)
                     }
                 })
         }

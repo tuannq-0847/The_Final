@@ -1,23 +1,35 @@
 package com.karl.last_chat.view.auth
 
-import android.animation.ObjectAnimator
-import android.graphics.Path
+import android.util.Log
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
-import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.view.login.LoginFragment
 import com.karl.last_chat.view.register.RegisterFragment
+import com.karl.last_chat.widget.TheLastViewPager
 import kotlinx.android.synthetic.main.fragment_auth.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListener {
+
+class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListener,
+    TheLastViewPager.OnSwipeOutListener {
+
+    private var thresholdOffsetPixels = 1
+    private var thresholdOffset = 0.5f
+    private var scrollStarted: Boolean = false
+    private var checkDirection: Boolean = false
+    override fun onSwipeOutAtEnd() {
+        Log.d("AuthPager", "onSwipeOutAtEnd....")
+    }
+
+    override fun onSwipeOutAtStart() {
+        Log.d("AuthPager", "onSwipeOutAtStart....")
+    }
+
     override fun onObserve() {
 
     }
@@ -25,14 +37,27 @@ class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListen
     override val viewModel: AuthViewModel by viewModel()
 
     override fun onPageScrollStateChanged(state: Int) {
-
+        if (!scrollStarted && state == ViewPager.SCROLL_STATE_DRAGGING) {
+            scrollStarted = true
+            checkDirection = true
+        } else {
+            scrollStarted = false
+        }
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
+        if(checkDirection){
+            if (thresholdOffset > positionOffset && positionOffsetPixels > thresholdOffsetPixels) {
+                Log.d("onPageScrolled", "going left")
+            } else {
+                Log.d("onPageScrolled", "going right")
+            }
+            checkDirection = false
+        }
     }
 
     override fun onPageSelected(position: Int) {
+        Log.d("onPageSelected", position.toString())
         (fragments[0] as LoginFragment).textVerticalLogin.visibility =
             if (fragments[position] is LoginFragment) View.GONE else View.VISIBLE
         //     handleAnimation(fragments[0].textVerticalLogin)
@@ -67,6 +92,7 @@ class AuthFragment : BaseFragment<AuthViewModel>(), ViewPager.OnPageChangeListen
     override fun onInitComponents(view: View) {
         viewPagerAuth.adapter = pagerAdapter
         viewPagerAuth.addOnPageChangeListener(this)
+        viewPagerAuth.setOnSwipeOutListener(this)
     }
 
     private val fragments =

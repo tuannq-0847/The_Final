@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_send"
         android:padding="@dimen/_8dp"
+        style="@style/TextViewMain"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_14sp"
