@@ -12,10 +12,11 @@ import kotlinx.coroutines.runBlocking
 
 class MessagesViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
     val messageEvents by lazy { SingleLiveEvent<MutableList<LastMessage>>() }
+    val lastMessages = mutableListOf<LastMessage>()
 
     fun getMessagesList() {
         runBlocking {
-            showLoading()
+            // showLoading()
             appRepository.getMessages()
                 .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
@@ -23,14 +24,28 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val data = mutableListOf<LastMessage>()
-                        Log.d("snap", dataSnapshot.childrenCount.toString())
-                        if (dataSnapshot.exists()) {
-                            dataSnapshot.children.forEach {
-                                data.add(it as LastMessage)
-                            }
+                        val idDiscuss = dataSnapshot.getValue(String::class.java)
+                        idDiscuss?.let {
+                            getLastMessage(it)
                         }
-                        messageEvents.value = data
+                    }
+                })
+        }
+    }
+
+    fun getLastMessage(idDiscuss: String) {
+        runBlocking {
+            appRepository.getDisscussMessages(idDiscuss)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        error.value = p0.toException()
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                        if (dataSnapshot.exists()) {
+
+                        }
                     }
                 })
         }

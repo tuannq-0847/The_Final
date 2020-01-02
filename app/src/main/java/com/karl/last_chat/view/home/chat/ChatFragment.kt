@@ -85,7 +85,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         viewModel.messages.observe(this, Observer {
             chatAdapter.submitList(it)
             chatAdapter.notifyDataSetChanged()
-            recyclerChat.smoothScrollToPosition(it.size - 1)
+            if (it.size > 0) recyclerChat.smoothScrollToPosition(it.size - 1)
         })
         viewModel.isSend.observe(this, Observer {
             viewModel.saveNotification(uid!!, Notification(it.content, it.idUserSend))

@@ -8,6 +8,7 @@ import com.karl.last_chat.base.BaseRecyclerView
 import com.karl.last_chat.data.model.LastMessage
 import com.karl.last_chat.utils.extensions.loadWithGlide
 import kotlinx.android.synthetic.main.item_message.view.*
+import kotlinx.android.synthetic.main.items_friends.view.*
 
 class MessageAdapter(listener: (item: LastMessage) -> Unit) :
     BaseRecyclerView<LastMessage>(object : DiffUtil.ItemCallback<LastMessage>() {
@@ -21,13 +22,13 @@ class MessageAdapter(listener: (item: LastMessage) -> Unit) :
 
     }, listener) {
 
-    override fun getLayoutRes(viewType: Int): Int = R.layout.item_message
+    override fun getLayoutRes(viewType: Int): Int = R.layout.items_friends
 
     override fun onBind(itemView: View, item: LastMessage, position: Int) {
         itemView.run {
             textLastMesasge.text = item.lastContent
-            imageStatus.setImageResource(if (item.onlineStatus == 1) R.drawable.ic_online else R.drawable.ic_offline)
-            imageAv.loadWithGlide(item.pathImage)
+            imageStatusUser.setImageResource(if (item.onlineStatus == 1) R.drawable.ic_online else R.drawable.ic_offline)
+            imageUserLastMessage.loadWithGlide(item.pathImage)
         }
     }
 }

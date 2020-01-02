@@ -93,7 +93,7 @@ class AppRepositoryImpl(
     }
 
     override suspend fun getMessages(): DatabaseReference =
-        firebaseDatabase.getReference("${Constants.MESSAGES}/$userId")
+        firebaseDatabase.getReference("${Constants.MESSAGE}/$userId")
 
     override suspend fun getInforUsers() =
         firebaseDatabase.getReference("${Constants.USER}/$userId")
