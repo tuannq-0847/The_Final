@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.home.message
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.karl.last_chat.R
@@ -39,21 +40,26 @@ class MessagesFragment : BaseFragment<MessagesViewModel>(), View.OnClickListener
 
     override fun onObserve() {
         viewModel.messageEvents.observe(this, Observer {
+            Log.d("lastMessage", it.size.toString())
             viewModel.hideLoading()
             if (it.isEmpty()) {
                 layoutFind.visibility = View.VISIBLE
                 textGetStarted.visibility = View.VISIBLE
             } else {
+                layoutFind.visibility = View.INVISIBLE
+                textGetStarted.visibility = View.INVISIBLE
                 recyclerMessages.adapter = messageAdapter
                 messageAdapter.submitList(it)
             }
+        })
+        viewModel.userEvent.observe(this, Observer {
+
         })
     }
 
     companion object {
 
         fun newInstance() = newInstance<MessagesFragment>()
-
         private const val HOME = "HOME"
     }
 }
