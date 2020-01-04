@@ -1,12 +1,14 @@
 package com.karl.last_chat.data.repository.impl
 
 import android.net.Uri
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
@@ -24,9 +26,21 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
-    override fun generateIdDiscuss(userId: String): String =
-        firebaseDatabase.getReference(Constants.MESSAGE)
-            .child(userId).push().key!!
+    override suspend fun updateStatusSeen(
+        idDiscuss: String,
+        idChild: String,
+        uid: String,
+        seen: String
+    ) {
+        Log.d("updateS", seen)
+        firebaseDatabase.getReference(Constants.MESSAGES).child(idDiscuss).child(idChild)
+            .child("seen").setValue(if (seen.isEmpty()) uid else "both")
+    }
+
+    override suspend fun getChildStatusSeen(idDiscuss: String): Query =
+        firebaseDatabase.getReference(Constants.MESSAGES)
+            .child(idDiscuss)
+            .orderByKey().limitToLast(1)
 
     override suspend fun logout() = firebaseAuth.signOut()
 
@@ -46,21 +60,24 @@ class AppRepositoryImpl(
         firebaseDatabase.reference.child(Constants.MESSAGES)
             .child(idDiscuss).push().key!!
 
-    override suspend fun setIdDiscuss(userId: String, disscussId: String): Task<Void> {
+    override suspend fun setIdDiscuss(
+        userId: String,
+        disscussId: String
+    ): Task<Void> {
         firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
-            .child(generateIdDiscuss(userId))
+            .child(userId)
             .setValue(disscussId)
 
         return firebaseDatabase.getReference(Constants.MESSAGE).child(userId)
-            .child(generateIdDiscuss(disscussId))
+            .child(getCurrentUser()!!.uid)
             .setValue(disscussId)
     }
 
     override suspend fun getDisscussMessages(idDiscuss: String): DatabaseReference =
         firebaseDatabase.getReference(Constants.MESSAGES).child(idDiscuss)
 
-    override suspend fun getIdDiscuss(userId: String): DatabaseReference =
-        firebaseDatabase.getReference(Constants.MESSAGE).child(userId)
+    override suspend fun getIdDiscuss(userId: String, otherUid: String): DatabaseReference =
+        firebaseDatabase.getReference(Constants.MESSAGE).child(userId).child(otherUid)
 
     override suspend fun sendMessage(idDiscuss: String, message: Message): Task<Void> =
         firebaseDatabase.getReference(Constants.MESSAGES)

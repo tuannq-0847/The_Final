@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.Query
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
@@ -54,7 +55,7 @@ interface AppRepository {
 
     suspend fun sendMessage(idDiscuss: String, message: Message): Task<Void>
 
-    suspend fun getIdDiscuss(userId: String): DatabaseReference
+    suspend fun getIdDiscuss(userId: String, otherUid: String): DatabaseReference
 
     suspend fun setIdDiscuss(userId: String, disscussId: String): Task<Void>
 
@@ -66,7 +67,11 @@ interface AppRepository {
 
     suspend fun generateNotificationId(receiveId: String, notification: Notification): String
 
-    fun generateIdDiscuss(userId: String): String
+//    fun generateIdDiscuss(userId: String, otherUid: String): String
 
     suspend fun logout()
+
+    suspend fun getChildStatusSeen(idDiscuss: String): Query
+
+    suspend fun updateStatusSeen(idDiscuss: String, idChild: String, uid: String, seen: String)
 }

@@ -1,6 +1,7 @@
 package com.karl.last_chat.view.home.chat
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
@@ -39,13 +40,14 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                     dId, Message(
                         content = editChat.text.toString(),
                         idUserSend = viewModel.getCurrentUser()!!.uid,
-                        idUserRec = uid!!
+                        idUserRec = uid!!,
+                        seen = viewModel.getCurrentUser()!!.uid
                     )
                 )
                 editChat.setText("")
             }
             R.id.imageBack -> {
-                onBackPressed()
+                activity?.onBackPressed()
             }
         }
     }
@@ -76,6 +78,8 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         recyclerEmoji.adapter = adapter
         recyclerChat.adapter = chatAdapter
         adapter.submitList(viewModel.listEmojis)
+        dId = arguments?.getString(DISCUSS_ID) ?: ""
+        Log.d("dId", dId)
         editChat.addTextChangedListener {
             if (it!!.isNotEmpty()) {
                 view.visibilityStateViews(imageSend)
@@ -85,23 +89,30 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 view.visibilityStateViews(imageAttach, imagePic)
             }
         }
-        viewModel.getDisscussId(uid!!)
+        if (dId.isEmpty()) {
+            viewModel.getDisscussId(viewModel.getCurrentUser()!!.uid, uid!!)
+            Log.d("isEmpty", "in...${viewModel.getCurrentUser()!!.uid}....$uid")
+        } else handleMessage(dId)
         viewModel.getInforUser(uid!!)
     }
 
     override fun onObserve() {
         viewModel.idDiscuss.observe(this, Observer {
+            Log.d("idDiscuss", it)
             if (it != "") {
                 dId = it
-                viewModel.getMesages(dId)
+                handleMessage(dId)
             } else {
-                viewModel.setDisscussId(uid!!, UUID.randomUUID().toString())
+                viewModel.setDisscussId(
+                    uid!!,
+                    UUID.randomUUID().toString()
+                )
             }
         })
         viewModel.messages.observe(this, Observer {
             chatAdapter.submitList(it)
             chatAdapter.notifyDataSetChanged()
-            if (it.size > 0) recyclerChat.smoothScrollToPosition(it.size - 1)
+            if (it.size > 0) recyclerChat.scrollToPosition(it.size - 1)
         })
         viewModel.isSend.observe(this, Observer {
             viewModel.saveNotification(uid!!, Notification(it.content, it.idUserSend))
@@ -112,9 +123,17 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         })
     }
 
+    private fun handleMessage(dId: String) {
+        viewModel.getMesages(dId)
+        viewModel.getChildKey(dId, viewModel.getCurrentUser()!!.uid)
+    }
+
     companion object {
 
-        fun newInstance(userId: String) = newInstance<ChatFragment>(Pair(USER_ID, userId))
+        fun newInstance(userId: String, idDiscuss: String = "") =
+            newInstance<ChatFragment>(Pair(USER_ID, userId), Pair(DISCUSS_ID, idDiscuss))
+
         const val USER_ID = "USER_ID"
+        const val DISCUSS_ID = "DISCUSS_ID"
     }
 }

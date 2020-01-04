@@ -1,6 +1,5 @@
 package com.karl.last_chat.view.home.message
 
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -14,8 +13,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class MessagesViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
-    val messageEvents by lazy { SingleLiveEvent<MutableList<LastMessage>>() }
-    val lastMessages = mutableListOf<LastMessage>()
+    val messageEvents by lazy { SingleLiveEvent<ArrayList<LastMessage>>() }
+    val lastMessages = arrayListOf<LastMessage>()
 
     fun getMessagesList() {
         runBlocking {
@@ -29,7 +28,6 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         dataSnapshot.children.forEach {
                             val idDiscuss = it.getValue(String::class.java)
-                            Log.d("idDiss", it.value.toString())
                             idDiscuss?.let { id ->
                                 getLastMessage(id)
                             }
@@ -45,7 +43,7 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
         runBlocking {
             appRepository.getDisscussMessages(idDiscuss)
                 .orderByKey().limitToLast(1)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         error.value = p0.toException()
                     }
@@ -55,8 +53,7 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                             dataSnapshot.children.forEach {
                                 val message = it.getValue(Message::class.java)
                                 message?.let {
-                                    Log.d("order", it.content)
-                                    getDetailLastMessage(it)
+                                    getDetailLastMessage(it, idDiscuss)
                                 }
                             }
                         }
@@ -65,7 +62,7 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
         }
     }
 
-    fun getDetailLastMessage(message: Message) {
+    fun getDetailLastMessage(message: Message, idDiscuss: String) {
         uiScope.launch {
             appRepository.getInforUser(if (getCurrentUId() == message.idUserRec) message.idUserSend else message.idUserRec)
                 .addValueEventListener(object : ValueEventListener {
@@ -76,7 +73,7 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val user = dataSnapshot.getValue(User::class.java)
                         user?.let {
-                            lastMessages.add(
+                            handleList(
                                 LastMessage(
                                     lastContent = message.content,
                                     nameSender = it.userName,
@@ -84,14 +81,27 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                                     seen = message.seen,
                                     onlineStatus = it.online,
                                     idUserRec = message.idUserRec,
-                                    idUserSend = message.idUserSend
+                                    idUserSend = message.idUserSend,
+                                    idDiscuss = idDiscuss
                                 )
                             )
-                            Log.d("lastMessage", lastMessages[0].lastContent)
                             messageEvents.value = lastMessages
                         }
                     }
                 })
         }
+    }
+
+    private fun handleList(lastMessage: LastMessage) {
+        if (lastMessages.isEmpty()) lastMessages.add(lastMessage)
+        else
+            for (i in 0 until lastMessages.size) {
+                if (lastMessages[i].idDiscuss == lastMessage.idDiscuss) {
+                    lastMessages[i] = lastMessage
+                    break
+                } else {
+                    lastMessages.add(lastMessage)
+                }
+            }
     }
 }

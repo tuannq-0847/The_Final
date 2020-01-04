@@ -32,9 +32,12 @@ class MessagesFragment : BaseFragment<MessagesViewModel>(), View.OnClickListener
     override val layoutRes: Int = R.layout.message_layout
 
     private val messageAdapter by lazy {
-        MessageAdapter {
+        MessageAdapter(viewModel.getCurrentUId()) {
             activity?.supportFragmentManager?.replaceWithBackStack(
-                ChatFragment.newInstance(if (it.idUserSend == viewModel.getCurrentUId()) it.idUserRec else it.idUserSend),
+                ChatFragment.newInstance(
+                    if (it.idUserSend == viewModel.getCurrentUId()) it.idUserRec else it.idUserSend,
+                    it.idDiscuss
+                ),
                 R.id.mainContainer
             )
         }

@@ -34,38 +34,33 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
         }
     }
 
-    fun getDisscussId(userId: String) {
+    fun getDisscussId(userId: String, uid: String) {
         uiScope.launch {
-            appRepository.getIdDiscuss(userId).addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    error.value = p0.toException()
-                }
+            appRepository.getIdDiscuss(userId, uid)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        error.value = p0.toException()
+                    }
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (!p0.exists()) {
-                        idDiscuss.value = ""
-                    } else {
-                        p0.children.forEach {
-                            idDiscuss.value = it.getValue(String::class.java)
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if (!p0.exists()) {
+                            idDiscuss.value = ""
+                        } else {
+                            idDiscuss.value = p0.getValue(String::class.java)
                         }
                     }
-                }
-
-            })
+                })
         }
     }
 
     fun getMesages(idDiscuss: String) {
-        Log.d("idDiscuss", idDiscuss)
         uiScope.launch {
             appRepository.getDisscussMessages(idDiscuss)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(p0: DataSnapshot) {
                         a.clear()
-                        Log.d("dataz", p0.childrenCount.toString())
                         p0.children.forEach {
                             it.getValue(Message::class.java)?.let { m ->
-                                Log.d("dataz", m.toString())
                                 a.add(m)
                             }
                         }
@@ -118,4 +113,32 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
                 })
         }
     }
+
+    fun getChildKey(idDiscuss: String, uid: String) {
+        uiScope.launch {
+            appRepository.getChildStatusSeen(idDiscuss)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        error.value = p0.toException()
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        dataSnapshot.children.forEach {
+                            val message = it.getValue(Message::class.java)
+                            Log.d("messageSeen", message!!.seen)
+                            updateStatusSeen(idDiscuss, it.key.toString(), uid, message!!.seen)
+                        }
+                    }
+
+                })
+        }
+    }
+
+    fun updateStatusSeen(idDiscuss: String, idChild: String, uid: String, seen: String) {
+        uiScope.launch {
+            Log.d("see", seen)
+            appRepository.updateStatusSeen(idDiscuss, idChild, uid, seen)
+        }
+    }
+
 }

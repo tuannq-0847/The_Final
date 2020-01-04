@@ -136,7 +136,7 @@
             <TextView
                 android:id="@+id/textLocation"
                 style="@style/TextViewMain"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
@@ -146,36 +146,41 @@
                 android:gravity="center_vertical"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_14sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textName" />
 
             <TextView
                 android:id="@+id/textGender"
                 style="@style/TextViewMain"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_8dp"
+                android:layout_marginEnd="@dimen/_16dp"
                 android:drawableStart="@drawable/ic_male"
                 android:drawablePadding="@dimen/_4dp"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_14sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textLocation" />
 
             <TextView
                 android:id="@+id/textBio"
                 style="@style/TextViewMain"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_8dp"
+                android:layout_marginEnd="@dimen/_16dp"
                 android:drawableStart="@drawable/ic_story"
                 android:drawablePadding="@dimen/_4dp"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_14sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textGender" />
         </androidx.constraintlayout.widget.ConstraintLayout>

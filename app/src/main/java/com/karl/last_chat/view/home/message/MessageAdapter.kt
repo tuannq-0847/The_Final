@@ -10,7 +10,7 @@ import com.karl.last_chat.data.model.LastMessage
 import com.karl.last_chat.utils.extensions.loadWithGlide
 import kotlinx.android.synthetic.main.items_friends.view.*
 
-class MessageAdapter(listener: (item: LastMessage) -> Unit) :
+class MessageAdapter(private val uid: String, listener: (item: LastMessage) -> Unit) :
     BaseRecyclerView<LastMessage>(object : DiffUtil.ItemCallback<LastMessage>() {
         override fun areItemsTheSame(oldItem: LastMessage, newItem: LastMessage): Boolean {
             return oldItem.idLast == newItem.idLast
@@ -27,7 +27,7 @@ class MessageAdapter(listener: (item: LastMessage) -> Unit) :
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onBind(itemView: View, item: LastMessage, position: Int) {
         itemView.run {
-            if (item.seen == 0) {
+            if (item.seen != uid && item.seen != "both") {
                 textLastMessage.setTextColor(
                     resources.getColor(
                         R.color.color_black,

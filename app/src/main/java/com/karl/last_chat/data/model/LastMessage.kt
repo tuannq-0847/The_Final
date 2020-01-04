@@ -6,7 +6,8 @@ data class LastMessage(
     var onlineStatus: Int = 1,
     var pathImage: String = "",
     var nameSender: String,
-    var seen: Int = 0,
+    var seen: String = "",
     var idUserSend: String = "",
-    var idUserRec: String = ""
+    var idUserRec: String = "",
+    var idDiscuss: String = ""
 )
