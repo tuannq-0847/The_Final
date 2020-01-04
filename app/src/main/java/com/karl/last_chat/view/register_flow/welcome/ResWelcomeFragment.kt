@@ -34,6 +34,8 @@ class ResWelcomeFragment : BaseFragment<ResWelcomeViewModel>() {
 
     }
 
+    override fun isNeedAutoBackPressed() = false
+
     companion object {
 
         fun newInstance() = newInstance<ResWelcomeFragment>()

@@ -93,13 +93,16 @@ class MainActivity : BaseActivity() {
 //    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
 //        val view = currentFocus
 //        if (event?.action == MotionEvent.ACTION_DOWN && view is EditText) {
-//            val outRect = Rect()
-//            view.getGlobalVisibleRect(outRect)
-//            if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-//                view.clearFocus()
-//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.hideSoftInputFromWindow(view.windowToken, 0)
-//            }
+//
+//            Log.d("dispatch", "in....")
+////            val outRect = Rect()
+////            view.getGlobalVisibleRect(outRect)
+////            if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+////                view.clearFocus()
+////                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+////                imm.hideSoftInputFromWindow(view.windowToken, 0)
+////            }
+//            return super.dispatchTouchEvent(event)
 //        }
 //        return super.dispatchTouchEvent(event)
 //    }
@@ -249,15 +252,18 @@ class MainActivity : BaseActivity() {
         for (fragment in supportFragmentManager.fragments) {
             if (fragment.isVisible) {
                 if (fragment.childFragmentManager.backStackEntryCount > 0) {
-                    (fragment.childFragmentManager.fragments.last() as StackFragment).onBackPressed()
-                    return
+                    if (!(fragment.childFragmentManager.fragments.last() as StackFragment).isNeedAutoBackPressed()) {
+                        (fragment.childFragmentManager.fragments.last() as StackFragment).onBackPressed()
+                        return
+                    } else super.onBackPressed()
                 } else {
-                    (fragment as StackFragment).onBackPressed()
-                    return
+                    if (!(fragment as StackFragment).isNeedAutoBackPressed()) {
+                        fragment.onBackPressed()
+                        return
+                    } else super.onBackPressed()
                 }
             }
         }
-        super.onBackPressed()
     }
 
     companion object {

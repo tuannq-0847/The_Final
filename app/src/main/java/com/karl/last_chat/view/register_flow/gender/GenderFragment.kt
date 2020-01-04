@@ -18,7 +18,7 @@ class GenderFragment : BaseFragment<GenderViewModel>() {
         get() = R.layout.fragment_gender
 
     override fun onInitComponents(view: View) {
-        (parentFragment as ParentResFragment).frameProgress.progress = 100
+        (parentFragment as ParentResFragment).animationProgress(80, 100)
     }
 
     override fun onObserve() {
@@ -42,9 +42,11 @@ class GenderFragment : BaseFragment<GenderViewModel>() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        (parentFragment as ParentResFragment).frameProgress.progress = 80
+        (parentFragment as ParentResFragment).animationProgress(100, 80)
         fragmentManager?.popBackStack()
     }
+
+    override fun isNeedAutoBackPressed() = false
 
     companion object {
 

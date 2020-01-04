@@ -4,12 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+
+            <include layout="@layout/data_place_holder" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/textGetStarted"
@@ -21,6 +57,7 @@
         android:gravity="center"
         android:text="Get started"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/layoutFind"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +72,7 @@
         android:layout_marginTop="@dimen/_16dp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,10 +1,9 @@
 package com.karl.last_chat.view.register_flow.parent_res
 
+import android.animation.ValueAnimator
 import android.view.View
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
-import com.karl.last_chat.utils.extensions.addFragment
-import com.karl.last_chat.utils.extensions.addFragmentWithBackStack
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.register_flow.welcome.ResWelcomeFragment
 import kotlinx.android.synthetic.main.layout_parent_register.*
@@ -24,6 +23,17 @@ class ParentResFragment : BaseFragment<ParentResViewModel>() {
     }
 
     override fun onObserve() {
+    }
+
+    fun animationProgress(start: Int, end: Int) {
+        ValueAnimator.ofInt(start, end)
+            .apply {
+                addUpdateListener {
+                    frameProgress.progress = it.animatedValue as Int
+                }
+                duration = 600
+                start()
+            }
     }
 
     companion object {

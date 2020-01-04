@@ -1,6 +1,8 @@
 package com.karl.last_chat.view.home.chat
 
+import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.karl.last_chat.R
@@ -26,6 +28,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         when (v?.id) {
             R.id.imageEmoji -> {
                 recyclerEmoji.visibility = if (isClicked) View.VISIBLE else View.GONE
+                if (isClicked) hideKeyBoard() else showKeyBoard()
                 isClicked = !isClicked
             }
             R.id.editChat -> {
@@ -41,6 +44,9 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 )
                 editChat.setText("")
             }
+            R.id.imageBack -> {
+                onBackPressed()
+            }
         }
     }
 
@@ -50,13 +56,23 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         editChat.setText(editChat.text.toString() + it)
     }
 
+    private fun hideKeyBoard() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    private fun showKeyBoard() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInputFromWindow(view?.windowToken, InputMethodManager.SHOW_FORCED, 0)
+    }
+
     private val chatAdapter by lazy { ChatAdapter(viewModel.getCurrentUser()!!.uid) }
 
     override val layoutRes: Int
         get() = R.layout.fragment_chat
 
     override fun onInitComponents(view: View) {
-        onClickViews(imageEmoji, editChat, imageSend)
+        onClickViews(imageEmoji, editChat, imageSend, imageBack)
         recyclerEmoji.adapter = adapter
         recyclerChat.adapter = chatAdapter
         adapter.submitList(viewModel.listEmojis)

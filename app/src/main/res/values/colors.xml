@@ -13,4 +13,6 @@
     <color name="color_white_80">#CCFFFFFF</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_grey">#CBD6D0</color>
+    <color name="color_black">#000000</color>
+    <color name="color_background_placeholder">#dddddd</color>
 </resources>

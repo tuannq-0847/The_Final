@@ -42,11 +42,12 @@ class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(ap
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    Log.d("dataDisscuss", p0.value.toString())
                     if (!p0.exists()) {
                         idDiscuss.value = ""
                     } else {
-                        idDiscuss.value = p0.getValue(String::class.java)
+                        p0.children.forEach {
+                            idDiscuss.value = it.getValue(String::class.java)
+                        }
                     }
                 }
 

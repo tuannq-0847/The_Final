@@ -16,7 +16,7 @@ class BirthdayFragment : BaseFragment<BirthdayViewModel>() {
         get() = R.layout.fragment_birth
 
     override fun onInitComponents(view: View) {
-        (parentFragment as ParentResFragment).frameProgress.progress = 80
+        (parentFragment as ParentResFragment).animationProgress(60, 80)
     }
 
     override fun onObserve() {
@@ -27,9 +27,11 @@ class BirthdayFragment : BaseFragment<BirthdayViewModel>() {
 
 
     override fun onBackPressed() {
-        (parentFragment as ParentResFragment).frameProgress.progress = 60
+        (parentFragment as ParentResFragment).animationProgress(80, 60)
         fragmentManager?.popBackStack()
     }
+
+    override fun isNeedAutoBackPressed() = false
 
     companion object {
 

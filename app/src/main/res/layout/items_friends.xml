@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/_16dp">
+    android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUserLastMessage"
-        android:layout_width="@dimen/_24dp"
-        android:layout_height="@dimen/_24dp"
-        android:src="@drawable/avatar"
-        app:layout_constraintBottom_toBottomOf="@+id/textLastMessage"
+        android:layout_width="@dimen/_48dp"
+        android:layout_height="@dimen/_48dp"
+        android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginTop="@dimen/_8dp"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:layout_marginBottom="@dimen/_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textUserRec" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textUserRec"
@@ -21,6 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginTop="@dimen/_8dp"
         android:textSize="@dimen/_20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/imageUserLastMessage"
@@ -32,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8dp"
+        android:layout_marginTop="@dimen/_16dp"
         android:background="@drawable/bg_new"
         android:padding="@dimen/_1dp"
         android:text="@string/new_friend"
@@ -39,13 +43,16 @@
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@+id/textUserRec"
-        app:layout_constraintTop_toTopOf="@+id/imageUserLastMessage" />
+        app:layout_constraintTop_toTopOf="@+id/imageUserLastMessage"
+        app:layout_goneMarginTop="@dimen/_16dp" />
 
     <TextView
         android:id="@+id/textLastMessage"
+        style="@style/TextViewMain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginTop="@dimen/_8dp"
         android:singleLine="true"
         android:textColor="@color/color_grey"
         android:textStyle="bold"
@@ -57,14 +64,23 @@
         android:id="@+id/imageStatusUser"
         android:layout_width="@dimen/_16dp"
         android:layout_height="@dimen/_16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textLastMessage"
+        android:layout_marginEnd="@dimen/_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textUserRec" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.75" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1dp"
+        android:layout_marginTop="@dimen/_8dp"
+        android:background="@color/color_default_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageUserLastMessage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

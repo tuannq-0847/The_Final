@@ -1,9 +1,13 @@
 package com.karl.last_chat.base
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.LayoutRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -11,7 +15,7 @@ import androidx.lifecycle.Observer
 import com.karl.last_chat.utils.extensions.showDialogWarning
 import com.karl.last_chat.view.dialogs.LoadingDialog
 
-abstract class BaseFragment<VM : BaseViewModel> : Fragment(),StackFragment {
+abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
 
     abstract val viewModel: VM
 
@@ -23,6 +27,8 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(),StackFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onInitComponents(view)
+        view.isClickable = true
+        view.isFocusableInTouchMode = true
         observeInternal()
         onObserve()
         observeError()
@@ -61,6 +67,30 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(),StackFragment {
         context?.showDialogWarning(throwable.message!!)
     }
 
+
+    fun setUpUI(view: View) {
+        if (view !is EditText) {
+            Log.d("edit", "in....")
+            view.setOnTouchListener { v, event ->
+                hideKeyboard()
+                return@setOnTouchListener false
+            }
+        }
+
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val innerView = view.getChildAt(i)
+                setUpUI(innerView)
+            }
+        }
+    }
+
+    private fun hideKeyboard() {
+        val inputManager =
+            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.hideLoading()
@@ -68,6 +98,8 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(),StackFragment {
 
     override fun onBackPressed() {
     }
+
+    override fun isNeedAutoBackPressed() = true
 
     companion object {
 

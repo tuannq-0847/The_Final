@@ -17,8 +17,6 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
     val messageEvents by lazy { SingleLiveEvent<MutableList<LastMessage>>() }
     val lastMessages = mutableListOf<LastMessage>()
 
-    val userEvent by lazy { SingleLiveEvent<User>() }
-
     fun getMessagesList() {
         runBlocking {
             // showLoading()
@@ -29,18 +27,24 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val idDiscuss = dataSnapshot.getValue(String::class.java)
-                        idDiscuss?.let {
-                            getLastMessage(it)
+                        dataSnapshot.children.forEach {
+                            val idDiscuss = it.getValue(String::class.java)
+                            Log.d("idDiss", it.value.toString())
+                            idDiscuss?.let { id ->
+                                getLastMessage(id)
+                            }
                         }
                     }
                 })
         }
     }
 
+    fun getCurrentUId() = appRepository.getCurrentUser()!!.uid
+
     fun getLastMessage(idDiscuss: String) {
         runBlocking {
             appRepository.getDisscussMessages(idDiscuss)
+                .orderByKey().limitToLast(1)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         error.value = p0.toException()
@@ -51,34 +55,41 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                             dataSnapshot.children.forEach {
                                 val message = it.getValue(Message::class.java)
                                 message?.let {
-                                    // lastMessages.add(LastMessage(it.idMessage, it.content, 1, ""))
-                                    checkSendUser(it)
+                                    Log.d("order", it.content)
+                                    getDetailLastMessage(it)
                                 }
                             }
-                            messageEvents.value = lastMessages
                         }
                     }
                 })
         }
     }
 
-    fun checkSendUser(message: Message) {
+    fun getDetailLastMessage(message: Message) {
         uiScope.launch {
-            val userId = appRepository.getCurrentUser()?.uid
-            getInforUser(if (userId == message.idUserSend) message.idUserSend else message.idUserRec)
-        }
-    }
-
-    fun getInforUser(uid: String) {
-        uiScope.launch {
-            appRepository.getInforUser(uid)
+            appRepository.getInforUser(if (getCurrentUId() == message.idUserRec) message.idUserSend else message.idUserRec)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         error.value = p0.toException()
                     }
 
-                    override fun onDataChange(p0: DataSnapshot) {
-                        userEvent.value = p0.getValue(User::class.java)
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val user = dataSnapshot.getValue(User::class.java)
+                        user?.let {
+                            lastMessages.add(
+                                LastMessage(
+                                    lastContent = message.content,
+                                    nameSender = it.userName,
+                                    pathImage = it.pathAvatar,
+                                    seen = message.seen,
+                                    onlineStatus = it.online,
+                                    idUserRec = message.idUserRec,
+                                    idUserSend = message.idUserSend
+                                )
+                            )
+                            Log.d("lastMessage", lastMessages[0].lastContent)
+                            messageEvents.value = lastMessages
+                        }
                     }
                 })
         }

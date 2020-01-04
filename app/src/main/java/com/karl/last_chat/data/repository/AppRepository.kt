@@ -66,5 +66,7 @@ interface AppRepository {
 
     suspend fun generateNotificationId(receiveId: String, notification: Notification): String
 
+    fun generateIdDiscuss(userId: String): String
+
     suspend fun logout()
 }

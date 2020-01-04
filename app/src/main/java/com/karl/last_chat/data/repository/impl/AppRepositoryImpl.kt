@@ -24,6 +24,10 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override fun generateIdDiscuss(userId: String): String =
+        firebaseDatabase.getReference(Constants.MESSAGE)
+            .child(userId).push().key!!
+
     override suspend fun logout() = firebaseAuth.signOut()
 
     override suspend fun generateNotificationId(
@@ -44,9 +48,11 @@ class AppRepositoryImpl(
 
     override suspend fun setIdDiscuss(userId: String, disscussId: String): Task<Void> {
         firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
+            .child(generateIdDiscuss(userId))
             .setValue(disscussId)
 
         return firebaseDatabase.getReference(Constants.MESSAGE).child(userId)
+            .child(generateIdDiscuss(disscussId))
             .setValue(disscussId)
     }
 
@@ -83,7 +89,7 @@ class AppRepositoryImpl(
         firebaseAuth.currentUser
 
     override suspend fun getUsers(): DatabaseReference =
-        firebaseDatabase.getReference("${Constants.USER}")
+        firebaseDatabase.getReference(Constants.USER)
 
     override suspend fun updateLocation(lat: Double, long: Double) {
         firebaseDatabase.getReference("${Constants.USER}/$userId")
