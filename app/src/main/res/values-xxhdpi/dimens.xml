@@ -7,4 +7,22 @@
     <dimen name="_14sp">14sp</dimen>
     <dimen name="_1px">1px</dimen>
     <dimen name="_52dp">52dp</dimen>
+    <dimen name="_24dp">24dp</dimen>
+    <dimen name="_32dp">32dp</dimen>
+    <dimen name="_512dp">512dp</dimen>
+    <dimen name="_144dp">144dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_352dp">352dp</dimen>
+    <dimen name="_74dp">74dp</dimen>
+    <dimen name="_244dp">244dp</dimen>
+    <dimen name="_36dp">36dp</dimen>
+    <dimen name="_120dp">120dp</dimen>
+    <dimen name="_4dp">4dp</dimen>
+    <dimen name="_12dp">12dp</dimen>
+    <dimen name="_48dp">48dp</dimen>
+    <dimen name="_20sp">20sp</dimen>
+    <dimen name="_56dp">56dp</dimen>
+    <dimen name="_2dp">2dp</dimen>
+    <dimen name="_1dp">1dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
 </resources>

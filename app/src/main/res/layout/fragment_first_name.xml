@@ -45,7 +45,7 @@
         android:id="@+id/buttonContinue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_button"
+        android:background="@drawable/bg_state_continue"
         android:paddingStart="@dimen/_64dp"
         android:paddingEnd="@dimen/_64dp"
         android:text="@string/_continue"

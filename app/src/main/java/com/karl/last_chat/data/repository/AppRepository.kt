@@ -74,4 +74,6 @@ interface AppRepository {
     suspend fun getChildStatusSeen(idDiscuss: String): Query
 
     suspend fun updateStatusSeen(idDiscuss: String, idChild: String, uid: String, seen: String)
+
+    suspend fun uploadBackground(uri: Uri): StorageTask<UploadTask.TaskSnapshot>
 }

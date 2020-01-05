@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.home.message
 
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -14,13 +15,14 @@ import kotlinx.coroutines.runBlocking
 
 class MessagesViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
     val messageEvents by lazy { SingleLiveEvent<ArrayList<LastMessage>>() }
+    val eventReload by lazy { SingleLiveEvent<Boolean>() }
     val lastMessages = arrayListOf<LastMessage>()
 
     fun getMessagesList() {
         runBlocking {
             // showLoading()
             appRepository.getMessages()
-                .addValueEventListener(object : ValueEventListener {
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         error.value = p0.toException()
                     }
@@ -93,15 +95,15 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
     }
 
     private fun handleList(lastMessage: LastMessage) {
-        if (lastMessages.isEmpty()) lastMessages.add(lastMessage)
-        else
-            for (i in 0 until lastMessages.size) {
-                if (lastMessages[i].idDiscuss == lastMessage.idDiscuss) {
-                    lastMessages[i] = lastMessage
-                    break
-                } else {
-                    lastMessages.add(lastMessage)
+        lastMessages.add(lastMessage)
+        for (i in 0 until lastMessages.size) {
+            if (lastMessages[i].idDiscuss == lastMessage.idDiscuss) {
+                lastMessages[i] = lastMessage
+                if (lastMessages.count { it == lastMessage } > 1) {
+                    lastMessages.removeAt(lastMessages.size - 1)
                 }
+                break
             }
+        }
     }
 }

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.karl.last_chat.R
 
-fun FragmentManager.addFragment(fragment: Fragment, container: Int) {
+fun FragmentManager.addFragment(fragment: Fragment, container: Int=  R.id.mainContainer) {
     beginTransaction().add(container, fragment, fragment.javaClass.simpleName)
         .addToBackStack(fragment.javaClass.simpleName)
         .setCustomAnimations(R.anim.left_to_right, R.anim.right_to_left)

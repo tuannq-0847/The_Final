@@ -26,10 +26,12 @@
     </FrameLayout>
 
     <ImageView
+        android:id="@+id/imageParent"
         android:layout_width="@dimen/_36dp"
         android:layout_height="@dimen/_36dp"
         android:layout_marginStart="@dimen/_16dp"
         android:layout_marginTop="@dimen/_16dp"
+        android:background="?attr/selectableItemBackground"
         android:src="@drawable/ic_mark" />
 
     <FrameLayout

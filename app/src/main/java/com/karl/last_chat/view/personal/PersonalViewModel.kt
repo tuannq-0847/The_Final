@@ -41,6 +41,19 @@ class PersonalViewModel(private val appRepository: AppRepository) : BaseViewMode
         }
     }
 
+    fun uploadBackground(uri: Uri) {
+        runBlocking {
+            showLoading()
+            appRepository.uploadBackground(uri)
+                .addOnSuccessListener {
+                    eventUploadAvatar.value = true
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
     fun getInforUser() {
         runBlocking {
             showLoading()

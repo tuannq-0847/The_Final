@@ -119,7 +119,7 @@ class AppRepositoryImpl(
         firebaseDatabase.getReference("${Constants.MESSAGE}/$userId")
 
     override suspend fun getInforUsers() =
-        firebaseDatabase.getReference("${Constants.USER}/$userId")
+        firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
 
     private val userId = firebaseAuth.currentUser?.uid
 
@@ -145,6 +145,22 @@ class AppRepositoryImpl(
         firebaseDatabase.getReference(Constants.USER)
             .child(userId!!)
             .child("pathAvatar")
+            .setValue(url)
+
+    override suspend fun uploadBackground(uri: Uri) =
+        storageRef.putFile(uri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener {
+                    runBlocking {
+                        insertImagePathBg(it.toString())
+                    }
+                }
+            }
+
+    fun insertImagePathBg(url: String) =
+        firebaseDatabase.getReference(Constants.USER)
+            .child(userId!!)
+            .child("pathBackground")
             .setValue(url)
 
     override suspend fun updateUserStatus(online: Int) {

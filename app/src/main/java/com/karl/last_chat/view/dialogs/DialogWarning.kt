@@ -4,10 +4,11 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import com.karl.last_chat.R
+import com.karl.last_chat.base.BaseDialog
 import kotlinx.android.synthetic.main.layout_warning_dialog.*
 
 class DialogWarning(context: Context, private val title: String, private val listener: () -> Unit) :
-    Dialog(context) {
+    BaseDialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

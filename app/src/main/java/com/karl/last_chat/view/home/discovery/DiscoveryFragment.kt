@@ -1,11 +1,9 @@
 package com.karl.last_chat.view.home.discovery
 
-import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DiffUtil
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.addFragment
@@ -41,8 +39,7 @@ class DiscoveryFragment : BaseFragment<DiscoveryViewModel>(), CardStackListener 
 
     private val discoveryAdapter = DiscoveryAdapter {
         activity?.supportFragmentManager?.addFragment(
-            ProfileFragment.newInstance(it.uid),
-            R.id.mainContainer
+            ProfileFragment.newInstance(it.uid)
         )
     }
 

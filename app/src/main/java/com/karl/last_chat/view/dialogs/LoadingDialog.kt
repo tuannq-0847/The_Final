@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import com.karl.last_chat.R
+import com.karl.last_chat.base.BaseDialog
 
 class LoadingDialog(context: Context) :
     Dialog(context) {

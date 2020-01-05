@@ -99,18 +99,27 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
     override fun onObserve() {
         viewModel.userData.observe(this, Observer {
             viewModel.hideLoading()
-            imageAvatar.loadWithGlide(it.pathAvatar)
-            imageAvatarSmall.loadWithGlide(it.pathAvatar)
-            imageBackground.loadWithGlide(it.pathBackground, R.drawable.bg_cover_1)
+            if (it.pathAvatar.isNotEmpty()) {
+                imageAvatar.loadWithGlide(it.pathAvatar)
+                imageAvatarSmall.loadWithGlide(it.pathAvatar)
+            }
+            if (it.pathBackground.isNotEmpty()) {
+                imageBackground.loadWithGlide(it.pathBackground, R.drawable.bg_cover_1)
+            }
             textNameSmall.text = it.userName
             textName.text = it.userName
             textBio.text = it.bio
             textGender.text = it.gender
+            textGender.setCompoundDrawablesWithIntrinsicBounds(
+                if (it.gender == "Female") R.drawable.ic_female else R.drawable.ic_male,
+                0,
+                0,
+                0
+            )
             textLocation.text = getLocationName(it.lat, it.long)
         })
         viewModel.isFriendEvent.observe(this, Observer {
             isFriend = it
-            Log.d("isFriend", it.toString())
             if (it) imageContact.setImageResource(R.drawable.ic_chat) else imageContact.setImageResource(
                 R.drawable.ic_add_black_24dp
             )

@@ -5,7 +5,6 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
@@ -13,10 +12,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
+import com.karl.last_chat.utils.DialogEnum
 import com.karl.last_chat.utils.extensions.*
 import com.karl.last_chat.view.auth.AuthFragment
 import com.karl.last_chat.view.dialogs.DialogAvatar
 import com.karl.last_chat.view.dialogs.DialogSetting
+import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -25,6 +26,10 @@ import kotlin.math.abs
 
 class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener,
     AppBarLayout.OnOffsetChangedListener {
+
+    private var signalImage = ""
+    private var pathImage = ""
+    private var pathBackground = ""
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
@@ -40,7 +45,22 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
 
     private val dialog by lazy {
         DialogAvatar(context!!) {
-            sharedViewModel.eventAvatar.value = it
+            listener(it)
+        }
+    }
+
+    private fun listener(dialogEnum: DialogEnum) {
+        if (dialogEnum != DialogEnum.STORED)
+            sharedViewModel.eventAvatar.value = dialogEnum
+        else {
+            dialog.dismiss()
+            activity?.supportFragmentManager?.addFragment(
+                DetailImageFragment.newInstance(
+                    url = if (signalImage == "Avatar") pathImage else pathBackground,
+                    signal = signalImage
+                ),
+                R.id.mainContainer
+            )
         }
     }
 
@@ -58,9 +78,13 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         when (v?.id) {
             R.id.imageAvatar -> {
                 dialog.show()
+                dialog.setTitle("Avatar")
+                signalImage = "Avatar"
             }
             R.id.imageBackground -> {
                 dialog.show()
+                dialog.setTitle("Background")
+                signalImage = "Background"
             }
             R.id.imageSetting -> {
                 dialogSetting.show()
@@ -73,7 +97,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         get() = R.layout.fragment_personal
 
     override fun onInitComponents(view: View) {
-        onClickViews(imageAvatar, imageSetting)
+        onClickViews(imageAvatar, imageSetting, imageBackground)
         sharedViewModel = activity?.run {
             ViewModelProviders.of(this)[SharedViewModel::class.java]
         } ?: throw Exception()
@@ -94,8 +118,16 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             val bitmap = BitmapFactory.decodeStream(inputStream)
             viewModel.hideLoading()
             inputStream?.let {
-                viewModel.uploadAvatar(uri)
-                imageAvatar.setImageBitmap(bitmap.rotate(bitmap, getOrientation(uri)))
+                if (signalImage == "Avatar") {
+                    imageAvatar.loadWithGlideBitmap(bitmap.rotate(bitmap, getOrientation(uri)))
+                    viewModel.uploadAvatar(uri)
+                } else {
+                    imageBackground.loadWithGlideBitmap(
+                        bitmap.rotate(bitmap, getOrientation(uri)),
+                        R.drawable.bg_cover_1
+                    )
+                    viewModel.uploadBackground(uri)
+                }
             }
         })
         viewModel.eventUploadAvatar.observe(this, Observer {
@@ -105,6 +137,8 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             viewModel.hideLoading()
             imageAvatar.loadWithGlide(it.pathAvatar)
             imageAvatarSmall.loadWithGlide(it.pathAvatar)
+            pathImage = it.pathAvatar
+            pathBackground = it.pathBackground
             imageBackground.loadWithGlide(it.pathBackground, R.drawable.bg_cover_1)
             textNameSmall.text = it.userName
             textName.text = it.userName
@@ -123,6 +157,11 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             }
         }
         return ""
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialog.dismiss()
     }
 
     private fun getOrientation(uri: Uri): Int {

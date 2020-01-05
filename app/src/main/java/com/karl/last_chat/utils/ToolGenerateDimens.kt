@@ -8,10 +8,28 @@ val a: String = "64dp\n" +
         "18sp\n" +
         "14sp\n" +
         "1px\n" +
-        "52dp\n";
+        "52dp\n" +
+        "24dp\n" +
+        "32dp\n" +
+        "512dp\n" +
+        "144dp\n" +
+        "8dp\n" +
+        "352dp\n" +
+        "74dp\n" +
+        "244dp\n" +
+        "36dp\n" +
+        "120dp\n" +
+        "4dp\n" +
+        "12dp\n" +
+        "48dp\n" +
+        "20sp\n" +
+        "56dp\n" +
+        "2dp\n" +
+        "1dp\n" +
+        "10dp\n"
 
 fun main() {
-    val rate = 1.8f
+    val rate = 0.8f
     var temp = ""
     var b: Float
     for (i in a.indices) {

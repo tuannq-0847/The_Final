@@ -96,8 +96,8 @@
 
                     <ImageView
                         android:id="@+id/imageSetting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/_24dp"
+                        android:layout_height="@dimen/_24dp"
                         android:layout_marginEnd="@dimen/_16dp"
                         android:src="@drawable/ic_setting"
                         app:layout_constraintBottom_toBottomOf="parent"

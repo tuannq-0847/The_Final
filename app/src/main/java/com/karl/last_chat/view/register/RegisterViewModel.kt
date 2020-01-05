@@ -14,9 +14,8 @@ import org.jsoup.Jsoup
 
 class RegisterViewModel(private val authRepository: AppRepository) : BaseViewModel(authRepository) {
 
-    val authResultEvent by lazy { SingleLiveEvent<Void>() }
+    val authResultEvent by lazy { SingleLiveEvent<Boolean>() }
 
-    val mainScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     fun validateEmailPassword(
         email: String,
         password: String,
@@ -39,7 +38,7 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
             showLoading()
             authRepository.createUser(email, password)
                 .addOnSuccessListener {
-                    insertUser(it.user!!)
+                    authResultEvent.value = true
                 }
                 .addOnFailureListener {
                     error.value = it
@@ -47,16 +46,4 @@ class RegisterViewModel(private val authRepository: AppRepository) : BaseViewMod
         }
     }
 
-    private fun insertUser(user: FirebaseUser) {
-        uiScope.launch {
-            authRepository.insertUser(
-                User(user.uid)
-            ).addOnSuccessListener {
-                authResultEvent.value = it
-                hideLoading()
-            }.addOnFailureListener {
-                error.value = it
-            }
-        }
-    }
 }

@@ -44,7 +44,8 @@ class MainActivity : BaseActivity() {
     private val permissions =
         arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.CAMERA
         )
 
     override val layoutRes: Int
@@ -73,7 +74,6 @@ class MainActivity : BaseActivity() {
                             .getFromLocation(lat, long, 1)
                         if (!addressList.isNullOrEmpty()) {
                             val address = addressList[0].getAddressLine(0)
-                            Log.d("dkm", address)
                         }
                     }
                 }
@@ -115,7 +115,11 @@ class MainActivity : BaseActivity() {
                 )
                 || ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                || ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.CAMERA
                 )
             ) {
                 // Show an explanation to the user *asynchronously* -- don't block
@@ -146,15 +150,18 @@ class MainActivity : BaseActivity() {
                 && ContextCompat.checkSelfPermission(
             this,
             permissions[1]
-        ) == PackageManager.PERMISSION_GRANTED)
+        ) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(
+            this, permissions[2]
+        ) == PackageManager.PERMISSION_GRANTED
+                )
     }
 
     override fun doObserve() {
         sharedViewModel.eventAvatar.observe(this, Observer {
-            if (it == DialogEnum.CAMERA) {
-                openCamera()
-            } else {
-                openGallery()
+            when (it) {
+                DialogEnum.CAMERA -> openCamera()
+                else -> openGallery()
             }
         })
     }

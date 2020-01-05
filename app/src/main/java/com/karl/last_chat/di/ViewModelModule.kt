@@ -10,6 +10,7 @@ import com.karl.last_chat.view.home.message.MessagesViewModel
 import com.karl.last_chat.view.login.LoginViewModel
 import com.karl.last_chat.view.personal.PersonalViewModel
 import com.karl.last_chat.view.profile.ProfileViewModel
+import com.karl.last_chat.view.profile.detail_image.DetailImageViewModel
 import com.karl.last_chat.view.register.RegisterViewModel
 import com.karl.last_chat.view.register_flow.birthday.BirthdayViewModel
 import com.karl.last_chat.view.register_flow.first_name.MyFirstNameViewModel
@@ -38,4 +39,5 @@ val viewModelModule = module {
     viewModel { BirthdayViewModel(get()) }
     viewModel { MyFirstNameViewModel(get()) }
     viewModel { GenderViewModel(get()) }
+    viewModel { DetailImageViewModel(get()) }
 }

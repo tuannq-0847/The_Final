@@ -62,8 +62,8 @@
 
     <ImageView
         android:id="@+id/imageStatusUser"
-        android:layout_width="@dimen/_16dp"
-        android:layout_height="@dimen/_16dp"
+        android:layout_width="@dimen/_10dp"
+        android:layout_height="@dimen/_10dp"
         android:layout_marginEnd="@dimen/_16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"

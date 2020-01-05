@@ -1,6 +1,5 @@
 package com.karl.last_chat.view.register_flow.welcome
 
-import android.util.Log
 import android.view.View
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
@@ -19,11 +18,12 @@ class ResWelcomeFragment : BaseFragment<ResWelcomeViewModel>() {
     override fun onInitComponents(view: View) {
         buttonGot.setOnClickListener {
             fragmentManager?.addFragment(
-                MyFirstNameFragment.newInstance(),
-                R.id.frameParentRegister
+                MyFirstNameFragment.newInstance()
             )
         }
-        (parentFragment as ParentResFragment).frameProgress.progress = 20
+        (parentFragment as ParentResFragment).run {
+            frameProgress.progress = 20
+        }
     }
 
     override fun onObserve() {
