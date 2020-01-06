@@ -7,11 +7,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -167,14 +169,17 @@ class MainActivity : BaseActivity() {
     private fun openGallery() {
         val i = Intent(
             Intent.ACTION_PICK,
-            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI
+            MediaStore.Images.Media.INTERNAL_CONTENT_URI
         )
         startActivityForResult(i, ACTIVITY_SELECT_IMAGE, null)
     }
 
     private fun openCamera() {
-        val intent = Intent("android.media.action.IMAGE_CAPTURE")
-        startActivity(intent, null)
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -183,6 +188,18 @@ class MainActivity : BaseActivity() {
             FLAG_OPEN_DIALOG_REQUEST -> {
                 if (resultCode == Activity.RESULT_CANCELED) {
                     finish()
+                }
+            }
+            REQUEST_IMAGE_CAPTURE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        val imageBitmap = data?.extras?.get("data") as Bitmap
+                        sharedViewModel.bitmapImage.value = imageBitmap
+
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
+                } else if (resultCode == Activity.RESULT_CANCELED) {
                 }
             }
             else -> {
@@ -275,5 +292,6 @@ class MainActivity : BaseActivity() {
         const val LOCATION_REFRESH_DISTANCE = 5000F
         const val ACTIVITY_SELECT_IMAGE = 1234
         const val FLAG_OPEN_DIALOG_REQUEST = 9999
+        const val REQUEST_IMAGE_CAPTURE = 1
     }
 }

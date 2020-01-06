@@ -35,6 +35,7 @@ class MessageAdapter(private val uid: String, listener: (item: LastMessage) -> U
                     )
                 )
             }
+            textNewFriend.visibility = if (item.type == "new") View.VISIBLE else View.GONE
             textLastMessage.text = item.lastContent
             imageStatusUser.setImageResource(if (item.onlineStatus == 1) R.drawable.ic_online else R.drawable.ic_offline)
             imageUserLastMessage.loadWithGlide(item.pathImage)

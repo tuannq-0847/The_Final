@@ -35,15 +35,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8dp"
-        android:layout_marginTop="@dimen/_16dp"
         android:background="@drawable/bg_new"
         android:padding="@dimen/_1dp"
         android:text="@string/new_friend"
         android:textColor="@color/color_white"
+        android:textSize="@dimen/_14sp"
         android:textStyle="bold"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/textUserRec"
         app:layout_constraintLeft_toRightOf="@+id/textUserRec"
-        app:layout_constraintTop_toTopOf="@+id/imageUserLastMessage"
+        app:layout_constraintTop_toTopOf="@id/textUserRec"
         app:layout_goneMarginTop="@dimen/_16dp" />
 
     <TextView

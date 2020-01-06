@@ -47,7 +47,6 @@ class App : Application() {
                 })
         }
         EmojiCompat.init(config)
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 
     companion object {

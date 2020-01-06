@@ -14,9 +14,9 @@ import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class MessagesViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
+class MessagesViewModel(private val appRepository: AppRepository, application: Application) :
+    BaseViewModel(appRepository, application) {
     val messageEvents by lazy { SingleLiveEvent<ArrayList<LastMessage>>() }
-    val eventReload by lazy { SingleLiveEvent<Boolean>() }
     val lastMessages = arrayListOf<LastMessage>()
 
     fun getMessagesList() {
@@ -29,8 +29,10 @@ class MessagesViewModel(private val appRepository: AppRepository,application: Ap
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        Log.d("data", dataSnapshot.value.toString())
                         if (!dataSnapshot.exists()) messageEvents.value = arrayListOf()
                         dataSnapshot.children.forEach {
+
                             val idDiscuss = it.getValue(String::class.java)
                             idDiscuss?.let { id ->
                                 getLastMessage(id)
@@ -44,6 +46,7 @@ class MessagesViewModel(private val appRepository: AppRepository,application: Ap
     fun getCurrentUId() = appRepository.getCurrentUser()!!.uid
 
     fun getLastMessage(idDiscuss: String) {
+        Log.d("idDis", idDiscuss)
         runBlocking {
             appRepository.getDisscussMessages(idDiscuss)
                 .orderByKey().limitToLast(1)
@@ -86,7 +89,8 @@ class MessagesViewModel(private val appRepository: AppRepository,application: Ap
                                     onlineStatus = it.online,
                                     idUserRec = message.idUserRec,
                                     idUserSend = message.idUserSend,
-                                    idDiscuss = idDiscuss
+                                    idDiscuss = idDiscuss,
+                                    type = message.type
                                 )
                             )
                             messageEvents.value = lastMessages

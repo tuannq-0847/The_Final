@@ -9,5 +9,6 @@ data class LastMessage(
     var seen: String = "",
     var idUserSend: String = "",
     var idUserRec: String = "",
-    var idDiscuss: String = ""
+    var idDiscuss: String = "",
+    var type: String
 )

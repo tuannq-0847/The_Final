@@ -119,6 +119,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
         onClickViews(imageBack, imageBackground, imageAvatar)
         view.visibilityStateViews(imageContact)
         uid?.let {
+            Log.d("uid", it)
             viewModel.getUser(it)
             viewModel.checkIsFriend(it)
         }

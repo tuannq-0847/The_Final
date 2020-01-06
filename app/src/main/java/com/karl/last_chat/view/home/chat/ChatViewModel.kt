@@ -1,22 +1,31 @@
 package com.karl.last_chat.view.home.chat
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
+import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.SingleLiveEvent
+import com.karl.last_chat.utils.extensions.generateName
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class ChatViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
+class ChatViewModel(private val appRepository: AppRepository, application: Application) :
+    BaseViewModel(appRepository, application) {
+
+    private val generateName = "".generateName()
 
     val isSend by lazy { SingleLiveEvent<Message>() }
     val idDiscuss by lazy { SingleLiveEvent<String>() }
+    val eventUploadImage by lazy { SingleLiveEvent<String>() }
     val messages = SingleLiveEvent<MutableList<Message>>()
     val a = mutableListOf<Message>()
     val userEvent by lazy { SingleLiveEvent<User>() }

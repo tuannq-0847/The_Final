@@ -6,7 +6,9 @@ import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.utils.extensions.visibilityStateViews
+import com.karl.last_chat.view.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_friend_request.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -31,12 +33,15 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
                 visibilityState = View.GONE
             )
             adapter.submitList(it)
+            adapter.notifyDataSetChanged()
         })
     }
 
     val listener = { item: User, isAccepted: Boolean ->
         if (isAccepted) {
             viewModel.acceptFriend(item.uid, UUID.randomUUID().toString())
+            if (parentFragment is HomeFragment) (parentFragment as HomeFragment).bottomNavigation.selectedItemId =
+                R.id.tabMessage
         } else {
             viewModel.rejectFriend(item.uid)
         }

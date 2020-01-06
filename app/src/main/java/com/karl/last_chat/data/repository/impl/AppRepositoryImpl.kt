@@ -11,8 +11,11 @@ import com.google.firebase.database.Query
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageTask
+import com.google.firebase.storage.UploadTask
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
+import com.karl.last_chat.data.model.Rquest
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.Constants
@@ -25,21 +28,39 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
-    override suspend fun removeFriendRequestFromSender(userId: String): Task<Void> =
-        firebaseDatabase.getReference(Constants.FRIEND)
+    override suspend fun putByteAvatar(bytes: ByteArray): StorageTask<UploadTask.TaskSnapshot> =
+        storageRef.putBytes(bytes)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener {
+                    runBlocking {
+                        insertImagePath(it.toString())
+                    }
+                }
+            }
+
+
+    override suspend fun putByteBackground(bytes: ByteArray): StorageTask<UploadTask.TaskSnapshot> =
+        storageRef.putBytes(bytes)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener {
+                    runBlocking {
+                        insertImagePathBg(it.toString())
+                    }
+                }
+            }
+
+    override suspend fun removeFriendRequestFromSender(userId: String): Task<Void> {
+        return firebaseDatabase.getReference(Constants.FRIEND)
             .child(userId)
             .child(getCurrentUser()!!.uid)
             .removeValue()
+    }
 
     override suspend fun removeFriendRequest(userId: String): Task<Void> =
         firebaseDatabase.getReference(Constants.FRIEND)
             .child(getCurrentUser()!!.uid)
             .child(userId)
             .removeValue()
-
-    override suspend fun generateFriendId(userId: String): String =
-        firebaseDatabase.getReference(Constants.FRIEND).child(userId)
-            .child(getCurrentUser()!!.uid).push().key!!
 
     override suspend fun checkFriendExist(userId: String): DatabaseReference =
         firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
@@ -106,13 +127,18 @@ class AppRepositoryImpl(
             .child(generateIdMessage(idDiscuss))
             .setValue(message)
 
-    override suspend fun sendFriendRequest(userId: String): Task<Void> =
+    override suspend fun sendFriendRequest(userId: String): Task<Void> {
         firebaseDatabase.getReference(Constants.FRIEND).child(userId)
-            .child(generateFriendId(userId))
-            .setValue(getCurrentUser()!!.uid)
+            .child(getCurrentUser()!!.uid)
+            .setValue(Rquest(getCurrentUser()!!.uid, 0))
+        return firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+            .child(userId)
+            .setValue(Rquest(userId, 1))
+    }
 
-    override suspend fun checkIsSendRequest(userId: String): DatabaseReference =
-        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid).child(userId)
+    override suspend fun checkIsSendRequest(userId: String): DatabaseReference {
+        return firebaseDatabase.getReference(Constants.FRIEND).child(userId)
+    }
 
     override suspend fun updateInstanceId(instanceId: String) =
         firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
@@ -164,6 +190,9 @@ class AppRepositoryImpl(
                     }
                 }
             }
+
+    override suspend fun uploadImage(uri: Uri) =
+        storageRef.putFile(uri)
 
     fun insertImagePath(url: String) =
         firebaseDatabase.getReference(Constants.USER)

@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.personal
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.net.Uri
@@ -21,6 +22,7 @@ import com.karl.last_chat.view.dialogs.DialogSetting
 import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.math.abs
 
@@ -125,6 +127,22 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
                     )
                     viewModel.uploadBackground(uri)
                 }
+            }
+        })
+        sharedViewModel.bitmapImage.observe(this, Observer {
+            viewModel.hideLoading()
+            val baos = ByteArrayOutputStream()
+            it.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            if (signalImage == Constants.AVATAR) {
+                imageAvatar.loadWithGlideBitmap(it)
+                viewModel.putByteAvatar(data)
+            } else {
+                imageBackground.loadWithGlideBitmap(
+                    it,
+                    R.drawable.bg_cover_1
+                )
+                viewModel.putByteBackground(data)
             }
         })
         viewModel.eventUploadAvatar.observe(this, Observer {

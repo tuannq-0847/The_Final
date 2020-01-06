@@ -11,7 +11,8 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.runBlocking
 
-class PersonalViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
+class PersonalViewModel(private val appRepository: AppRepository, application: Application) :
+    BaseViewModel(appRepository, application) {
 
     val eventUploadAvatar by lazy { SingleLiveEvent<Boolean>() }
 
@@ -41,6 +42,33 @@ class PersonalViewModel(private val appRepository: AppRepository,application: Ap
                 }
         }
     }
+
+    fun putByteAvatar(byteArray: ByteArray) {
+        runBlocking {
+            showLoading()
+            appRepository.putByteAvatar(byteArray)
+                .addOnSuccessListener {
+                    eventUploadAvatar.value = true
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
+    fun putByteBackground(byteArray: ByteArray) {
+        runBlocking {
+            showLoading()
+            appRepository.putByteBackground(byteArray)
+                .addOnSuccessListener {
+                    eventUploadAvatar.value = true
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
 
     fun uploadBackground(uri: Uri) {
         runBlocking {

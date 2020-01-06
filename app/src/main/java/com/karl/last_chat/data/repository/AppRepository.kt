@@ -81,9 +81,14 @@ interface AppRepository {
 
     suspend fun checkFriendExist(userId: String): DatabaseReference
 
-    suspend fun generateFriendId(userId: String): String
-
     suspend fun removeFriendRequest(userId: String): Task<Void>
 
     suspend fun removeFriendRequestFromSender(userId: String): Task<Void>
+
+    suspend fun putByteAvatar(bytes: ByteArray): StorageTask<UploadTask.TaskSnapshot>
+
+
+    suspend fun putByteBackground(bytes: ByteArray): StorageTask<UploadTask.TaskSnapshot>
+
+    suspend fun uploadImage(uri: Uri): UploadTask
 }
