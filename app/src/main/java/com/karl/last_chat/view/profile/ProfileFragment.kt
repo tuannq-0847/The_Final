@@ -9,6 +9,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.Constants
+import com.karl.last_chat.utils.FriendRequestEnum
 import com.karl.last_chat.utils.extensions.*
 import com.karl.last_chat.view.home.chat.ChatFragment
 import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
@@ -48,24 +49,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
         }
     }
 
-    private var isFriend = false
-
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.imageBack -> {
                 activity?.onBackPressed()
-            }
-            R.id.imageContact -> {
-                if (!isFriend) {
-                    uid?.let {
-                        viewModel.addFriend(it)
-                    }
-                } else {
-                    fragmentManager?.addFragment(
-                        ChatFragment.newInstance(uid!!),
-                        R.id.mainContainer
-                    )
-                }
             }
             R.id.imageBackground -> {
                 activity?.supportFragmentManager?.addFragment(
@@ -88,18 +75,52 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
         }
     }
 
+    private fun checkFriendStatus(friend: FriendRequestEnum, uid: String?) {
+        Log.d("checkFriendStatus", friend.name)
+        when (friend) {
+            FriendRequestEnum.REJECTED -> {
+                imageContact.run {
+                    setImageResource(R.drawable.ic_add_black_24dp)
+                    setOnClickListener {
+                        viewModel.addFriend(uid!!)
+                    }
+                }
+            }
+            FriendRequestEnum.WAITING -> {
+                imageContact.run {
+                    setImageResource(R.drawable.ic_cancel)
+                    setOnClickListener {
+                        uid?.let {
+                            viewModel.removeRequest(uid)
+                        }
+                    }
+                }
+            }
+            FriendRequestEnum.ACCEPTED -> {
+                imageContact.run {
+                    setImageResource(R.drawable.ic_chat)
+                    setOnClickListener {
+                        fragmentManager?.addFragment(
+                            ChatFragment.newInstance(uid!!),
+                            R.id.mainContainer
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     override val viewModel: ProfileViewModel by viewModel()
     override val layoutRes: Int = R.layout.fragment_personal
 
     private val uid by lazy { arguments?.getString(UID) }
 
     override fun onInitComponents(view: View) {
-        onClickViews(imageBack, imageContact, imageBackground, imageAvatar)
+        onClickViews(imageBack, imageBackground, imageAvatar)
         view.visibilityStateViews(imageContact)
         uid?.let {
             viewModel.getUser(it)
             viewModel.checkIsFriend(it)
-            viewModel.checkIsSend(it)
         }
         nestedScrollPersonal.setOnScrollChangeListener(this)
         appBarPersonal.addOnOffsetChangedListener(this)
@@ -143,14 +164,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
             textLocation.text = getLocationName(it.lat, it.long)
         })
         viewModel.isFriendEvent.observe(this, Observer {
-            isFriend = it
-            if (it) imageContact.setImageResource(R.drawable.ic_chat) else imageContact.setImageResource(
-                R.drawable.ic_add_black_24dp
-            )
-        })
-        viewModel.isSendRequest.observe(this, Observer {
-            if (it) {
-                imageContact.setImageResource(R.drawable.ic_cancel)
+            uid?.let { uid ->
+                checkFriendStatus(it, uid)
             }
         })
     }

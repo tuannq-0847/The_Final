@@ -1,19 +1,20 @@
 package com.karl.last_chat.view.profile
 
-import android.util.Log
+import android.app.Application
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
+import com.karl.last_chat.utils.FriendRequestEnum
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class ProfileViewModel(private val appRepository: AppRepository, application: Application) :
+    BaseViewModel(appRepository, application) {
     val userData by lazy { SingleLiveEvent<User>() }
-    val isFriendEvent by lazy { SingleLiveEvent<Boolean>() }
-    val isSendRequest by lazy { SingleLiveEvent<Boolean>() }
+    val isFriendEvent by lazy { SingleLiveEvent<FriendRequestEnum>() }
 
     fun getUser(userId: String) {
         uiScope.launch {
@@ -40,12 +41,12 @@ class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel
                     override fun onDataChange(data: DataSnapshot) {
                         when {
                             !data.exists() -> {
-                                isFriendEvent.value = false
+                                checkIsSendFriendRequest(userId)
                             }
                             else -> {
                                 data.children.forEach {
                                     if (it.getValue(String::class.java) == userId) {
-                                        isFriendEvent.value = true
+                                        isFriendEvent.value = FriendRequestEnum.ACCEPTED
                                     }
                                 }
                             }
@@ -55,9 +56,9 @@ class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel
         }
     }
 
-    fun checkIsSend(userId: String) {
+    fun checkIsSendFriendRequest(userId: String) {
         uiScope.launch {
-            appRepository.checkIsFriend(userId)
+            appRepository.checkIsSendRequest(userId)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         error.value = p0.toException()
@@ -66,12 +67,12 @@ class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel
                     override fun onDataChange(data: DataSnapshot) {
                         when {
                             !data.exists() -> {
-                                isSendRequest.value = false
+                                isFriendEvent.value = FriendRequestEnum.REJECTED
                             }
                             else -> {
                                 data.children.forEach {
                                     if (it.getValue(String::class.java) == userId) {
-                                        isSendRequest.value = true
+                                        isFriendEvent.value = FriendRequestEnum.WAITING
                                     }
                                 }
                             }
@@ -82,14 +83,22 @@ class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel
     }
 
     fun removeRequest(userId: String) {
-
+        uiScope.launch {
+            appRepository.removeFriendRequestFromSender(userId)
+                .addOnSuccessListener {
+                    isFriendEvent.value = FriendRequestEnum.REJECTED
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
     }
 
     fun addFriend(userId: String) {
         uiScope.launch {
             appRepository.sendFriendRequest(userId)
                 .addOnSuccessListener {
-                    isSendRequest.value = true
+                    isFriendEvent.value = FriendRequestEnum.WAITING
                 }
                 .addOnFailureListener {
                     error.value = it

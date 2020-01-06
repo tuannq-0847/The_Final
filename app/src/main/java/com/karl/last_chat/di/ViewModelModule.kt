@@ -22,22 +22,22 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { RegisterViewModel(get()) }
-    viewModel { AuthViewModel(get()) }
-    viewModel { LoginViewModel(get()) }
-    viewModel { HomeViewModel(get()) }
-    viewModel { ChatViewModel(get()) }
-    viewModel { PersonalViewModel(get()) }
-    viewModel { SplashViewModel(get()) }
-    viewModel { MessagesViewModel(get()) }
-    viewModel { GroupViewModel(get()) }
-    viewModel { DiscoveryViewModel(get()) }
-    viewModel { MainViewModel(get()) }
-    viewModel { ProfileViewModel(get()) }
-    viewModel { ParentResViewModel(get()) }
-    viewModel { ResWelcomeViewModel(get()) }
-    viewModel { BirthdayViewModel(get()) }
-    viewModel { MyFirstNameViewModel(get()) }
-    viewModel { GenderViewModel(get()) }
-    viewModel { DetailImageViewModel(get()) }
+    viewModel { RegisterViewModel(get(), get()) }
+    viewModel { AuthViewModel(get(), get()) }
+    viewModel { LoginViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get()) }
+    viewModel { ChatViewModel(get(), get()) }
+    viewModel { PersonalViewModel(get(), get()) }
+    viewModel { SplashViewModel(get(), get())}
+    viewModel { MessagesViewModel(get(), get()) }
+    viewModel { GroupViewModel(get(), get()) }
+    viewModel { DiscoveryViewModel(get(), get()) }
+    viewModel { MainViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { ParentResViewModel(get(), get()) }
+    viewModel { ResWelcomeViewModel(get(), get()) }
+    viewModel { BirthdayViewModel(get(), get()) }
+    viewModel { MyFirstNameViewModel(get(), get()) }
+    viewModel { GenderViewModel(get(), get()) }
+    viewModel { DetailImageViewModel(get(), get()) }
 }

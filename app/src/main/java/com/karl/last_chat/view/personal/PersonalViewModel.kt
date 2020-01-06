@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.personal
 
+import android.app.Application
 import android.net.Uri
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -10,7 +11,7 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.runBlocking
 
-class PersonalViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class PersonalViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
 
     val eventUploadAvatar by lazy { SingleLiveEvent<Boolean>() }
 

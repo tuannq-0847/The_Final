@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.home.message
 
+import android.app.Application
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -13,7 +14,7 @@ import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class MessagesViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class MessagesViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
     val messageEvents by lazy { SingleLiveEvent<ArrayList<LastMessage>>() }
     val eventReload by lazy { SingleLiveEvent<Boolean>() }
     val lastMessages = arrayListOf<LastMessage>()

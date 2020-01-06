@@ -49,7 +49,7 @@ interface AppRepository {
 
     suspend fun updateInstanceId(instanceId: String): Task<Void>
 
-    suspend fun checkIsFriend(userId: String): DatabaseReference
+    suspend fun checkIsSendRequest(userId: String): DatabaseReference
 
     suspend fun sendFriendRequest(userId: String): Task<Void>
 
@@ -82,4 +82,8 @@ interface AppRepository {
     suspend fun checkFriendExist(userId: String): DatabaseReference
 
     suspend fun generateFriendId(userId: String): String
+
+    suspend fun removeFriendRequest(userId: String): Task<Void>
+
+    suspend fun removeFriendRequestFromSender(userId: String): Task<Void>
 }

@@ -1,18 +1,16 @@
 package com.karl.last_chat.view.register
 
-import android.util.Log
-import com.google.firebase.auth.FirebaseUser
+import android.app.Application
 import com.karl.last_chat.base.BaseViewModel
-import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import com.karl.last_chat.utils.extensions.validEmail
 import com.karl.last_chat.utils.extensions.validPassword
 import com.karl.last_chat.utils.validate.ValidateEnum
-import kotlinx.coroutines.*
-import org.jsoup.Jsoup
+import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val authRepository: AppRepository) : BaseViewModel(authRepository) {
+class RegisterViewModel(private val authRepository: AppRepository, application: Application) :
+    BaseViewModel(authRepository, application) {
 
     val authResultEvent by lazy { SingleLiveEvent<Boolean>() }
 

@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.home.chat
 
+import android.app.Application
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,7 +13,7 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class ChatViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class ChatViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
 
     val isSend by lazy { SingleLiveEvent<Message>() }
     val idDiscuss by lazy { SingleLiveEvent<String>() }

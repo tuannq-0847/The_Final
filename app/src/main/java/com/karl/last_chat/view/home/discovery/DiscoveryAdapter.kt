@@ -25,6 +25,9 @@ class DiscoveryAdapter(onClickItem: (item: User) -> Unit) :
 
     override fun onBind(itemView: View, item: User, position: Int) {
         itemView.imageUser.loadWithGlide(item.pathAvatar)
-        itemView.textNameUser.text = ("${item.userName}, ${item.birthday!!.getCurrentAge()}")
+        if (item.birthday != null)
+            itemView.textNameUser.text = ("${item.userName}, ${item.birthday!!.getCurrentAge()}")
+        else
+            itemView.textNameUser.text = ("${item.userName}")
     }
 }

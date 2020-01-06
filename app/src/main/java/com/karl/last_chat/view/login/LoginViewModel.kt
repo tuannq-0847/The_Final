@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.login
 
+import android.app.Application
 import com.google.firebase.auth.AuthResult
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.repository.AppRepository
@@ -10,7 +11,7 @@ import com.karl.last_chat.utils.validate.ValidateEnum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class LoginViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class LoginViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
 
     val authResultEvent by lazy { SingleLiveEvent<AuthResult>() }
     fun validateLogin(

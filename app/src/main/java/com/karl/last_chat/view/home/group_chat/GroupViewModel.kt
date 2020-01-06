@@ -1,18 +1,24 @@
 package com.karl.last_chat.view.home.group_chat
 
-import android.util.Log
+import android.app.Application
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseViewModel
+import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
+import com.karl.last_chat.utils.FriendRequestEnum
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class GroupViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class GroupViewModel(private val appRepository: AppRepository, private val app: Application) :
+    BaseViewModel(appRepository, app) {
     val friends by lazy { SingleLiveEvent<MutableList<User>>() }
     val friendsData = mutableListOf<User>()
+    val friendRequestEvent by lazy { SingleLiveEvent<FriendRequestEnum>() }
 
     fun getFriendRequest() {
         uiScope.launch {
@@ -50,11 +56,45 @@ class GroupViewModel(private val appRepository: AppRepository) : BaseViewModel(a
         }
     }
 
-    fun acceptFriend(userId: String) {
+    fun setDiscussId(userId: String, discussId: String): String {
+        uiScope.launch {
+            appRepository.setIdDiscuss(userId, discussId)
+        }
+        return discussId
+    }
 
+    fun acceptFriend(userId: String, discussId: String) {
+        uiScope.launch {
+            appRepository.removeFriendRequest(userId)
+                .addOnSuccessListener {
+                    friendRequestEvent.value = FriendRequestEnum.ACCEPTED
+                    runBlocking {
+                        appRepository.sendMessage(
+                            setDiscussId(userId, discussId),
+                            Message(
+                                content = app.applicationContext.getString(R.string.notice_connect),
+                                idUserSend = appRepository.getCurrentUser()!!.uid,
+                                idUserRec = userId,
+                                seen = appRepository.getCurrentUser()!!.uid
+                            )
+                        )
+                    }
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
     }
 
     fun rejectFriend(userId: String) {
-
+        uiScope.launch {
+            appRepository.removeFriendRequest(userId)
+                .addOnSuccessListener {
+                    friendRequestEvent.value = FriendRequestEnum.REJECTED
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
     }
 }

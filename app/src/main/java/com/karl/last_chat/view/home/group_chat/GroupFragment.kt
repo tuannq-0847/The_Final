@@ -8,6 +8,7 @@ import com.karl.last_chat.data.model.User
 import com.karl.last_chat.utils.extensions.visibilityStateViews
 import kotlinx.android.synthetic.main.fragment_friend_request.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class GroupFragment : BaseFragment<GroupViewModel>() {
     override val viewModel: GroupViewModel by viewModel()
@@ -34,7 +35,11 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
     }
 
     val listener = { item: User, isAccepted: Boolean ->
-
+        if (isAccepted) {
+            viewModel.acceptFriend(item.uid, UUID.randomUUID().toString())
+        } else {
+            viewModel.rejectFriend(item.uid)
+        }
     }
 
     companion

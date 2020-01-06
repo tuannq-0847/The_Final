@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.home.discovery
 
+import android.app.Application
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -9,7 +10,7 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class DiscoveryViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class DiscoveryViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
     val userAroundHere by lazy { SingleLiveEvent<MutableList<User>>() }
 
     fun getUsers() {

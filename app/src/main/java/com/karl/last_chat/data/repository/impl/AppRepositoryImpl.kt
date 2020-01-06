@@ -1,7 +1,6 @@
 package com.karl.last_chat.data.repository.impl
 
 import android.net.Uri
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -26,9 +25,21 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun removeFriendRequestFromSender(userId: String): Task<Void> =
+        firebaseDatabase.getReference(Constants.FRIEND)
+            .child(userId)
+            .child(getCurrentUser()!!.uid)
+            .removeValue()
+
+    override suspend fun removeFriendRequest(userId: String): Task<Void> =
+        firebaseDatabase.getReference(Constants.FRIEND)
+            .child(getCurrentUser()!!.uid)
+            .child(userId)
+            .removeValue()
+
     override suspend fun generateFriendId(userId: String): String =
-        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
-            .child(userId).push().key!!
+        firebaseDatabase.getReference(Constants.FRIEND).child(userId)
+            .child(getCurrentUser()!!.uid).push().key!!
 
     override suspend fun checkFriendExist(userId: String): DatabaseReference =
         firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
@@ -43,7 +54,6 @@ class AppRepositoryImpl(
         uid: String,
         seen: String
     ) {
-        Log.d("updateS", seen)
         firebaseDatabase.getReference(Constants.MESSAGES).child(idDiscuss).child(idChild)
             .child("seen").setValue(if (seen.isEmpty()) uid else "both")
     }
@@ -97,12 +107,12 @@ class AppRepositoryImpl(
             .setValue(message)
 
     override suspend fun sendFriendRequest(userId: String): Task<Void> =
-        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+        firebaseDatabase.getReference(Constants.FRIEND).child(userId)
             .child(generateFriendId(userId))
-            .setValue(userId)
+            .setValue(getCurrentUser()!!.uid)
 
-    override suspend fun checkIsFriend(userId: String): DatabaseReference =
-        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+    override suspend fun checkIsSendRequest(userId: String): DatabaseReference =
+        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid).child(userId)
 
     override suspend fun updateInstanceId(instanceId: String) =
         firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
@@ -121,10 +131,12 @@ class AppRepositoryImpl(
         firebaseDatabase.getReference(Constants.USER)
 
     override suspend fun updateLocation(lat: Double, long: Double) {
-        firebaseDatabase.getReference("${Constants.USER}/$userId")
-            .child("lat").setValue(lat)
-        firebaseDatabase.getReference("${Constants.USER}/$userId")
-            .child("long").setValue(long)
+        userId?.let {
+            firebaseDatabase.getReference("${Constants.USER}/$it")
+                .child("lat").setValue(lat)
+            firebaseDatabase.getReference("${Constants.USER}/$it")
+                .child("long").setValue(long)
+        }
     }
 
     override suspend fun getMessages(): DatabaseReference =

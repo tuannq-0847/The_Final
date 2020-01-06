@@ -1,12 +1,13 @@
 package com.karl.last_chat.view.register_flow.gender
 
+import android.app.Application
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class GenderViewModel(private val appRepository: AppRepository) : BaseViewModel(appRepository) {
+class GenderViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application){
 
     val completeEvent by lazy { SingleLiveEvent<Boolean>() }
 

@@ -91,14 +91,12 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         }
         if (dId.isEmpty()) {
             viewModel.getDisscussId(viewModel.getCurrentUser()!!.uid, uid!!)
-            Log.d("isEmpty", "in...${viewModel.getCurrentUser()!!.uid}....$uid")
         } else handleMessage(dId)
         viewModel.getInforUser(uid!!)
     }
 
     override fun onObserve() {
         viewModel.idDiscuss.observe(this, Observer {
-            Log.d("idDiscuss", it)
             if (it != "") {
                 dId = it
                 handleMessage(dId)

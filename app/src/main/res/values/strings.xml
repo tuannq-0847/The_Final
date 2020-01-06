@@ -39,4 +39,5 @@
     <string name="cancel_request">cancel</string>
     <string name="friend_request">Friend Request</string>
     <string name="empty_request">No new requests</string>
+    <string name="notice_connect">You are now connected on EzChat</string>
 </resources>

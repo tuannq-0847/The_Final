@@ -1,11 +1,13 @@
 package com.karl.last_chat.base
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.SingleLiveEvent
 import kotlinx.coroutines.*
 
-abstract class BaseViewModel(private val appRepository: AppRepository?) : ViewModel() {
+abstract class BaseViewModel(private val appRepository: AppRepository?, application: Application) :
+    AndroidViewModel(application) {
 
 
     open val viewModelJob = SupervisorJob()
