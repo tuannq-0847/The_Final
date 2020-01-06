@@ -18,7 +18,7 @@ class ResWelcomeFragment : BaseFragment<ResWelcomeViewModel>() {
     override fun onInitComponents(view: View) {
         buttonGot.setOnClickListener {
             fragmentManager?.addFragment(
-                MyFirstNameFragment.newInstance()
+                MyFirstNameFragment.newInstance(), R.id.frameParentRegister
             )
         }
         (parentFragment as ParentResFragment).run {

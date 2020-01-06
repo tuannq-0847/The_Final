@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.profile
 
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -30,6 +31,32 @@ class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel
 
     fun checkIsFriend(userId: String) {
         uiScope.launch {
+            appRepository.checkFriendExist(userId)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        error.value = p0.toException()
+                    }
+
+                    override fun onDataChange(data: DataSnapshot) {
+                        when {
+                            !data.exists() -> {
+                                isFriendEvent.value = false
+                            }
+                            else -> {
+                                data.children.forEach {
+                                    if (it.getValue(String::class.java) == userId) {
+                                        isFriendEvent.value = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+        }
+    }
+
+    fun checkIsSend(userId: String) {
+        uiScope.launch {
             appRepository.checkIsFriend(userId)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
@@ -38,16 +65,24 @@ class ProfileViewModel(private val appRepository: AppRepository) : BaseViewModel
 
                     override fun onDataChange(data: DataSnapshot) {
                         when {
-                            data.key.isNullOrEmpty() -> {
-                                isFriendEvent.value = false
+                            !data.exists() -> {
+                                isSendRequest.value = false
                             }
                             else -> {
-                                isFriendEvent.value = true
+                                data.children.forEach {
+                                    if (it.getValue(String::class.java) == userId) {
+                                        isSendRequest.value = true
+                                    }
+                                }
                             }
                         }
                     }
                 })
         }
+    }
+
+    fun removeRequest(userId: String) {
+
     }
 
     fun addFriend(userId: String) {

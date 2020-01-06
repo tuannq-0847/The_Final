@@ -35,4 +35,8 @@
     <string name="woman">Woman</string>
     <string name="man">Man</string>
     <string name="new_friend">NEW</string>
+    <string name="accept_request">accept</string>
+    <string name="cancel_request">cancel</string>
+    <string name="friend_request">Friend Request</string>
+    <string name="empty_request">No new requests</string>
 </resources>

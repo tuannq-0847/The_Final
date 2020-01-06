@@ -21,6 +21,7 @@
         app:itemBackground="@android:color/white"
         app:itemIconTint="@drawable/background_btm_navigation"
         app:itemTextColor="@drawable/background_btm_navigation"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

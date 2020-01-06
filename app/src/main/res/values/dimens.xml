@@ -25,4 +25,8 @@
     <dimen name="_2dp">2dp</dimen>
     <dimen name="_1dp">1dp</dimen>
     <dimen name="_10dp">10dp</dimen>
+    <dimen name="_134dp">134dp</dimen>
+    <dimen name="_3dp">3dp</dimen>
+    <dimen name="_16sp">16sp</dimen>
+    <dimen name="_254dp">254dp</dimen>
 </resources>

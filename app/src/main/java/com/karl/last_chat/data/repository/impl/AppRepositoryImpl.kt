@@ -26,6 +26,17 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun generateFriendId(userId: String): String =
+        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+            .child(userId).push().key!!
+
+    override suspend fun checkFriendExist(userId: String): DatabaseReference =
+        firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
+
+    override suspend fun getFriendRequest(): DatabaseReference =
+        firebaseDatabase.getReference(Constants.FRIEND)
+            .child(getCurrentUser()!!.uid)
+
     override suspend fun updateStatusSeen(
         idDiscuss: String,
         idChild: String,
@@ -87,10 +98,11 @@ class AppRepositoryImpl(
 
     override suspend fun sendFriendRequest(userId: String): Task<Void> =
         firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+            .child(generateFriendId(userId))
             .setValue(userId)
 
     override suspend fun checkIsFriend(userId: String): DatabaseReference =
-        firebaseDatabase.getReference(Constants.FRIEND).child(userId)
+        firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
 
     override suspend fun updateInstanceId(instanceId: String) =
         firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
@@ -163,9 +175,11 @@ class AppRepositoryImpl(
             .child("pathBackground")
             .setValue(url)
 
-    override suspend fun updateUserStatus(online: Int) {
-
-    }
+    override suspend fun updateUserStatus(online: Int) =
+        firebaseDatabase.getReference(Constants.USER)
+            .child(getCurrentUser()!!.uid)
+            .child("online")
+            .setValue(online)
 
     override suspend fun isLoggedIn(): Boolean {
         return !firebaseAuth.uid.isNullOrEmpty()

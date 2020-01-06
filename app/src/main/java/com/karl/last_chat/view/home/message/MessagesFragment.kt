@@ -66,10 +66,6 @@ class MessagesFragment : BaseFragment<MessagesViewModel>(), View.OnClickListener
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     companion object {
 
         fun newInstance() = newInstance<MessagesFragment>()

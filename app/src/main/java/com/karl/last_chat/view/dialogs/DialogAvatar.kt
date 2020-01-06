@@ -30,6 +30,7 @@ class DialogAvatar(context: Context, private val listener: (dialogEnum: DialogEn
 
     fun setTitle(title: String) {
         textTitle.text = title
+        imageSee.text = "See $title"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

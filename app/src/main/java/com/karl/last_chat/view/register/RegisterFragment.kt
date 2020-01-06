@@ -11,7 +11,6 @@ import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.utils.extensions.showDialogOk
 import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.utils.validate.ValidateEnum
-import com.karl.last_chat.view.home.HomeFragment
 import com.karl.last_chat.view.register_flow.parent_res.ParentResFragment
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,12 +20,14 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(), View.OnClickListener
         viewModel.authResultEvent.observe(this, Observer {
             context?.showDialogOk(getString(R.string.res_successfully)) {
                 // viewModel.getAllIcon()
+                viewModel.hideLoading()
                 fragmentManager?.replaceFragment(
                     ParentResFragment.newInstance(),
                     R.id.mainContainer
                 )
                 writeSharePreferences(false)
                 viewModel.updateFirebaseIntanceId()
+                viewModel.updateStatusOnline(1)
             }
         })
     }

@@ -66,14 +66,11 @@ class MainActivity : BaseActivity() {
             1F,
             object : LocationListener {
                 override fun onLocationChanged(location: Location?) {
-                    val lat = location?.latitude
-                    val long = location?.longitude
-                    if (lat != null && long != null) {
-                        viewModel.updateLocation(lat, long)
-                        val addressList = Geocoder(this@MainActivity, Locale.getDefault())
-                            .getFromLocation(lat, long, 1)
-                        if (!addressList.isNullOrEmpty()) {
-                            val address = addressList[0].getAddressLine(0)
+                    runOnUiThread {
+                        val lat = location?.latitude
+                        val long = location?.longitude
+                        if (lat != null && long != null) {
+                            viewModel.updateLocation(lat, long)
                         }
                     }
                 }

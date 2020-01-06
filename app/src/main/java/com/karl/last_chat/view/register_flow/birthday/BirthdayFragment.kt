@@ -31,7 +31,8 @@ class BirthdayFragment : BaseFragment<BirthdayViewModel>() {
                         userName = user!!.userName,
                         birthday = getDate().time
                     )
-                )
+                ),
+                R.id.frameParentRegister
             )
         }
     }

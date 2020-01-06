@@ -9,6 +9,7 @@ abstract class BaseViewModel(private val appRepository: AppRepository?) : ViewMo
 
 
     open val viewModelJob = SupervisorJob()
+    open val eventStatus by lazy { SingleLiveEvent<Boolean>() }
     open val error by lazy { SingleLiveEvent<Throwable>() }
     open val loading by lazy { SingleLiveEvent<Boolean>() }
 
@@ -24,6 +25,15 @@ abstract class BaseViewModel(private val appRepository: AppRepository?) : ViewMo
         uiScope.launch {
             sortList()
             //modify ui
+        }
+    }
+
+
+    fun updateStatusOnline(isOnline: Int) {
+        uiScope.launch {
+            appRepository?.updateUserStatus(isOnline)?.addOnCompleteListener {
+                eventStatus.value = true
+            }
         }
     }
 

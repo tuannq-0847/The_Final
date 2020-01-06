@@ -28,6 +28,7 @@ class MessagesViewModel(private val appRepository: AppRepository) : BaseViewMode
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (!dataSnapshot.exists()) messageEvents.value = arrayListOf()
                         dataSnapshot.children.forEach {
                             val idDiscuss = it.getValue(String::class.java)
                             idDiscuss?.let { id ->

@@ -26,6 +26,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
             viewModel.hideLoading()
             fragmentManager?.replaceFragment(HomeFragment.newInstance(), R.id.mainContainer)
             viewModel.updateFirebaseIntanceId()
+            viewModel.updateStatusOnline(1)
         })
     }
 

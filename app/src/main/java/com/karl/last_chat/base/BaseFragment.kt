@@ -1,6 +1,7 @@
 package com.karl.last_chat.base
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -67,6 +68,11 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
         context?.showDialogWarning(throwable.message!!)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.updateStatusOnline(0)
+    }
+
 
     fun setUpUI(view: View) {
         if (view !is EditText) {
@@ -94,6 +100,12 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.hideLoading()
+        hideKeyBoard()
+    }
+
+    private fun hideKeyBoard() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onBackPressed() {

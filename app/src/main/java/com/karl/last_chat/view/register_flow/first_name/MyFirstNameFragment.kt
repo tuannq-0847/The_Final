@@ -31,7 +31,8 @@ class MyFirstNameFragment : BaseFragment<MyFirstNameViewModel>() {
         buttonContinue.isEnabled = false
         buttonContinue.setOnClickListener {
             fragmentManager?.addFragment(
-                BirthdayFragment.newInstance(User(userName = editName.text.toString()))
+                BirthdayFragment.newInstance(User(userName = editName.text.toString())),
+                R.id.frameParentRegister
             )
         }
     }

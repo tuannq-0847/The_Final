@@ -31,7 +31,7 @@ interface AppRepository {
 
     suspend fun uploadAvatar(uri: Uri): StorageTask<UploadTask.TaskSnapshot>
 
-    suspend fun updateUserStatus(online: Int)
+    suspend fun updateUserStatus(online: Int): Task<Void>
 
     suspend fun getInforUsers(): DatabaseReference
 
@@ -76,4 +76,10 @@ interface AppRepository {
     suspend fun updateStatusSeen(idDiscuss: String, idChild: String, uid: String, seen: String)
 
     suspend fun uploadBackground(uri: Uri): StorageTask<UploadTask.TaskSnapshot>
+
+    suspend fun getFriendRequest(): DatabaseReference
+
+    suspend fun checkFriendExist(userId: String): DatabaseReference
+
+    suspend fun generateFriendId(userId: String): String
 }

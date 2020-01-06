@@ -8,11 +8,10 @@ import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
-import com.karl.last_chat.utils.extensions.addFragment
-import com.karl.last_chat.utils.extensions.loadWithGlide
-import com.karl.last_chat.utils.extensions.onClickViews
-import com.karl.last_chat.utils.extensions.visibilityStateViews
+import com.karl.last_chat.utils.Constants
+import com.karl.last_chat.utils.extensions.*
 import com.karl.last_chat.view.home.chat.ChatFragment
+import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -20,6 +19,9 @@ import kotlin.math.abs
 
 class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
     NestedScrollView.OnScrollChangeListener, AppBarLayout.OnOffsetChangedListener {
+
+    private var url = ""
+    private var urlAvatar = ""
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
@@ -51,7 +53,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.imageBack -> {
-                fragmentManager?.popBackStack()
+                activity?.onBackPressed()
             }
             R.id.imageContact -> {
                 if (!isFriend) {
@@ -65,6 +67,24 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
                     )
                 }
             }
+            R.id.imageBackground -> {
+                activity?.supportFragmentManager?.addFragment(
+                    DetailImageFragment.newInstance(
+                        url = url,
+                        signal = Constants.BACKGROUND
+                    ),
+                    R.id.mainContainer
+                )
+            }
+            R.id.imageAvatar -> {
+                activity?.supportFragmentManager?.addFragment(
+                    DetailImageFragment.newInstance(
+                        url = urlAvatar,
+                        signal = Constants.AVATAR
+                    ),
+                    R.id.mainContainer
+                )
+            }
         }
     }
 
@@ -74,11 +94,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
     private val uid by lazy { arguments?.getString(UID) }
 
     override fun onInitComponents(view: View) {
-        onClickViews(imageBack, imageContact)
+        onClickViews(imageBack, imageContact, imageBackground, imageAvatar)
         view.visibilityStateViews(imageContact)
         uid?.let {
             viewModel.getUser(it)
             viewModel.checkIsFriend(it)
+            viewModel.checkIsSend(it)
         }
         nestedScrollPersonal.setOnScrollChangeListener(this)
         appBarPersonal.addOnOffsetChangedListener(this)
@@ -110,8 +131,11 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
             textName.text = it.userName
             textBio.text = it.bio
             textGender.text = it.gender
+            textBirthDay.text = it.birthday!!.getCurrentAge().toString()
+            url = it.pathBackground
+            urlAvatar = it.pathAvatar
             textGender.setCompoundDrawablesWithIntrinsicBounds(
-                if (it.gender == "Female") R.drawable.ic_female else R.drawable.ic_male,
+                if (it.gender == Constants.FEMALE) R.drawable.ic_female else R.drawable.ic_male,
                 0,
                 0,
                 0
@@ -130,6 +154,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), View.OnClickListener,
             }
         })
     }
+
+    override fun isNeedAutoBackPressed() = false
 
     companion object {
 

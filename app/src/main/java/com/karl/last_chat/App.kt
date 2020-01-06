@@ -7,6 +7,7 @@ import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.crashlytics.android.answers.ContentViewEvent
+import com.google.firebase.database.FirebaseDatabase
 import com.karl.last_chat.di.appModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -46,6 +47,7 @@ class App : Application() {
                 })
         }
         EmojiCompat.init(config)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 
     companion object {

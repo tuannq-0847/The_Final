@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
+import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.DialogEnum
 import com.karl.last_chat.utils.extensions.*
 import com.karl.last_chat.view.auth.AuthFragment
@@ -56,7 +57,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             dialog.dismiss()
             activity?.supportFragmentManager?.addFragment(
                 DetailImageFragment.newInstance(
-                    url = if (signalImage == "Avatar") pathImage else pathBackground,
+                    url = if (signalImage == Constants.AVATAR) pathImage else pathBackground,
                     signal = signalImage
                 ),
                 R.id.mainContainer
@@ -66,11 +67,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
 
     private val dialogSetting by lazy {
         DialogSetting(context!!, "") {
-            viewModel.logout()
-            activity?.supportFragmentManager?.replaceFragment(
-                AuthFragment.newInstance(),
-                R.id.mainContainer
-            )
+            viewModel.updateStatusOnline(0)
         }
     }
 
@@ -78,13 +75,13 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
         when (v?.id) {
             R.id.imageAvatar -> {
                 dialog.show()
-                dialog.setTitle("Avatar")
-                signalImage = "Avatar"
+                dialog.setTitle(Constants.AVATAR)
+                signalImage = Constants.AVATAR
             }
             R.id.imageBackground -> {
                 dialog.show()
-                dialog.setTitle("Background")
-                signalImage = "Background"
+                dialog.setTitle(Constants.BACKGROUND)
+                signalImage = Constants.BACKGROUND
             }
             R.id.imageSetting -> {
                 dialogSetting.show()
@@ -118,7 +115,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             val bitmap = BitmapFactory.decodeStream(inputStream)
             viewModel.hideLoading()
             inputStream?.let {
-                if (signalImage == "Avatar") {
+                if (signalImage == Constants.AVATAR) {
                     imageAvatar.loadWithGlideBitmap(bitmap.rotate(bitmap, getOrientation(uri)))
                     viewModel.uploadAvatar(uri)
                 } else {
@@ -131,6 +128,7 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             }
         })
         viewModel.eventUploadAvatar.observe(this, Observer {
+            viewModel.hideLoading()
             context?.showMessage("done")
         })
         viewModel.dataPersonal.observe(this, Observer {
@@ -144,7 +142,15 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             textName.text = it.userName
             textBio.text = it.bio
             textGender.text = it.gender
+            textBirthDay.text = it.birthday!!.getCurrentAge().toString()
             textLocation.text = getLocationName(it.lat, it.long)
+        })
+        viewModel.eventStatus.observe(this, Observer {
+            viewModel.logout()
+            activity?.supportFragmentManager?.replaceFragment(
+                AuthFragment.newInstance(),
+                R.id.mainContainer
+            )
         })
     }
 

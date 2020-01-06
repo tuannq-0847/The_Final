@@ -29,7 +29,7 @@ val a: String = "64dp\n" +
         "10dp\n"
 
 fun main() {
-    val rate = 0.8f
+    val rate = 0.7f
     var temp = ""
     var b: Float
     for (i in a.indices) {

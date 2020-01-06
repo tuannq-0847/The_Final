@@ -63,6 +63,7 @@ class PersonalViewModel(private val appRepository: AppRepository) : BaseViewMode
                 }
 
                 override fun onDataChange(data: DataSnapshot) {
+                    hideLoading()
                     dataPersonal.value = data.getValue(User::class.java)
                 }
 
