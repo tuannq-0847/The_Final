@@ -6,19 +6,21 @@
     android:padding="@dimen/_8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageUserRec"
+        android:id="@+id/imageUserRecI"
         android:layout_width="@dimen/_48dp"
         android:layout_height="@dimen/_48dp"
         android:src="@drawable/avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/imageRec"
         android:layout_width="@dimen/_140dp"
         android:layout_height="@dimen/_200dp"
         android:layout_marginStart="@dimen/_8dp"
+        android:scaleType="centerCrop"
         app:layout_constrainedWidth="true"
-        app:layout_constraintLeft_toRightOf="@+id/imageUserRec"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toRightOf="@+id/imageUserRecI"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="@dimen/_16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

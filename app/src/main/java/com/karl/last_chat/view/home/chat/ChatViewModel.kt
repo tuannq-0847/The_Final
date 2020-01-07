@@ -1,6 +1,8 @@
 package com.karl.last_chat.view.home.chat
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
@@ -15,13 +17,14 @@ import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.SingleLiveEvent
 import com.karl.last_chat.utils.extensions.generateName
+import com.karl.last_chat.utils.extensions.rotate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 class ChatViewModel(private val appRepository: AppRepository, application: Application) :
     BaseViewModel(appRepository, application) {
-
-    private val generateName = "".generateName()
 
     val isSend by lazy { SingleLiveEvent<Message>() }
     val idDiscuss by lazy { SingleLiveEvent<String>() }
@@ -148,6 +151,19 @@ class ChatViewModel(private val appRepository: AppRepository, application: Appli
         uiScope.launch {
             Log.d("see", seen)
             appRepository.updateStatusSeen(idDiscuss, idChild, uid, seen)
+        }
+    }
+
+    fun uploadImage(
+        uid: String,
+        did: String,
+        uri: Uri
+    ) {
+        uiScope.launch {
+            appRepository.uploadImage(uid, did, uri)
+                .addOnSuccessListener {
+                    eventUploadImage.value = "done"
+                }
         }
     }
 

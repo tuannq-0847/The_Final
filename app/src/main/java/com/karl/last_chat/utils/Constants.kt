@@ -2,6 +2,7 @@ package com.karl.last_chat.utils
 
 object Constants {
 
+    const val INTENT_GALLERY = "image/*"
     const val EMPTY = ""
     const val MESSAGE = "MESSAGE"
     const val USER = "USER"
@@ -13,4 +14,5 @@ object Constants {
     const val BACKGROUND = "Background"
     const val MALE = "MALE"
     const val FEMALE = "FEMALE"
+    const val IMAGE_CHAT = 22
 }

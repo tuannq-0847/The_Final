@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.karl.last_chat.base.BaseActivity
 import com.karl.last_chat.base.StackFragment
+import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.DialogEnum
 import com.karl.last_chat.utils.extensions.replaceFragment
 import com.karl.last_chat.view.personal.SharedViewModel
@@ -167,11 +168,16 @@ class MainActivity : BaseActivity() {
 
 
     private fun openGallery() {
-        val i = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.INTERNAL_CONTENT_URI
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = Constants.INTENT_GALLERY
+        startActivityForResult(
+            Intent.createChooser(
+                intent,
+                resources.getString(R.string.choose_image)
+            ),
+            ACTIVITY_SELECT_IMAGE
         )
-        startActivityForResult(i, ACTIVITY_SELECT_IMAGE, null)
     }
 
     private fun openCamera() {
@@ -202,7 +208,7 @@ class MainActivity : BaseActivity() {
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                 }
             }
-            else -> {
+            ACTIVITY_SELECT_IMAGE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     try {
                         val imageUri = data?.data

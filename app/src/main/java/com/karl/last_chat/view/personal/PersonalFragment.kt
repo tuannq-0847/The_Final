@@ -3,13 +3,10 @@ package com.karl.last_chat.view.personal
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
-import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
@@ -23,6 +20,7 @@ import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 import kotlin.math.abs
 
@@ -43,8 +41,6 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             view?.visibilityStateViews(imageAvatarSmall, textNameSmall, visibilityState = View.GONE)
         }
     }
-
-    private lateinit var sharedViewModel: SharedViewModel
 
     private val dialog by lazy {
         DialogAvatar(context!!) {
@@ -97,9 +93,6 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
 
     override fun onInitComponents(view: View) {
         onClickViews(imageAvatar, imageSetting, imageBackground)
-        sharedViewModel = activity?.run {
-            ViewModelProviders.of(this)[SharedViewModel::class.java]
-        } ?: throw Exception()
         appBarPersonal.addOnOffsetChangedListener(this)
         viewModel.getInforUser()
         imageBack.visibilityStateViews(imageBack, imageContact, visibilityState = View.GONE)
@@ -169,7 +162,37 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
                 AuthFragment.newInstance(),
                 R.id.mainContainer
             )
+            clearApplicationData()
         })
+    }
+
+    fun clearApplicationData() {
+        val cacheDirectory = activity!!.cacheDir
+        val applicationDirectory = File(cacheDirectory.parent)
+        if (applicationDirectory.exists()) {
+            val fileNames = applicationDirectory.list()
+            for (fileName in fileNames) {
+                if (fileName != "lib") {
+                    deleteFile(File(applicationDirectory, fileName))
+                }
+            }
+        }
+    }
+
+    fun deleteFile(file: File?): Boolean {
+        var deletedAll = true
+        if (file != null) {
+            if (file.isDirectory) {
+                val children = file.list()
+                for (i in children.indices) {
+                    deletedAll = deleteFile(File(file, children[i])) && deletedAll
+                }
+            } else {
+                deletedAll = file.delete()
+            }
+        }
+
+        return deletedAll
     }
 
     private fun getLocationName(lat: Double, long: Double): String {
@@ -186,23 +209,6 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
     override fun onDestroyView() {
         super.onDestroyView()
         dialog.dismiss()
-    }
-
-    private fun getOrientation(uri: Uri): Int {
-        val cursor = context?.contentResolver?.query(
-            uri,
-            arrayOf(MediaStore.Images.ImageColumns.ORIENTATION), null, null, null
-        )
-
-        if (cursor!!.count != 1) {
-            cursor.close()
-            return -1
-        }
-
-        cursor.moveToFirst()
-        val orientation = cursor.getInt(0)
-        cursor.close()
-        return orientation
     }
 
     companion object {

@@ -1,6 +1,8 @@
 package com.karl.last_chat.view.home.chat
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -44,7 +46,8 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                             content = editChat.text.toString(),
                             idUserSend = viewModel.getCurrentUser()!!.uid,
                             idUserRec = uid!!,
-                            seen = viewModel.getCurrentUser()!!.uid
+                            seen = viewModel.getCurrentUser()!!.uid,
+                            type = "text"
                         )
                     )
                     editChat.setText(Constants.EMPTY)
@@ -54,6 +57,16 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 activity?.onBackPressed()
             }
             R.id.imagePic -> {
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = Constants.INTENT_GALLERY
+                startActivityForResult(
+                    Intent.createChooser(
+                        intent,
+                        resources.getString(R.string.choose_image)
+                    ),
+                    32
+                )
             }
         }
     }
@@ -85,7 +98,6 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         recyclerChat.adapter = chatAdapter
         adapter.submitList(viewModel.listEmojis)
         dId = arguments?.getString(DISCUSS_ID) ?: ""
-        Log.d("dId", dId)
         editChat.addTextChangedListener {
             if (it!!.isNotEmpty()) {
                 view.visibilityStateViews(imageSend)
@@ -100,6 +112,37 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         } else handleMessage(dId)
         viewModel.getInforUser(uid!!)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 32 && resultCode == Activity.RESULT_OK) {
+            viewModel.a.add(
+                Message(
+                    content = "abc",
+                    idUserSend = viewModel.getCurrentUser()!!.uid,
+                    idUserRec = uid!!,
+                    seen = viewModel.getCurrentUser()!!.uid,
+                    type = "image-temp"
+                )
+            )
+            chatAdapter.submitList(viewModel.a)
+            chatAdapter.notifyDataSetChanged()
+            recyclerChat.scrollToPosition(viewModel.a.size - 1)
+            viewModel.uploadImage(
+                uid!!,
+                dId,
+                data?.data!!
+            )
+        }
+    }
+
+//    fun compressBitmap(uri: Uri): ByteArray {
+//        val bitmap = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
+//        val temp = bitmap?.rotate(bitmap, getOrientation(uri))
+//        val outputStream = ByteArrayOutputStream()
+//        temp?.compress(Bitmap.CompressFormat.JPEG, 10, outputStream)
+//        return outputStream.toByteArray()
+//    }
 
     override fun onObserve() {
         viewModel.idDiscuss.observe(this, Observer {
@@ -133,6 +176,9 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         viewModel.userEvent.observe(this, Observer {
             chatAdapter.setAvatar(it.pathAvatar)
             textSpannable.text = it.userName
+        })
+        viewModel.eventUploadImage.observe(this, Observer {
+            chatAdapter.notifyDataSetChanged()
         })
     }
 

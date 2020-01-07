@@ -2,7 +2,9 @@ package com.karl.last_chat.base
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +15,10 @@ import androidx.annotation.LayoutRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.karl.last_chat.utils.extensions.showDialogWarning
 import com.karl.last_chat.view.dialogs.LoadingDialog
+import com.karl.last_chat.view.personal.SharedViewModel
 
 abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
 
@@ -25,9 +29,14 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
 
     private val loadingDialog by lazy { LoadingDialog(context!!) }
 
+    lateinit var sharedViewModel: SharedViewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onInitComponents(view)
+        sharedViewModel = activity?.run {
+            ViewModelProviders.of(this)[SharedViewModel::class.java]
+        } ?: throw Exception()
         view.isClickable = true
         view.isFocusableInTouchMode = true
         observeInternal()
@@ -112,6 +121,23 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
     }
 
     override fun isNeedAutoBackPressed() = true
+
+    fun getOrientation(uri: Uri): Int {
+        val cursor = context?.contentResolver?.query(
+            uri,
+            arrayOf(MediaStore.Images.ImageColumns.ORIENTATION), null, null, null
+        )
+
+        if (cursor!!.count != 1) {
+            cursor.close()
+            return -1
+        }
+
+        cursor.moveToFirst()
+        val orientation = cursor.getInt(0)
+        cursor.close()
+        return orientation
+    }
 
     companion object {
 

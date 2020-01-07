@@ -42,4 +42,5 @@
     <string name="notice_connect">You are now connected on EzChat</string>
     <string name="notice">Don\'t waste your time. \n Let\'s say hello</string>
     <string name="not_type">You don\'t type anything</string>
+    <string name="choose_image">Choose Image</string>
 </resources>

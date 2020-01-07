@@ -11,6 +11,7 @@ import com.google.firebase.database.Query
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.karl.last_chat.data.model.Message
@@ -28,6 +29,28 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun uploadImage(
+        uid: String,
+        did: String,
+        uri: Uri
+    ): StorageTask<UploadTask.TaskSnapshot> =
+        storageRef.putFile(uri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener {
+                    runBlocking {
+                        sendMessage(
+                            did, Message(
+                                content = it.toString(),
+                                idUserSend = getCurrentUser()!!.uid,
+                                idUserRec = uid,
+                                seen = getCurrentUser()!!.uid,
+                                type = "image"
+                            )
+                        )
+                    }
+                }
+            }
+
     override suspend fun putByteAvatar(bytes: ByteArray): StorageTask<UploadTask.TaskSnapshot> =
         storageRef.putBytes(bytes)
             .addOnSuccessListener {
@@ -171,7 +194,7 @@ class AppRepositoryImpl(
     override suspend fun getInforUsers() =
         firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
 
-    private val userId = firebaseAuth.currentUser?.uid
+    private val userId by lazy { firebaseAuth.currentUser?.uid }
 
     private val generateName = "".generateName()
 
@@ -191,14 +214,14 @@ class AppRepositoryImpl(
                 }
             }
 
-    override suspend fun uploadImage(uri: Uri) =
-        storageRef.putFile(uri)
-
-    fun insertImagePath(url: String) =
-        firebaseDatabase.getReference(Constants.USER)
-            .child(userId!!)
-            .child("pathAvatar")
-            .setValue(url)
+    fun insertImagePath(url: String) {
+        getCurrentUser()?.uid?.let {
+            firebaseDatabase.getReference(Constants.USER)
+                .child(it)
+                .child("pathAvatar")
+                .setValue(url)
+        }
+    }
 
     override suspend fun uploadBackground(uri: Uri) =
         storageRef.putFile(uri)
@@ -212,7 +235,7 @@ class AppRepositoryImpl(
 
     fun insertImagePathBg(url: String) =
         firebaseDatabase.getReference(Constants.USER)
-            .child(userId!!)
+            .child(getCurrentUser()!!.uid)
             .child("pathBackground")
             .setValue(url)
 
