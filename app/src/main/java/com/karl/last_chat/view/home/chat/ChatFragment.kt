@@ -1,22 +1,19 @@
 package com.karl.last_chat.view.home.chat
 
 import android.content.Context
-import android.content.Intent
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import com.karl.last_chat.MainActivity
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
+import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.utils.extensions.visibilityStateViews
-import com.karl.last_chat.view.personal.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,8 +47,8 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                             seen = viewModel.getCurrentUser()!!.uid
                         )
                     )
-                    editChat.setText("")
-                } else context?.showMessage("You don't type anything")
+                    editChat.setText(Constants.EMPTY)
+                } else context?.showMessage(getString(R.string.not_type))
             }
             R.id.imageBack -> {
                 activity?.onBackPressed()
