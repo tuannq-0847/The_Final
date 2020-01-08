@@ -9,6 +9,7 @@ import com.karl.last_chat.base.BaseRecyclerView
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.utils.extensions.loadWithGlide
 import kotlinx.android.synthetic.main.item_chat_file_rec.view.*
+import kotlinx.android.synthetic.main.item_chat_file_send.view.*
 import kotlinx.android.synthetic.main.item_chat_image_rec.view.*
 import kotlinx.android.synthetic.main.item_chat_image_send.view.*
 import kotlinx.android.synthetic.main.item_rec.view.*
@@ -75,9 +76,14 @@ class ChatAdapter(
                     textNameFile.text = item.content
                     if (pathAvatar.isNotEmpty()) imageAvatarRec.loadWithGlide(pathAvatar)
                     //         isNeedInvisible(position, imageAvatarRec)
+                    listener(item, true)
                 }
                 3 -> {
-                    textNameFile.text = item.content
+                    textNameFileSend.text =
+                        if (item.namePreview.isNotEmpty()) item.namePreview else item.content
+                    textNameFileSend.setOnClickListener {
+                        listener(item, true)
+                    }
                 }
                 4 -> {
                     imageRec.loadWithGlide(item.content, R.drawable.bg_image_send)
@@ -87,7 +93,7 @@ class ChatAdapter(
                 }
                 5 -> {
                     imageSend.loadWithGlide(item.content, R.drawable.bg_image_send)
-                    imageSend.setOnClickListener { listener(item,false) }
+                    imageSend.setOnClickListener { listener(item, false) }
                 }
             }
         }

@@ -1,30 +1,34 @@
 package com.karl.last_chat.view.home.chat
 
 import android.app.Application
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
 import com.karl.last_chat.base.BaseViewModel
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
-import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.SingleLiveEvent
 import com.karl.last_chat.utils.extensions.generateName
-import com.karl.last_chat.utils.extensions.rotate
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import io.grpc.internal.ReadableBuffers.openStream
+import java.io.DataInputStream
+import java.net.URL
 
-class ChatViewModel(private val appRepository: AppRepository, application: Application) :
-    BaseViewModel(appRepository, application) {
+
+class ChatViewModel(private val appRepository: AppRepository, private val app: Application) :
+    BaseViewModel(appRepository, app) {
 
     val isSend by lazy { SingleLiveEvent<Message>() }
     val idDiscuss by lazy { SingleLiveEvent<String>() }
@@ -32,6 +36,8 @@ class ChatViewModel(private val appRepository: AppRepository, application: Appli
     val messages = SingleLiveEvent<MutableList<Message>>()
     val a = mutableListOf<Message>()
     val userEvent by lazy { SingleLiveEvent<User>() }
+    val eventUploadFile by lazy { SingleLiveEvent<String>() }
+    val eventDownloadFile by lazy { SingleLiveEvent<Boolean>() }
 
     fun getCurrentUser() = appRepository.getCurrentUser()
 
@@ -164,7 +170,63 @@ class ChatViewModel(private val appRepository: AppRepository, application: Appli
                 .addOnSuccessListener {
                     eventUploadImage.value = "done"
                 }
+                .addOnFailureListener {
+                    error.value = it
+                }
         }
     }
 
+    fun uploadFile(uid: String, did: String, uri: Uri, previewName: String) {
+        uiScope.launch {
+            appRepository.uploadFileChat(uid, did, uri, previewName)
+                .addOnSuccessListener {
+                    eventUploadFile.value = "done"
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
+    fun downloadFile(url: String, namePreview: String) {
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                downloadFile(url, File("".generateName() + namePreview))
+                Log.d("fileDownload", app.externalCacheDir?.absolutePath + namePreview)
+            }
+        }
+    }
+
+    private fun downloadFile(url: String, outputFile: File) {
+        val timeStamp = SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().time)
+        val root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            .absolutePath
+        val myDir = File(root)
+        myDir.mkdirs()
+
+        val fname = "image$timeStamp.png"
+        val file = File(myDir, fname)
+        if (file.exists()) file.delete()
+        try {
+            val u = URL(url)
+            val conn = u.openConnection()
+            val contentLength = conn.contentLength
+
+            val stream = DataInputStream(u.openStream())
+
+            val buffer = ByteArray(contentLength)
+            stream.readFully(buffer)
+            stream.close()
+            val out = FileOutputStream(file)
+            out.write(buffer)
+            eventDownloadFile.postValue(true)
+            out.flush()
+            out.close()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            error.postValue(e)
+        }
+
+    }
 }

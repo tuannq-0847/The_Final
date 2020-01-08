@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8dp"
         android:background="@drawable/bg_rec"
+        android:maxWidth="@dimen/_56dp"
         android:padding="@dimen/_8dp"
         app:layout_constraintStart_toEndOf="@id/imageAvatarRec"
         app:layout_constraintTop_toTopOf="parent">

@@ -13,10 +13,7 @@ import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.utils.Constants
-import com.karl.last_chat.utils.extensions.addFragment
-import com.karl.last_chat.utils.extensions.onClickViews
-import com.karl.last_chat.utils.extensions.showMessage
-import com.karl.last_chat.utils.extensions.visibilityStateViews
+import com.karl.last_chat.utils.extensions.*
 import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -134,7 +131,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         viewModel.getInforUser(uid!!)
     }
 
-    private val listener = { data: Message, isFile: Boolean ->
+    private val listener: (data: Message, isFile: Boolean) -> Unit = { data, isFile ->
         if (!isFile) {
             fragmentManager?.addFragment(
                 DetailImageFragment.newInstance(
@@ -142,6 +139,8 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                     "Background"
                 )
             )
+        } else {
+            viewModel.downloadFile(data.content, data.namePreview)
         }
     }
 
@@ -165,6 +164,9 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 dId,
                 data?.data!!
             )
+        } else if (requestCode == 34 && resultCode == Activity.RESULT_OK) {
+            val uri = data?.data
+            viewModel.uploadFile(uid!!, dId, uri!!, context?.getMimeType(uri) ?: "")
         }
     }
 
@@ -211,6 +213,12 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         })
         viewModel.eventUploadImage.observe(this, Observer {
             chatAdapter.notifyDataSetChanged()
+        })
+        viewModel.eventUploadFile.observe(this, Observer {
+            chatAdapter.notifyDataSetChanged()
+        })
+        viewModel.eventUploadFile.observe(this, Observer {
+            context?.showMessage("done")
         })
     }
 

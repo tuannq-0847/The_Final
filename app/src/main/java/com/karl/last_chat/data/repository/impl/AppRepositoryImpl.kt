@@ -1,6 +1,7 @@
 package com.karl.last_chat.data.repository.impl
 
 import android.net.Uri
+import android.webkit.MimeTypeMap
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +21,9 @@ import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.extensions.generateName
+import com.karl.last_chat.utils.extensions.getMimeType
 import kotlinx.coroutines.runBlocking
+import java.io.File
 
 class AppRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -28,6 +31,40 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+
+    private val generateName = "".generateName()
+
+    private val storageFileRef = firebaseStorage.getReference("${Constants.MESSAGE}/$generateName")
+
+    private val userId by lazy { firebaseAuth.currentUser?.uid }
+
+    private val storageRef = firebaseStorage.getReference("${Constants.USER}/$userId/$generateName")
+
+
+    override suspend fun uploadFileChat(
+        uid: String,
+        did: String,
+        uri: Uri,
+        previewName:String
+    ): StorageTask<UploadTask.TaskSnapshot> =
+        storageFileRef
+            .putFile(uri).addOnSuccessListener {
+                storageFileRef.downloadUrl.addOnSuccessListener {
+                    runBlocking {
+                        sendMessage(
+                            did, Message(
+                                content = it.toString(),
+                                idUserSend = getCurrentUser()!!.uid,
+                                idUserRec = uid,
+                                seen = getCurrentUser()!!.uid,
+                                type = "file",
+                                namePreview = previewName
+                            )
+                        )
+                    }
+                }
+            }
+
     override suspend fun forgotPw(email: String) = firebaseAuth.sendPasswordResetEmail(email)
 
     override suspend fun uploadImage(
@@ -194,12 +231,6 @@ class AppRepositoryImpl(
 
     override suspend fun getInforUsers() =
         firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
-
-    private val userId by lazy { firebaseAuth.currentUser?.uid }
-
-    private val generateName = "".generateName()
-
-    private val storageRef = firebaseStorage.getReference("${Constants.USER}/$userId/$generateName")
 
     override suspend fun uploadCover(uri: Uri) =
         firebaseStorage.getReference("${Constants.USER}/$userId/$generateName")

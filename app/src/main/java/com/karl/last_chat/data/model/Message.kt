@@ -7,5 +7,6 @@ data class Message(
     var idUserSend: String = "",
     var type: String = "",
     var bytes: ByteArray? = null,
-    var seen: String = ""
+    var seen: String = "",
+    var namePreview: String = ""
 )

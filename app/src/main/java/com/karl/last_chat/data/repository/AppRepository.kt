@@ -12,6 +12,7 @@ import com.google.firebase.storage.UploadTask
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.data.model.User
+import java.io.File
 
 interface AppRepository {
 
@@ -97,4 +98,11 @@ interface AppRepository {
     ): StorageTask<UploadTask.TaskSnapshot>
 
     suspend fun forgotPw(email: String): Task<Void>
+
+    suspend fun uploadFileChat(
+        uid: String,
+        did: String,
+        uri: Uri,
+        previewName:String
+    ): StorageTask<UploadTask.TaskSnapshot>
 }
