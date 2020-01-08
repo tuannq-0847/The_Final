@@ -19,10 +19,12 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
         get() = R.layout.fragment_friend_request
 
     private val adapter by lazy { GroupAdapter(listener) }
+    private val friendAdapter by lazy { FriendAdapter(callBackFriend) }
 
     override fun onInitComponents(view: View) {
         recyclerFriendRequest.adapter = adapter
         viewModel.getFriendRequest()
+        viewModel.getFriends()
     }
 
     override fun onObserve() {
@@ -34,6 +36,10 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
             )
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
+        })
+        viewModel.usersEvent.observe(this, Observer {
+            friendAdapter.submitList(it)
+            friendAdapter.notifyDataSetChanged()
         })
     }
 
@@ -47,9 +53,11 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
         }
     }
 
-    companion
+    val callBackFriend = { item: User ->
 
-    object {
+    }
+
+    companion object {
 
         fun newInstance() = newInstance<GroupFragment>()
     }

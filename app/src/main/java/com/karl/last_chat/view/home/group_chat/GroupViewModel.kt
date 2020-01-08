@@ -21,6 +21,8 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
     val friends by lazy { SingleLiveEvent<MutableList<User>>() }
     val friendsData = mutableListOf<User>()
     val friendRequestEvent by lazy { SingleLiveEvent<FriendRequestEnum>() }
+    val users = mutableListOf<User>()
+    val usersEvent by lazy { SingleLiveEvent<MutableList<User>>() }
 
     fun getFriendRequest() {
         uiScope.launch {
@@ -30,7 +32,6 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    Log.d("p01", p0.value.toString())
                     if (p0.exists()) {
                         p0.children.forEach {
                             friendsData.clear()
@@ -91,6 +92,10 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
                                 type = "new"
                             )
                         )
+                        appRepository.insertFriend(userId)
+                            .addOnFailureListener {
+                                error.value = it
+                            }
                     }
                 }
                 .addOnFailureListener {
@@ -120,4 +125,39 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
                 }
         }
     }
+
+    fun getFriends() {
+        uiScope.launch {
+            appRepository.getFriends().addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    error.value = p0.toException()
+                }
+
+                override fun onDataChange(data: DataSnapshot) {
+                    if (data.exists()) {
+                        data.children.forEach {
+                            getUserInfor(it.getValue(String::class.java)!!)
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    fun getUserInfor(userId: String) {
+        uiScope.launch {
+            appRepository.getInforUser(userId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        error.value = p0.toException()
+                    }
+
+                    override fun onDataChange(data: DataSnapshot) {
+                        users.add(data.getValue(User::class.java)!!)
+                    }
+                })
+            usersEvent.value = users
+        }
+    }
+
 }

@@ -103,6 +103,10 @@ interface AppRepository {
         uid: String,
         did: String,
         uri: Uri,
-        previewName:String
+        previewName: String
     ): StorageTask<UploadTask.TaskSnapshot>
+
+    suspend fun insertFriend(uId: String): Task<Void>
+
+    suspend fun getFriends(): DatabaseReference
 }

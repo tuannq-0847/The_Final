@@ -1,7 +1,6 @@
 package com.karl.last_chat.data.repository.impl
 
 import android.net.Uri
-import android.webkit.MimeTypeMap
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -21,9 +20,7 @@ import com.karl.last_chat.data.model.User
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.extensions.generateName
-import com.karl.last_chat.utils.extensions.getMimeType
 import kotlinx.coroutines.runBlocking
-import java.io.File
 
 class AppRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -31,6 +28,12 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun getFriends(): DatabaseReference =
+        firebaseDatabase.getReference("${Constants.FRIEND}/${getCurrentUser()!!.uid}")
+
+    override suspend fun insertFriend(uId: String): Task<Void> =
+        firebaseDatabase.getReference("${Constants.FRIEND}/${getCurrentUser()!!.uid}")
+            .child(uId).setValue(uId)
 
     private val generateName = "".generateName()
 
@@ -45,7 +48,7 @@ class AppRepositoryImpl(
         uid: String,
         did: String,
         uri: Uri,
-        previewName:String
+        previewName: String
     ): StorageTask<UploadTask.TaskSnapshot> =
         storageFileRef
             .putFile(uri).addOnSuccessListener {

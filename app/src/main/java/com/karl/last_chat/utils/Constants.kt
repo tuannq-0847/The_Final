@@ -14,5 +14,4 @@ object Constants {
     const val BACKGROUND = "Background"
     const val MALE = "MALE"
     const val FEMALE = "FEMALE"
-    const val IMAGE_CHAT = 22
 }
