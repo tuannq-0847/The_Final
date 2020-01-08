@@ -13,13 +13,16 @@ import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.utils.Constants
+import com.karl.last_chat.utils.extensions.addFragment
 import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.showMessage
 import com.karl.last_chat.utils.extensions.visibilityStateViews
+import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
+
 
 class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
 
@@ -68,6 +71,24 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                     32
                 )
             }
+            R.id.imageAttach -> {
+                Log.d("isClicked", "in....")
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "*/*"
+                val mimetypes = arrayOf(
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                    "application/vnd.ms-powerpoint",
+                    "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                    "application/vnd.ms-excel",
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                    "text/plain",
+                    "application/pdf",
+                    "application/zip"
+                )
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
+                startActivityForResult(intent, 34)
+            }
         }
     }
 
@@ -87,13 +108,13 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         imm.toggleSoftInputFromWindow(view?.windowToken, InputMethodManager.SHOW_FORCED, 0)
     }
 
-    private val chatAdapter by lazy { ChatAdapter(viewModel.getCurrentUser()!!.uid) }
+    private val chatAdapter by lazy { ChatAdapter(viewModel.getCurrentUser()!!.uid, listener) }
 
     override val layoutRes: Int
         get() = R.layout.fragment_chat
 
     override fun onInitComponents(view: View) {
-        onClickViews(imageEmoji, editChat, imageSend, imageBack, imagePic)
+        onClickViews(imageEmoji, editChat, imageSend, imageBack, imagePic, imageAttach)
         recyclerEmoji.adapter = adapter
         recyclerChat.adapter = chatAdapter
         adapter.submitList(viewModel.listEmojis)
@@ -111,6 +132,17 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
             viewModel.getDisscussId(viewModel.getCurrentUser()!!.uid, uid!!)
         } else handleMessage(dId)
         viewModel.getInforUser(uid!!)
+    }
+
+    private val listener = { data: Message, isFile: Boolean ->
+        if (!isFile) {
+            fragmentManager?.addFragment(
+                DetailImageFragment.newInstance(
+                    data.content,
+                    "Background"
+                )
+            )
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -14,7 +14,10 @@ import kotlinx.android.synthetic.main.item_chat_image_send.view.*
 import kotlinx.android.synthetic.main.item_rec.view.*
 import kotlinx.android.synthetic.main.item_send.view.*
 
-class ChatAdapter(private val uid: String) :
+class ChatAdapter(
+    private val uid: String,
+    private val listener: (data: Message, isFile: Boolean) -> Unit
+) :
     BaseRecyclerView<Message>(object : DiffUtil.ItemCallback<Message>() {
         override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
             return oldItem.content == oldItem.content
@@ -78,11 +81,13 @@ class ChatAdapter(private val uid: String) :
                 }
                 4 -> {
                     imageRec.loadWithGlide(item.content, R.drawable.bg_image_send)
+                    imageRec.setOnClickListener { listener(item, false) }
                     if (pathAvatar.isNotEmpty()) imageUserRecI.loadWithGlide(pathAvatar)
                     //         isNeedInvisible(position, imageUserRecI)
                 }
                 5 -> {
                     imageSend.loadWithGlide(item.content, R.drawable.bg_image_send)
+                    imageSend.setOnClickListener { listener(item,false) }
                 }
             }
         }

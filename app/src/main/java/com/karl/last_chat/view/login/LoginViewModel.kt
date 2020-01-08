@@ -11,9 +11,12 @@ import com.karl.last_chat.utils.validate.ValidateEnum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class LoginViewModel(private val appRepository: AppRepository,application: Application) : BaseViewModel(appRepository,application) {
+class LoginViewModel(private val appRepository: AppRepository, application: Application) :
+    BaseViewModel(appRepository, application) {
 
     val authResultEvent by lazy { SingleLiveEvent<AuthResult>() }
+
+    val isSentEmail by lazy { SingleLiveEvent<Boolean>() }
     fun validateLogin(
         email: String,
         password: String
@@ -32,6 +35,22 @@ class LoginViewModel(private val appRepository: AppRepository,application: Appli
             appRepository.signIn(email, password)
                 .addOnSuccessListener {
                     authResultEvent.value = it
+                }
+                .addOnFailureListener {
+                    error.value = it
+                }
+        }
+    }
+
+    fun sendMailForgotPw(email: String) {
+        uiScope.launch {
+            appRepository.forgotPw(email)
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        isSentEmail.value = true
+                    } else {
+                        error.value = it.exception
+                    }
                 }
                 .addOnFailureListener {
                     error.value = it

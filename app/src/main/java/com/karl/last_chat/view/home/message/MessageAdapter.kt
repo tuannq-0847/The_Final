@@ -36,15 +36,21 @@ class MessageAdapter(private val uid: String, listener: (item: LastMessage) -> U
                 )
             }
             textNewFriend.visibility = if (item.type == "new") View.VISIBLE else View.GONE
-            textLastMessage.text = when (item.type) {
-                "text" -> item.lastContent
+            when (item.type) {
+                "text" -> textLastMessage.text = item.lastContent
                 "image" -> {
                     if (uid == item.idUserSend) {
-                        "You sent a image"
-                    } else "${item.nameSender} sent a image"
+                        textLastMessage.text = "You sent a image"
+                    } else textLastMessage.text = "${item.nameSender} sent a image"
+                }
+                "file" -> {
+                    textLastMessage.text = "sent a file"
+                }
+                "new" -> {
+                    textLastMessage.text = item.lastContent
                 }
                 else -> {
-                    "sent a file"
+
                 }
             }
             imageStatusUser.setImageResource(if (item.onlineStatus == 1) R.drawable.ic_online else R.drawable.ic_offline)

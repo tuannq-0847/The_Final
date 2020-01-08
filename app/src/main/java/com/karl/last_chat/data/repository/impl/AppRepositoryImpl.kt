@@ -11,7 +11,6 @@ import com.google.firebase.database.Query
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.karl.last_chat.data.model.Message
@@ -29,6 +28,8 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun forgotPw(email: String) = firebaseAuth.sendPasswordResetEmail(email)
+
     override suspend fun uploadImage(
         uid: String,
         did: String,

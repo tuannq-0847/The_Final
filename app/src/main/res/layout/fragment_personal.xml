@@ -214,6 +214,7 @@
         android:layout_marginBottom="@dimen/_32dp"
         android:backgroundTint="@color/color_default_image"
         android:src="@drawable/ic_add_black_24dp"
+        android:layout_gravity="center"
         app:borderWidth="@dimen/_2dp"
         app:elevation="@dimen/_4dp"
         app:fabSize="normal"

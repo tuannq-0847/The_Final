@@ -17,7 +17,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
 
     private val dialogPw by lazy {
         ForgotPwDialog(context!!) {
-
+            viewModel.sendMailForgotPw(it)
         }
     }
 
@@ -27,6 +27,10 @@ class LoginFragment : BaseFragment<LoginViewModel>(), View.OnClickListener {
             fragmentManager?.replaceFragment(HomeFragment.newInstance(), R.id.mainContainer)
             viewModel.updateFirebaseIntanceId()
             viewModel.updateStatusOnline(1)
+        })
+        viewModel.isSentEmail.observe(this, Observer {
+            context?.showMessage("Sent mail successfully")
+            dialogPw.dismiss()
         })
     }
 

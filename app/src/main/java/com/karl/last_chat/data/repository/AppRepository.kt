@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
 import com.google.firebase.iid.InstanceIdResult
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.karl.last_chat.data.model.Message
@@ -96,4 +95,6 @@ interface AppRepository {
         did: String,
         uri: Uri
     ): StorageTask<UploadTask.TaskSnapshot>
+
+    suspend fun forgotPw(email: String): Task<Void>
 }
