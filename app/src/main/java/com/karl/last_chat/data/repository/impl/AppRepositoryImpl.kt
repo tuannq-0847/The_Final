@@ -114,14 +114,14 @@ class AppRepositoryImpl(
             }
 
     override suspend fun removeFriendRequestFromSender(userId: String): Task<Void> {
-        return firebaseDatabase.getReference(Constants.FRIEND)
+        return firebaseDatabase.getReference(Constants.REQUEST)
             .child(userId)
             .child(getCurrentUser()!!.uid)
             .removeValue()
     }
 
     override suspend fun removeFriendRequest(userId: String): Task<Void> =
-        firebaseDatabase.getReference(Constants.FRIEND)
+        firebaseDatabase.getReference(Constants.REQUEST)
             .child(getCurrentUser()!!.uid)
             .child(userId)
             .removeValue()
@@ -130,7 +130,7 @@ class AppRepositoryImpl(
         firebaseDatabase.getReference(Constants.MESSAGE).child(getCurrentUser()!!.uid)
 
     override suspend fun getFriendRequest(): DatabaseReference =
-        firebaseDatabase.getReference(Constants.FRIEND)
+        firebaseDatabase.getReference(Constants.REQUEST)
             .child(getCurrentUser()!!.uid)
 
     override suspend fun updateStatusSeen(
@@ -192,16 +192,16 @@ class AppRepositoryImpl(
             .setValue(message)
 
     override suspend fun sendFriendRequest(userId: String): Task<Void> {
-        firebaseDatabase.getReference(Constants.FRIEND).child(userId)
+        firebaseDatabase.getReference(Constants.REQUEST).child(userId)
             .child(getCurrentUser()!!.uid)
             .setValue(Rquest(getCurrentUser()!!.uid, 0))
-        return firebaseDatabase.getReference(Constants.FRIEND).child(getCurrentUser()!!.uid)
+        return firebaseDatabase.getReference(Constants.REQUEST).child(getCurrentUser()!!.uid)
             .child(userId)
             .setValue(Rquest(userId, 1))
     }
 
     override suspend fun checkIsSendRequest(userId: String): DatabaseReference {
-        return firebaseDatabase.getReference(Constants.FRIEND).child(userId)
+        return firebaseDatabase.getReference(Constants.REQUEST).child(userId)
     }
 
     override suspend fun updateInstanceId(instanceId: String) =

@@ -7,11 +7,12 @@ object Constants {
     const val MESSAGE = "MESSAGE"
     const val USER = "USER"
     const val MESSAGES = "MESSAGES"
-    const val FRIEND = "FRIEND"
+    const val REQUEST = "REQUEST"
     const val NOTIFICATION = "NOTIFICATION"
     const val KEY_IS_FINISHED = "KEY_IS_FINISHED"
     const val AVATAR = "Avatar"
     const val BACKGROUND = "Background"
     const val MALE = "MALE"
     const val FEMALE = "FEMALE"
+    const val FRIEND = "FRIEND"
 }

@@ -1,8 +1,11 @@
 package com.karl.last_chat.view.home.chat
 
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -140,7 +143,21 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 )
             )
         } else {
-            viewModel.downloadFile(data.content, data.namePreview)
+            //viewModel.downloadFile(data.content, data.namePreview)
+            val request = DownloadManager.Request(Uri.parse(data.content))
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+            request.setTitle("Download")
+            request.setDescription("The file is downloading...")
+            context?.showMessage("The file is downloading...")
+            request.allowScanningByMediaScanner()
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            request.setDestinationInExternalPublicDir(
+                Environment.DIRECTORY_DOWNLOADS,
+                "${System.currentTimeMillis()}"
+            )
+
+            val manager = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            manager.enqueue(request)
         }
     }
 
@@ -210,6 +227,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         viewModel.userEvent.observe(this, Observer {
             chatAdapter.setAvatar(it.pathAvatar)
             textSpannable.text = it.userName
+            imageSmall.loadWithGlide(it.pathAvatar)
         })
         viewModel.eventUploadImage.observe(this, Observer {
             chatAdapter.notifyDataSetChanged()
