@@ -100,7 +100,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
         }
     }
 
-    private fun hideKeyboard() {
+    fun hideKeyboard() {
         val inputManager =
             activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
@@ -109,12 +109,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), StackFragment {
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.hideLoading()
-        hideKeyBoard()
-    }
-
-    private fun hideKeyBoard() {
-        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        hideKeyboard()
     }
 
     override fun onBackPressed() {

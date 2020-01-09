@@ -21,12 +21,12 @@
         android:orientation="vertical">
 
         <View
-            android:layout_width="100dp"
+            android:layout_width="@dimen/_244dp"
             android:layout_height="@dimen/_8dp"
             android:background="@color/color_background_placeholder" />
 
         <View
-            android:layout_width="30dp"
+            android:layout_width="@dimen/_74dp"
             android:layout_height="@dimen/_8dp"
             android:layout_marginTop="5dp"
             android:background="@color/color_background_placeholder" />

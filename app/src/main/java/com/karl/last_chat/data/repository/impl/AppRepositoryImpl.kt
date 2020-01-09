@@ -28,6 +28,9 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun queryUserName(userName: String): Query =
+        firebaseDatabase.getReference(Constants.USER)
+
     override suspend fun getFriends(): DatabaseReference =
         firebaseDatabase.getReference("${Constants.FRIEND}/${getCurrentUser()!!.uid}")
 

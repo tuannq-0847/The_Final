@@ -96,6 +96,10 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
                             .addOnFailureListener {
                                 error.value = it
                             }
+                        appRepository.insertFriend(appRepository.getCurrentUser()!!.uid)
+                            .addOnFailureListener {
+                                error.value = it
+                            }
                     }
                 }
                 .addOnFailureListener {
@@ -134,6 +138,7 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
                 }
 
                 override fun onDataChange(data: DataSnapshot) {
+                    Log.d("children", data.childrenCount.toString())
                     if (data.exists()) {
                         data.children.forEach {
                             getUserInfor(it.getValue(String::class.java)!!)
@@ -154,9 +159,9 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
 
                     override fun onDataChange(data: DataSnapshot) {
                         users.add(data.getValue(User::class.java)!!)
+                        usersEvent.value = users
                     }
                 })
-            usersEvent.value = users
         }
     }
 

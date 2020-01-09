@@ -13,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
+import com.karl.last_chat.data.model.EnumListener
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.data.model.Notification
 import com.karl.last_chat.utils.Constants
@@ -75,18 +76,18 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 Log.d("isClicked", "in....")
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "*/*"
-                val mimetypes = arrayOf(
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                    "application/vnd.ms-powerpoint",
-                    "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                    "application/vnd.ms-excel",
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
-                    "text/plain",
-                    "application/pdf",
-                    "application/zip"
-                )
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
+//                val mimetypes = arrayOf(
+//                    "application/msword",
+//                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+//                    "application/vnd.ms-powerpoint",
+//                    "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+//                    "application/vnd.ms-excel",
+//                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+//                    "text/plain",
+//                    "application/pdf",
+//                    "application/zip"
+//                )
+//                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
                 startActivityForResult(intent, 34)
             }
         }
@@ -134,32 +135,34 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
         viewModel.getInforUser(uid!!)
     }
 
-    private val listener: (data: Message, isFile: Boolean) -> Unit = { data, isFile ->
-        if (!isFile) {
-            fragmentManager?.addFragment(
-                DetailImageFragment.newInstance(
-                    data.content,
-                    "Background"
+    private val listener: (data: Message, enumListener: EnumListener) -> Unit =
+        { data, enumListener ->
+            if (enumListener == EnumListener.IMAGE) {
+                fragmentManager?.addFragment(
+                    DetailImageFragment.newInstance(
+                        data.content,
+                        "Background"
+                    )
                 )
-            )
-        } else {
-            //viewModel.downloadFile(data.content, data.namePreview)
-            val request = DownloadManager.Request(Uri.parse(data.content))
-            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-            request.setTitle("Download")
-            request.setDescription("The file is downloading...")
-            context?.showMessage("The file is downloading...")
-            request.allowScanningByMediaScanner()
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            request.setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                "${System.currentTimeMillis()}"
-            )
+            } else if(enumListener == EnumListener.FILE){
+                //viewModel.downloadFile(data.content, data.namePreview)
+                val request = DownloadManager.Request(Uri.parse(data.content))
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                request.setTitle("Download")
+                request.setDescription("The file is downloading...")
+                context?.showMessage("The file is downloading...")
+                request.allowScanningByMediaScanner()
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                request.setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_DOWNLOADS,
+                    "${System.currentTimeMillis()}"
+                )
 
-            val manager = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            manager.enqueue(request)
+                val manager =
+                    activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                manager.enqueue(request)
+            }
         }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

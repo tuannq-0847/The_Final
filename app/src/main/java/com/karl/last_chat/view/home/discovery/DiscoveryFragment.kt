@@ -7,12 +7,22 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
 import com.karl.last_chat.utils.extensions.addFragment
+import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.view.profile.ProfileFragment
+import com.karl.last_chat.view.search.SearchFragment
 import com.yuyakaido.android.cardstackview.*
 import kotlinx.android.synthetic.main.fragment_discovery.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DiscoveryFragment : BaseFragment<DiscoveryViewModel>(), CardStackListener {
+class DiscoveryFragment : BaseFragment<DiscoveryViewModel>(), CardStackListener,
+    View.OnClickListener {
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.editSearch -> {
+                activity?.supportFragmentManager?.addFragment(SearchFragment.newInstance())
+            }
+        }
+    }
 
 
     override fun onCardDisappeared(view: View?, position: Int) {
@@ -53,6 +63,7 @@ class DiscoveryFragment : BaseFragment<DiscoveryViewModel>(), CardStackListener 
         manager.setDirections(Direction.HORIZONTAL)
         manager.setCanScrollHorizontal(true)
         manager.setCanScrollVertical(true)
+        onClickViews(editSearch)
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
         recyclerDiscovery.layoutManager = manager

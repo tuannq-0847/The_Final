@@ -5,9 +5,9 @@ import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
-import com.karl.last_chat.data.model.User
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseFragment
+import com.karl.last_chat.data.model.User
 import com.karl.last_chat.utils.Constants
 import com.karl.last_chat.utils.extensions.onClickViews
 import com.karl.last_chat.utils.extensions.replaceFragment
@@ -79,6 +79,7 @@ class GenderFragment : BaseFragment<GenderViewModel>(), View.OnClickListener {
                 )
             )
         }
+        hideKeyboard()
     }
 
     override fun onObserve() {

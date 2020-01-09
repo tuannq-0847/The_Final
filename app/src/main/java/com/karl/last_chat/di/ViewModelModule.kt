@@ -17,6 +17,7 @@ import com.karl.last_chat.view.register_flow.first_name.MyFirstNameViewModel
 import com.karl.last_chat.view.register_flow.gender.GenderViewModel
 import com.karl.last_chat.view.register_flow.parent_res.ParentResViewModel
 import com.karl.last_chat.view.register_flow.welcome.ResWelcomeViewModel
+import com.karl.last_chat.view.search.SearchViewModel
 import com.karl.last_chat.view.splash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,7 +29,7 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get(), get()) }
     viewModel { ChatViewModel(get(), get()) }
     viewModel { PersonalViewModel(get(), get()) }
-    viewModel { SplashViewModel(get(), get())}
+    viewModel { SplashViewModel(get(), get()) }
     viewModel { MessagesViewModel(get(), get()) }
     viewModel { GroupViewModel(get(), get()) }
     viewModel { DiscoveryViewModel(get(), get()) }
@@ -40,4 +41,5 @@ val viewModelModule = module {
     viewModel { MyFirstNameViewModel(get(), get()) }
     viewModel { GenderViewModel(get(), get()) }
     viewModel { DetailImageViewModel(get(), get()) }
+    viewModel { SearchViewModel(get(), get()) }
 }

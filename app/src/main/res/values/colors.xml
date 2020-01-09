@@ -17,4 +17,5 @@
     <color name="color_background_placeholder">#dddddd</color>
     <color name="color_blue_face">#4267B2</color>
     <color name="color_light_grey">#DDDDDD</color>
+    <color name="color_gray_d9">#d9d9d9</color>
 </resources>

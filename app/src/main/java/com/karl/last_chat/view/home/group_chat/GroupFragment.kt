@@ -1,5 +1,6 @@
 package com.karl.last_chat.view.home.group_chat
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.karl.last_chat.R
@@ -23,6 +24,7 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
 
     override fun onInitComponents(view: View) {
         recyclerFriendRequest.adapter = adapter
+        recyclerFriends.adapter = friendAdapter
         viewModel.getFriendRequest()
         viewModel.getFriends()
     }
@@ -38,8 +40,13 @@ class GroupFragment : BaseFragment<GroupViewModel>() {
             adapter.notifyDataSetChanged()
         })
         viewModel.usersEvent.observe(this, Observer {
-            friendAdapter.submitList(it)
-            friendAdapter.notifyDataSetChanged()
+            Log.d("userSize", it.size.toString())
+            if (it.isEmpty()) imageEmpty.visibility = View.VISIBLE
+            else {
+                imageEmpty.visibility = View.INVISIBLE
+                friendAdapter.submitList(it)
+                friendAdapter.notifyDataSetChanged()
+            }
         })
     }
 

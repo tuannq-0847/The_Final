@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import com.karl.last_chat.R
 import com.karl.last_chat.base.BaseRecyclerView
+import com.karl.last_chat.data.model.EnumListener
 import com.karl.last_chat.data.model.Message
 import com.karl.last_chat.utils.extensions.loadWithGlide
 import kotlinx.android.synthetic.main.item_chat_file_rec.view.*
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.item_send.view.*
 
 class ChatAdapter(
     private val uid: String,
-    private val listener: (data: Message, isFile: Boolean) -> Unit
+    private val listener: (data: Message, enumListener: EnumListener) -> Unit
 ) :
     BaseRecyclerView<Message>(object : DiffUtil.ItemCallback<Message>() {
         override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
@@ -73,27 +74,30 @@ class ChatAdapter(
                     textSend.text = item.content
                 }
                 2 -> {
-                    textNameFile.text = item.content
+                    textNameFile.text =
+                        if (item.namePreview.isNotEmpty()) item.namePreview else item.content
                     if (pathAvatar.isNotEmpty()) imageAvatarRec.loadWithGlide(pathAvatar)
                     //         isNeedInvisible(position, imageAvatarRec)
-                    listener(item, true)
+                    textNameFile.setOnClickListener {
+                        listener(item, EnumListener.FILE)
+                    }
                 }
                 3 -> {
                     textNameFileSend.text =
                         if (item.namePreview.isNotEmpty()) item.namePreview else item.content
                     textNameFileSend.setOnClickListener {
-                        listener(item, true)
+                        listener(item, EnumListener.FILE)
                     }
                 }
                 4 -> {
                     imageRec.loadWithGlide(item.content, R.drawable.bg_image_send)
-                    imageRec.setOnClickListener { listener(item, false) }
+                    imageRec.setOnClickListener { listener(item, EnumListener.IMAGE) }
                     if (pathAvatar.isNotEmpty()) imageUserRecI.loadWithGlide(pathAvatar)
                     //         isNeedInvisible(position, imageUserRecI)
                 }
                 5 -> {
                     imageSend.loadWithGlide(item.content, R.drawable.bg_image_send)
-                    imageSend.setOnClickListener { listener(item, false) }
+                    imageSend.setOnClickListener { listener(item, EnumListener.IMAGE) }
                 }
             }
         }
