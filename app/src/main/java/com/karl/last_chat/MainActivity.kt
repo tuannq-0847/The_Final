@@ -58,6 +58,7 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.replaceFragment(SplashFragment.newInstance(), R.id.mainContainer)
         sharedViewModel = ViewModelProviders.of(this@MainActivity)[SharedViewModel::class.java]
         checkPermission()
+        viewModel.updateStatusOnline(1)
     }
 
     @SuppressLint("MissingPermission")

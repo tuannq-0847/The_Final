@@ -43,4 +43,11 @@
     <string name="notice">Don\'t waste your time. \n Let\'s say hello</string>
     <string name="not_type">You don\'t type anything</string>
     <string name="choose_image">Choose Image</string>
+    <string name="title_info_user">Information User</string>
+    <string name="sign_up_full_name">User name</string>
+    <string name="sign_up_gender">Gender</string>
+    <string name="sign_up_male">Male</string>
+    <string name="sign_up_female">Female</string>
+    <string name="sign_up_birthday">Birthday</string>
+    <string name="bio">Biography</string>
 </resources>

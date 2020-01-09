@@ -96,10 +96,6 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
                             .addOnFailureListener {
                                 error.value = it
                             }
-                        appRepository.insertFriend(appRepository.getCurrentUser()!!.uid)
-                            .addOnFailureListener {
-                                error.value = it
-                            }
                     }
                 }
                 .addOnFailureListener {
@@ -111,7 +107,6 @@ class GroupViewModel(private val appRepository: AppRepository, private val app: 
 
     fun rejectFriend(userId: String) {
         uiScope.launch {
-            appRepository.removeFriendRequestFromSender(userId)
             appRepository.removeFriendRequest(userId)
                 .addOnSuccessListener {
                     runBlocking {

@@ -110,4 +110,8 @@ interface AppRepository {
     suspend fun getFriends(): DatabaseReference
 
     suspend fun queryUserName(userName: String): Query
+    suspend fun updateInforBio(data: String): Task<Void>
+    suspend fun updateInforName(data: String): Task<Void>
+    suspend fun updateInforBirth(data: Long): Task<Void>
+    suspend fun updateInforGender(data: String): Task<Void>
 }

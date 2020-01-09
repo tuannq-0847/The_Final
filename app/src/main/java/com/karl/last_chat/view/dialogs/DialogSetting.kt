@@ -10,16 +10,21 @@ import com.karl.last_chat.base.BaseDialog
 import com.karl.last_chat.utils.extensions.onClickViews
 import kotlinx.android.synthetic.main.layout_setting_personal.*
 
-class DialogSetting(context: Context, private val title: String, private val listener: () -> Unit) :
+class DialogSetting(
+    context: Context,
+    private val title: String,
+    private val listener: (isLogout: Boolean) -> Unit
+) :
     BaseDialog(context), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
 
             R.id.textEditProfile -> {
-                //todo
+                listener(false)
+                dismiss()
             }
             R.id.textLogout -> {
-                listener()
+                listener(true)
                 dismiss()
             }
         }

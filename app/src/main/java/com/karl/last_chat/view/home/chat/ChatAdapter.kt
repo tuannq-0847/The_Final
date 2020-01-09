@@ -41,7 +41,8 @@ class ChatAdapter(
             3 -> R.layout.item_chat_file_send
             4 -> R.layout.item_chat_image_rec
             5 -> R.layout.item_chat_image_send
-            else -> R.layout.layout_temp_load_image
+            6 -> R.layout.layout_temp_load_image
+            else -> R.layout.layout_temp_load_file
         }
     }
 
@@ -54,6 +55,7 @@ class ChatAdapter(
             message.idUserSend != uid && message.type == "file" -> 2
             message.idUserSend == uid && message.type == "image" -> 5
             message.idUserSend == uid && message.type == "image-temp" -> 6
+            message.idUserSend == uid && message.type == "file-temp" -> 7
             else -> 4
         }
     }

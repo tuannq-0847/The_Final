@@ -22,4 +22,14 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageFriends"
         app:layout_constraintLeft_toRightOf="@+id/imageFriends"
         app:layout_constraintTop_toTopOf="@+id/imageFriends" />
+
+    <View
+        android:id="@+id/viewBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1dp"
+        android:layout_marginTop="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:background="@color/color_default_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageFriends" />
 </androidx.constraintlayout.widget.ConstraintLayout>

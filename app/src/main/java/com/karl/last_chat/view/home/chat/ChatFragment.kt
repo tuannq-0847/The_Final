@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
@@ -73,7 +72,6 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                 )
             }
             R.id.imageAttach -> {
-                Log.d("isClicked", "in....")
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "*/*"
 //                val mimetypes = arrayOf(
@@ -144,7 +142,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
                         "Background"
                     )
                 )
-            } else if(enumListener == EnumListener.FILE){
+            } else if (enumListener == EnumListener.FILE) {
                 //viewModel.downloadFile(data.content, data.namePreview)
                 val request = DownloadManager.Request(Uri.parse(data.content))
                 request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
@@ -186,6 +184,18 @@ class ChatFragment : BaseFragment<ChatViewModel>(), View.OnClickListener {
             )
         } else if (requestCode == 34 && resultCode == Activity.RESULT_OK) {
             val uri = data?.data
+            viewModel.a.add(
+                Message(
+                    content = "abc",
+                    idUserSend = viewModel.getCurrentUser()!!.uid,
+                    idUserRec = uid!!,
+                    seen = viewModel.getCurrentUser()!!.uid,
+                    type = "file-temp"
+                )
+            )
+            chatAdapter.submitList(viewModel.a)
+            chatAdapter.notifyDataSetChanged()
+            recyclerChat.scrollToPosition(viewModel.a.size - 1)
             viewModel.uploadFile(uid!!, dId, uri!!, context?.getMimeType(uri) ?: "")
         }
     }

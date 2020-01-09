@@ -28,15 +28,40 @@ class AppRepositoryImpl(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseInstanceId: FirebaseInstanceId
 ) : AppRepository {
+    override suspend fun updateInforBio(data: String): Task<Void> =
+        firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
+            .child("bio")
+            .setValue(data)
+
+    override suspend fun updateInforName(data: String): Task<Void> =
+        firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
+            .child("userName")
+            .setValue(data)
+
+    override suspend fun updateInforBirth(data: Long): Task<Void> =
+        firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
+            .child("birthday")
+            .setValue(data)
+
+    override suspend fun updateInforGender(data: String): Task<Void> =
+        firebaseDatabase.getReference("${Constants.USER}/${getCurrentUser()!!.uid}")
+            .child("gender")
+            .setValue(data)
+
+
     override suspend fun queryUserName(userName: String): Query =
         firebaseDatabase.getReference(Constants.USER)
 
     override suspend fun getFriends(): DatabaseReference =
         firebaseDatabase.getReference("${Constants.FRIEND}/${getCurrentUser()!!.uid}")
 
-    override suspend fun insertFriend(uId: String): Task<Void> =
-        firebaseDatabase.getReference("${Constants.FRIEND}/${getCurrentUser()!!.uid}")
+    override suspend fun insertFriend(uId: String): Task<Void> {
+
+        firebaseDatabase.getReference("${Constants.FRIEND}/$uId")
+            .child(getCurrentUser()!!.uid).setValue(getCurrentUser()!!.uid)
+        return firebaseDatabase.getReference("${Constants.FRIEND}/${getCurrentUser()!!.uid}")
             .child(uId).setValue(uId)
+    }
 
     private val generateName = "".generateName()
 

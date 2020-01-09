@@ -30,6 +30,7 @@ class MyFirstNameFragment : BaseFragment<MyFirstNameViewModel>() {
     override fun onObserve() {
         buttonContinue.isEnabled = false
         buttonContinue.setOnClickListener {
+            hideKeyboard()
             fragmentManager?.addFragment(
                 BirthdayFragment.newInstance(User(userName = editName.text.toString())),
                 R.id.frameParentRegister

@@ -44,7 +44,9 @@ class MessageAdapter(private val uid: String, listener: (item: LastMessage) -> U
                     } else textLastMessage.text = "${item.nameSender} sent a image"
                 }
                 "file" -> {
-                    textLastMessage.text = "sent a file"
+                    if (uid == item.idUserSend) {
+                        textLastMessage.text = "You sent a file"
+                    } else textLastMessage.text = "${item.nameSender} sent a file"
                 }
                 "new" -> {
                     textLastMessage.text = item.lastContent

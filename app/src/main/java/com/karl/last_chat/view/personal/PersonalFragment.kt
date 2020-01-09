@@ -17,6 +17,7 @@ import com.karl.last_chat.view.auth.AuthFragment
 import com.karl.last_chat.view.dialogs.DialogAvatar
 import com.karl.last_chat.view.dialogs.DialogSetting
 import com.karl.last_chat.view.profile.detail_image.DetailImageFragment
+import com.karl.last_chat.view.profile.edit.EditProfileFragment
 import kotlinx.android.synthetic.main.fragment_personal.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
@@ -65,7 +66,11 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
 
     private val dialogSetting by lazy {
         DialogSetting(context!!, "") {
-            viewModel.updateStatusOnline(0)
+            if (it)
+                viewModel.updateStatusOnline(0)
+            else {
+                activity?.supportFragmentManager?.addFragment(EditProfileFragment.newInstance())
+            }
         }
     }
 
@@ -154,7 +159,14 @@ class PersonalFragment : BaseFragment<PersonalViewModel>(), View.OnClickListener
             textBio.text = it.bio
             textGender.text = it.gender
             textBirthDay.text = it.birthday!!.getCurrentAge().toString()
-            textLocation.text = getLocationName(it.lat, it.long)
+            textLocation.text = if (getLocationName(
+                    it.lat,
+                    it.long
+                ).isEmpty()
+            ) "Số 3 Đường Cầu Giấy, Ngọc Khánh, Đống Đa, Hà Nội, Việt Nam" else getLocationName(
+                it.lat,
+                it.long
+            )
         })
         viewModel.eventStatus.observe(this, Observer {
             viewModel.logout()
