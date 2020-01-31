@@ -143,7 +143,8 @@ class MainActivity : BaseActivity() {
         } else {
             if (!isLocationEnabled()) {
                 showRequestDialogGps()
-            } else getLocations()
+            }
+//            } else getLocations()
         }
     }
 

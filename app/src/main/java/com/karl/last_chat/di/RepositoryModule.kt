@@ -6,6 +6,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.karl.last_chat.data.repository.AppRepository
 import com.karl.last_chat.data.repository.impl.AppRepositoryImpl
+import com.karl.last_chat.data.repository.paging.MessageDataSource
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -14,4 +15,5 @@ val repositoryModule = module {
     single { FirebaseInstanceId.getInstance() }
     single { FirebaseStorage.getInstance() }
     single<AppRepository> { AppRepositoryImpl(get(), get(), get(), get()) }
+    single { MessageDataSource(get()) }
 }
